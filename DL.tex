@@ -1,0 +1,476 @@
+%\documentclass[12pt,draft]{article}
+\documentclass[12pt]{article}
+\usepackage{CJK}
+\usepackage{mathrsfs}
+\usepackage{amsmath,amsthm,amsfonts,amssymb}
+\usepackage{geometry}
+\usepackage{fancyhdr}
+\usepackage{indentfirst}
+\usepackage{float}
+\usepackage[dvips]{graphicx}
+\usepackage{subfigure}
+\usepackage[font=small]{caption}
+\usepackage{threeparttable}
+\usepackage{cases}
+\usepackage{multicol}
+\usepackage{url}
+\usepackage{amsmath}
+\usepackage{bm}
+\usepackage{xcolor}
+\usepackage{overpic}
+\usepackage{natbib}
+\usepackage[utf8]{inputenc}
+\usepackage[american]{babel}
+\usepackage{natbib}
+\usepackage{graphicx}
+\numberwithin{equation}{section}
+\geometry{left=1.5cm,right=1.5cm,top=1.5cm,bottom=1.5cm}
+\setlength{\parskip}{0.3\baselineskip}
+\setlength{\headheight}{15pt}
+\begin{document}\small
+ % \renewcommand\figurename{Fig.}
+  %\renewcommand\arraystretch{1.0}
+    \title{Deep Learning\cite{Goodfellow-et-al-2016-Book} Notes}
+    \author{Yan JIN}
+    \pagestyle{fancy}\fancyhf{}
+    \lhead{}\rhead{JIN Yan}
+    \lfoot{\textit{}}\cfoot{}\rfoot{\thepage}
+    \renewcommand{\headrulewidth}{1.pt}
+    \renewcommand{\footrulewidth}{1.pt}
+  \maketitle
+  \tableofcontents
+  
+%=======================================
+\section{Matrix Derivative}
+
+Here we choose \textbf{Numerator layout}.
+
+\textbf{Scalar}: x, y;
+
+\textbf{Vector}:
+\[
+\mathbf{x} = 
+\begin{bmatrix}
+x_1\\ x_2\\ \vdots\\ x_3\\
+\end{bmatrix}, 
+\mathbf{y} = 
+\begin{bmatrix}
+y_1\\ y_2\\ \vdots\\ y_3\\
+\end{bmatrix};
+\]
+
+\textbf{Derivatives with Vectors}:
+\[
+\nabla_{x} \mathbf{y} = \frac{\partial \mathbf{y}}{\partial x} =
+\begin{bmatrix}
+\frac{\partial y_1}{\partial x}\\
+\frac{\partial y_2}{\partial x}\\
+\vdots\\
+\frac{\partial y_n}{\partial x}\\
+\end{bmatrix},
+\nabla_{\mathbf{x}} y = \frac{\partial y}{\partial \mathbf{x}} =
+\begin{bmatrix}
+\frac{\partial y}{\partial x_1},
+\ \ \frac{\partial y}{\partial x_2},
+\ \ \cdots,
+\ \ \frac{\partial y}{\partial x_n}\\
+\end{bmatrix},
+\nabla_{\mathbf{x}} \mathbf{y} = \frac{\partial \mathbf{y}}{\partial \mathbf{x}} =
+\begin{bmatrix}
+\frac{\partial y_1}{\partial x_1} & \frac{\partial y_1}{\partial x_2} & \cdots & \frac{\partial y_1}{\partial x_n}\\
+\frac{\partial y_2}{\partial x_1} & \frac{\partial y_2}{\partial x_2} & \cdots & \frac{\partial y_2}{\partial x_n}\\
+\vdots & \vdots & \ddots & \vdots\\
+\frac{\partial y_m}{\partial x_1} & \frac{\partial y_m}{\partial x_2} & \cdots & \frac{\partial y_m}{\partial x_n}\\
+\end{bmatrix};
+\]
+ 
+In \textbf{vector calculus}, the derivative of a vector function $\mathbf{y}$ with respect to a vector $\mathbf{x}$ whose components represent a space is known as the \textbf{Jacobian matrix}.
+
+The \textbf{directional derivative} of a scalar function $f(\mathbf{x})$ of the space vector $\mathbf{x}$ in the direction of the unit vector $\mathbf{u}$ is defined using the gradient as follows.
+\[\nabla_{\bold{u}}{f}(\bold{x}) = \nabla f(\bold{x}) \cdot \bold{u}\]
+Using the notation just defined for the derivative of a scalar with respect to a vector we can re-write the directional derivative as
+\[\nabla_\mathbf{u} f = \frac{\partial f}{\partial \mathbf{x}}\mathbf{u}.\]
+
+\textbf{Derivatives with Matrices}:
+\[
+\frac{\partial \mathbf{Y}}{\partial x} =
+\begin{bmatrix}
+\frac{\partial y_{11}}{\partial x} & \frac{\partial y_{12}}{\partial x} & \cdots & \frac{\partial y_{1n}}{\partial x}\\
+\frac{\partial y_{21}}{\partial x} & \frac{\partial y_{22}}{\partial x} & \cdots & \frac{\partial y_{2n}}{\partial x}\\
+\vdots & \vdots & \ddots & \vdots\\
+\frac{\partial y_{m1}}{\partial x} & \frac{\partial y_{m2}}{\partial x} & \cdots & \frac{\partial y_{mn}}{\partial x}\\
+\end{bmatrix},
+\frac{\partial y}{\partial \mathbf{X}} =
+\begin{bmatrix}
+\frac{\partial y}{\partial x_{11}} & \frac{\partial y}{\partial x_{21}} & \cdots & \frac{\partial y}{\partial x_{p1}}\\
+\frac{\partial y}{\partial x_{12}} & \frac{\partial y}{\partial x_{22}} & \cdots & \frac{\partial y}{\partial x_{p2}}\\
+\vdots & \vdots & \ddots & \vdots\\
+\frac{\partial y}{\partial x_{1q}} & \frac{\partial y}{\partial x_{2q}} & \cdots & \frac{\partial y}{\partial x_{pq}}\\
+\end{bmatrix};
+\]
+%=======================================
+\section{Chapter 2 Linear Algebra}
+%\addcontentsline{toc}{subsection}{Singular Value Decomposition (\$2.8)}
+\subsection{Singular Value Decomposition (\$2.8)}
+SVD(Singular Value Decomposition):
+\begin{align*}
+\mathbf{A=UDV}^{T}
+\end{align*}
+
+\textbf{A}: m x n matrix; \textbf{U}: m x m matrix; \textbf{D}: m x n matrix;  \textbf{V}: n x n matrix; 
+
+\textbf{U} and \textbf{V} are orthogonal; \textbf{D} is diagonal but not necessarily square.
+
+The elements along the diagonal of \textbf{D} are \emph{singular values} of \textbf{A};
+the columns of \textbf{U} are the \emph{left-singular vectors}, the columns of \textbf{V} are the \emph{right-singular vectors}
+
+The left-singular vectors are the eigenvectors of $\mathbf{AA}^T$; the right-singular vectors are the eigenvectors of $\mathbf{A}^T\mathbf{A}$
+
+Every real matrix has a SVD. One of the usage of SVD is to generalize matrix inversion to non-square matrices.
+%-----------------------------------------
+\subsection{Example Principal Components Analysis (\$2.12)}
+Inputs: A collection of m points \{$\mathbf{x}^{(1)},...,\mathbf{x}^{(m)}$\} in $\mathbb{R}^{n}$.
+
+Target is to lossy compression to these points, that means to storing the points in a way that requires less memory but may lose some precision. We would like to lose as little precision as possible. So,
+
+Outputs: For each point $\mathbf{x}^{(i)} \in \mathbb{R}^{n}$ we will find:
+\begin{enumerate}
+	\item A $\mathbf{c}^{(i)} \in \mathbb{R}^{l}$, where $l < n$;
+	\item A encoding function: $f(\mathbf{x})=\mathbf{c}$; 
+	\item A decoding function: $\mathbf{x} \approx g(f(\mathbf{x}))$.
+\end{enumerate}
+%=======================================
+\section{Chapter 3 Probability and Information Theory}
+\subsection{Expectation, Variance and Covariance}
+\begin{align*}
+Expectation: \mathbb{E}_{X \sim P}[f(x)]&=\int p(x)f(x)dx \\
+Variance: Var(f(x))&=\mathbb{E}[(f(x)-\mathbb{E}[f(x)])^2] \\
+Covariance: Cov(f(x),g(x))&=\mathbb{E}[(f(x)-\mathbb{E}[f(x)])(g(x)-\mathbb{E}[g(x)])]
+\end{align*}
+%=======================================
+\section{Chapter 5 Machine Learning Basics}
+\subsection{Estimators, Bias and Variance (\$5.4)}
+\subsubsection{Point Estimation}
+\subsubsection{Bias}
+\[ bias(\hat{{\boldsymbol\theta}}_m)=\mathbb{E}(\hat{\boldsymbol\theta}_m)-\boldsymbol\theta
+\]
+
+Proof of formula (5.39):
+\begin{align*}
+\hat{\mu}_m&=\mathbb{E}[x^{(i)}]=\frac{1}{m}\sum_{i=1}^{m}x^{(i)} \\
+\mu&=\mathbb{E}[\hat{\mu}_m] \\
+Var(x^{(i)})&=\mathbb{E}[(x^{(i)}-\mu)^2]=\sigma^2 \\
+Var(\hat{\mu}_m)&=\mathbb{E}[(\hat{\mu}_m-\mu)^2] =\frac{\sigma^2}{m}
+\end{align*}
+
+so:
+\begin{align*}
+\mathbb{E}[\hat{\sigma}^2_m]
+&=\mathbb{E}[\frac{1}{m}\sum_{i=1}^{m}(x^{(i)}-\hat{\mu}_m)^2] \\
+&=\frac{1}{m}\mathbb{E}[\sum_{i=1}^{m}(x^{(i)}-\mu+\mu-\hat{\mu}_m)^2] \\
+&=\frac{1}{m}\mathbb{E}[\sum_{i=1}^{m}(x^{(i)}-\mu)^2+2\sum_{i=1}^{m}(x^{(i)}-\mu)(\mu-\hat{\mu}_m)+\sum_{i=1}^{m}(\mu-\hat{\mu}_m)^2] \\
+&=\frac{1}{m}\mathbb{E}[\sum_{i=1}^{m}(x^{(i)}-\mu)^2+2m(\hat{\mu}_m-\mu)(\mu-\hat{\mu}_m)+m(\mu-\hat{\mu}_m)^2] \\
+&=\frac{1}{m}\mathbb{E}[\sum_{i=1}^{m}(x^{(i)}-\mu)^2-m(\hat{\mu}_m-\mu)^2] \\
+&=\frac{1}{m}(\sum_{i=1}^{m}\mathbb{E}[(x^{(i)}-\mu)^2]-m\mathbb{E}[(\hat{\mu}_m-\mu)^2]) \\
+&=\frac{1}{m}(mVar(x^{(i)})-mVar(\hat{\mu}_m)) \\
+&=Var(x^{(i)})-Var(\hat{\mu}_m) \\
+&=\sigma^2-\frac{\sigma^2}{m}=\frac{m-1}{m}\sigma^2
+\end{align*}
+
+\subsubsection{Variance and Standard Error}
+Variance:$ Var(\hat{\theta})$
+
+Standard Error: $SE(\hat{\theta})=\sqrt{Var(\hat{\theta})}$
+
+\subsubsection{Trading off Bias and Variance to Minimize Mean Square Error}
+
+Proof (5.54):
+\begin{align*}
+MSE
+&=\mathbb{E}[(\hat{\theta}_m-\theta)^2] \\
+&=\mathbb{E}[\hat{\theta}_m^2]-2\theta\mathbb{E}(\hat{\theta}_m)+\theta^2 \\
+Bias(\hat{\theta}_m)^2
+&=(\mathbb{E}[\hat{\theta}_m]-\theta)^2 \\
+&=\mathbb{E}[\hat{\theta}_m]^2-2\mathbb{E}[\hat{\theta}_m]\theta+\theta^2 \\
+Var(\hat{\theta}_m)
+&=\mathbb{E}[(\hat{\theta}_m-\mathbb{E}[\hat{\theta}_m])^2]\\
+&=\mathbb{E}[\hat{\theta}_m^2-2\hat{\theta}_m\mathbb{E}[\hat{\theta}_m]+\mathbb{E}[\hat{\theta}_m]^2]\\
+&=\mathbb{E}[\hat{\theta}_m^2]-\mathbb{E}[\hat{\theta}_m]^2\\
+\Rightarrow
+MSE&=Bias(\hat{\theta}_m)^2+Var(\hat{\theta}_m)
+\end{align*}
+%=======================================
+\subsection{Frequentist Statistics and Baysian Statistics($\$5.5 \sim \$5.6$)}
+Frequentist: Estimate a single value of $\boldsymbol\theta$, then making all predictions 
+thereafter based on that \textbf{one} estimate;
+
+Baysian: Consider \textbf{all} possible values of $\boldsymbol\theta$ when making a prediction;
+
+Frequentist: The true parameter value $\boldsymbol\theta$ is \textbf{fixed but unknown}, while the point estimate $\hat{\boldsymbol\theta}$ is a random variable and a function of \textbf{the dataset}(which is seen as \textbf{random});
+
+Baysian: \textbf{Dataset} is directly observed and is \textbf{not random}; the true parameter value $\boldsymbol\theta$ is \textbf{unknown or uncertain} and thus is represented as a random variable;
+
+Differences between MLE(Maximum Likelihood Estimation) and Bayesian estimation:
+\begin{enumerate}
+	\item MLE: Make predictions using a \textbf{point estimate} of $\boldsymbol\theta$;
+	
+	Bayesian: Using a \textbf{full distribution} over $\boldsymbol\theta$;
+	\item MLE: Address the uncertainty on a given point estimate of $\boldsymbol\theta$ by evaluating its \textbf{variance};
+	
+	Bayesian: Simply \textbf{integrate over it};
+	\item Baysian: Use a priori, which expresses a preference for \textbf{simpler and smooth models}, and seems as a source of \textbf{subjective human judgment} impacting the predictions;
+	\item Baysian: \textbf{Generalize much better} when training data is \textbf{small}, but \textbf{high computation cost} when training data is \textbf{large};
+\end{enumerate}
+%-----------------------------------------
+\subsubsection{Frequentist Statistics - Maximum Likelihood Estimation (MLE)}
+$p_{data}(\boldsymbol{x})$: \textbf{The true but unknown} data generating distribution.
+
+ $\mathbb{X}=\{x^{(1)},...,x^{(m)}\}$: Drawn independently from $p_{data}(\boldsymbol{x})$.
+
+$\hat{p}_{data}(\boldsymbol{x})$: The empirical distribution.
+
+$p_{model}(\boldsymbol{x;\theta})$: A parametric family of probability distribution over the space indexed by $\boldsymbol{\theta}$ for estimating the $p_{data}(\boldsymbol{x})$.
+
+The maximum likelihood estimator for $\boldsymbol{\theta}$:
+
+\begin{align*}
+\boldsymbol{\theta_{ML}}&=\underset{\boldsymbol{\theta}}{argmax}\ p_{model}({\mathbb{X};\boldsymbol{\theta}}) \\
+&=\underset{\boldsymbol{\theta}}{argmax}\prod_{i=1}^{m}p_{model}(x^{(i)};\boldsymbol{\theta}) \\
+&=\underset{\boldsymbol{\theta}}{argmax}\sum_{i=1}^{m}log\ p_{model}(x^{(i)};\boldsymbol{\theta}) \\
+&=\underset{\boldsymbol{\theta}}{argmax}\frac{1}{m}\sum_{i=1}^{m}log\ p_{model}(x^{(i)};\boldsymbol{\theta}) \\
+&=\underset{\boldsymbol{\theta}}{argmax}\ \mathbb{E}_{\boldsymbol{x}\sim\hat{p}_{data}}log\ p_{model}(\boldsymbol{x};\boldsymbol{\theta}) \\
+\end{align*}
+
+MLE is an attempt to make the $p_{model}$ match $\hat{p}_{data}$, because we have no direct access to $p_{data}$.
+%-----------------------------------------
+\subsubsection{Baysian Statistics}
+$p(\boldsymbol\theta)$: Prior probability distribution(the prior).
+
+$\{x^{(1)},...,x^{(m)}\}$: Data samples.
+
+we reform the belief about $\boldsymbol\theta$(the posterior $p(\boldsymbol\theta|x^{(1)},...,x^{(m)})$) by the data likelihood $p(x^{(1)},...,x^{(m)}|\boldsymbol\theta)$ and the prior $p(\boldsymbol\theta)$ via \textbf{Bayes' rule}: \[
+p(\boldsymbol\theta|x^{(1)},...,x^{(m)})=\frac{p(x^{(1)},...,x^{(m)}|\boldsymbol\theta)p(\boldsymbol\theta)}{p(x^{(1)},...,x^{(m)})}
+\]
+%-----------------------------------------
+\subsubsection{Maximum A Posteriori (MAP) Estimation}
+The maximum a posteriori point estimate:
+\[
+\boldsymbol\theta_{MAP}=\underset{\boldsymbol\theta}{argmax} \  p(\boldsymbol{\theta|x})=\underset{\boldsymbol\theta}{argmax} \ log \  p(\boldsymbol{x|\theta})+log\ p(\boldsymbol{\theta})
+\]
+MAP has the advantage of leveraging information that is brought by \textbf{the prior} and cannot be found in \textbf{the training data}. This information helps to \textbf{reduce the variance} in the MAP point estimate (compare to MLE), but \textbf{increase bias}.
+
+\subsubsection{Relation between MLE and MAP}
+Some times:
+\[
+MLE \ + \ Regularization\ with\ weight\ decay = MAP .
+\]
+%=======================================
+\section{Chapter 6 Deep Feedforward Networks}
+\subsection{Back-Propagation (\$6.5)}
+Training example: $(\mathbf{x}, \mathbf{y})$
+
+Forward propagation: Algorithm 6.3 
+
+Back-propagation: Algorithm 6.4
+%=======================================
+\section{Chapter 10 Sequence modeling: Recurrent and recursive nets}
+For equation (10.18):
+\begin{align*}
+L^{(t)} =& -\sum_{i}y_{i}^{(t)}log[\hat{y}_{i}^{(t)}] \\
+\overset{(10.11)}{=}& -\sum_{i}y_{i}^{(t)}log[softmax(\mathbf{o^{(t)}})_{i}] \\
+=& -\sum_{i}y_{i}^{(t)}log[\frac{exp(\mathbf{o^{(t)}}_{i})}{\sum_{k}exp(\mathbf{o^{(t)}_{k}})}]
+\end{align*}
+\begin{align*}
+\frac{\partial L^{(t)}}{\partial o_i^{(t)}}
+&=-\frac{\partial}{\partial o_i^{(t)}} \sum_{i}y_{i}^{(t)} \{o_i^{(t)}-log[\sum_{k}exp(\mathbf{o^{(t)}_{k}})] \}\\
+&=-\frac{\partial}{\partial o_i^{(t)}} \{\sum_{i}y_{i}^{(t)} o_i^{(t)}-\sum_{i}y_{i}^{(t)} log[\sum_{k}exp(\mathbf{o^{(t)}_{k}})] \}\\
+&=-y_{i}^{(t)} + [\sum_{i}y_{i}^{(t)}] \cdot [\frac{exp(\mathbf{o^{(t)}}_{i})}{\sum_{k}exp(\mathbf{o^{(t)}_{k}})}]\\
+&=-y_{i}^{(t)} + \hat{y}_{i}^{(t)} = \hat{y}_{i}^{(t)} - y_{i}^{(t)} =  \hat{y}_{i}^{(t)} - \mathbf{1}_{y_{i}^{(t)}=1}
+\end{align*}
+
+For equation (10.19):
+
+Scalar L, matrix V, vectors \textbf{o} and \textbf{h} has the realation:  
+\[
+\mathbf{o}=\mathbf{Vh} \Leftrightarrow
+\begin{bmatrix}
+o_1\\ o_2\\ \vdots\\ o_m\\
+\end{bmatrix}=
+\begin{bmatrix}
+V_{11} & V_{12} & \cdots & V_{1n}\\
+V_{21} & V_{22} & \cdots & V_{2n}\\
+\vdots & \vdots & \ddots & \vdots\\
+V_{m1} & V_{m2} & \cdots & V_{mn}\\
+\end{bmatrix}
+\begin{bmatrix}
+h_1\\ h_2\\ \vdots\\ h_n\\
+\end{bmatrix};
+\]
+
+\begin{align*}
+\nabla_{\mathbf{h}} L &= 
+\begin{bmatrix}
+\frac{\partial L}{\partial h_1},
+\ \ \frac{\partial L}{\partial h_2},
+\ \ \cdots
+\ \ \frac{\partial L}{\partial h_n}\\
+\end{bmatrix} \\&= 
+\begin{bmatrix}
+\sum_{i=1}^{m} \frac{\partial L}{\partial o_i}\frac{\partial o_i}{\partial h_1},
+\ \ \sum_{i=1}^{m}  \frac{\partial L}{\partial o_i}\frac{\partial o_i}{\partial h_2},
+\ \ \cdots
+\ \ \sum_{i=1}^{m}  \frac{\partial L}{\partial o_i}\frac{\partial o_i}{\partial h_n}\\
+\end{bmatrix} \\&=
+\begin{bmatrix}
+	\begin{bmatrix}
+	\frac{\partial L}{\partial o_1},
+	\ \ \frac{\partial L}{\partial o_2},
+	\ \ \cdots
+	\ \ \frac{\partial L}{\partial o_m}\\
+	\end{bmatrix}
+	\begin{bmatrix}
+	\frac{\partial o_1}{\partial h_1}\\
+	\frac{\partial o_2}{\partial h_1}\\
+	\vdots\\
+	\frac{\partial o_m}{\partial h_1}\\
+	\end{bmatrix},
+	\begin{bmatrix}
+	\frac{\partial L}{\partial o_1},
+	\ \ \frac{\partial L}{\partial o_2},
+	\ \ \cdots
+	\ \ \frac{\partial L}{\partial o_m}\\
+	\end{bmatrix}
+	\begin{bmatrix}
+	\frac{\partial o_1}{\partial h_2}\\
+	\frac{\partial o_2}{\partial h_2}\\
+	\vdots\\
+	\frac{\partial o_m}{\partial h_2}\\
+	\end{bmatrix},
+\ \ \cdots,
+	\begin{bmatrix}
+	\frac{\partial L}{\partial o_1},
+	\ \ \frac{\partial L}{\partial o_2},
+	\ \ \cdots
+	\ \ \frac{\partial L}{\partial o_m}\\
+	\end{bmatrix}
+	\begin{bmatrix}
+	\frac{\partial o_1}{\partial h_n}\\
+	\frac{\partial o_2}{\partial h_n}\\
+	\vdots\\
+	\frac{\partial o_m}{\partial h_n}\\
+	\end{bmatrix}
+\end{bmatrix} \\&= 
+\begin{bmatrix}
+\frac{\partial L}{\partial o_1},
+\ \ \frac{\partial L}{\partial o_2},
+\ \ \cdots
+\ \ \frac{\partial L}{\partial o_m}\\
+\end{bmatrix}
+\begin{bmatrix}
+\frac{\partial o_{1}}{\partial h_1} & \frac{\partial o_{1}}{\partial h_2} & \cdots & \frac{\partial o_{1}}{\partial h_n}\\
+\frac{\partial o_{2}}{\partial h_1} & \frac{\partial o_{2}}{\partial h_2} & \cdots & \frac{\partial o_{2}}{\partial h_n}\\
+\vdots & \vdots & \ddots & \vdots\\
+\frac{\partial o_{m}}{\partial h_1} & \frac{\partial o_{m}}{\partial h_2} & \cdots & \frac{\partial o_{m}}{\partial h_n}\\
+\end{bmatrix} \\&= 
+\nabla_{\mathbf{o}} L \ \mathbf{V}
+\end{align*}
+%=======================================
+\section{Chapter 11 Practical Methodology}
+Practical design process:
+\begin{enumerate}
+	\item Determine error metric and target value;
+	\item Establish a Baseline Model;
+	\item Determine bottlenecks in performance;
+	\item Repeatedly make incremental changes: gathering new data, adjusting hyperparameters, or changing algorithms;
+\end{enumerate}
+
+\subsection{Determining Whether to Gather More Data (\$11.3)}
+\begin{enumerate}
+	\item Determine whether the performance on the training set is acceptable; 
+	
+	If performance on the training set is poor:
+	\item Increase the size of the model: add more layers; add more hidden unites to each layer; turning 
+	the learning rate etc.
+	
+	If still not work well: data needed to be cleaned or gathered;
+	
+	Else:
+	\item Measure performance on test set;
+	
+	If performance good, done!
+	
+	Else if test set performance is much worse than training set performance:
+	\item Gather data;
+	
+	If not easy to gather data:
+	\item Reduce the size of the model; Improve regularization(adjust weight decay coefficients or add dropout);
+	
+	If test set performance is still unacceptable:
+	\item Gather data;
+\end{enumerate}
+%=======================================
+\section{NLP - Language Model}
+Finite set of all the words W; Ex: W = \{the, a, man, bag, dogs, ...\}.
+
+Set of all the REAL sequences of words L; Ex: L = \{the, a, the fan, the fan saw Beckham, the fan saw saw, ...\}.
+
+We have a sample set of sequences of words S.
+
+Now we need to learn the REAL probability distribution $p$, where:
+\[
+\sum_{x \in L} p(x) = 1
+\]
+
+Old method to calculate $p_{L}$:
+\begin{enumerate}
+	\item Assuming that $|S| = N$;
+	\item c(x) is the number of appearances of x in T;
+	\item Then, $p(x)=\frac{c(x)}{N} $.
+\end{enumerate}
+Problem of this method: If a sequences of words $x \in S$ does not in sample set T, so $p(x)=0$;
+But if it exists in S, then $p(x) \neq 0$.
+
+\subsection{Markov Processes and N-gram}
+To solve this problem, we assume a random variables $X_1, X_2, X_3, ..., X_n$, for each of them can take
+any value in the word set W.
+
+The word sequence $x \in T$ can be represented by the words: $x = \{x_1, x_2, x_3, ..., x_n\}$, where $x_i \in W$;
+
+First-order Markov Processes(the probability of the word is depend only on ONE word before):
+\begin{align*}
+&P(X_1=x_1, X_2=x_2, ..., X_n=x_n)\\ 
+=&P(X_1=x_1)\prod_{i=2}^{n}P(X_i=x_i|X_1=x_1, ..., X_{i-1}=x_{i-1})\\ 
+=&P(X_1=x_1)\prod_{i=2}^{n}P(X_i=x_i|X_{i-1}=x_{i-1}) 
+\end{align*}
+
+Second-order Markov Processes(the probability of the word is depend only on TWO words before):
+\begin{align*}
+&P(X_1=x_1, X_2=x_2, ..., X_n=x_n)\\ 
+=&\prod_{i=1}^{n}P(X_i=x_i|X_{i-2}=x_{i-2}, X_{i-1}=x_{i-1}) 
+\end{align*}
+where $x_0=x_1=START$.
+
+Trigram Language Model:
+
+For every $x = \{x_1, x_2, x_3, ..., x_n\} \in T$, we have:
+\begin{align*}
+p(\{x_1, x_2, ..., x_n\})=\prod_{i=1}^{n}q(x_i|\{x_{i-2}, x_{i-1}\}) 
+\end{align*}
+where $x_0=x_1=START$, and $q(x_i|\{x_{i-2}, x_{i-1}\})=\frac{c(\{x_i, x_{i-2}, x_{i-1}\})}{c(\{x_{i-2}, x_{i-1}\})}$
+
+Problem of this method: for example, $q(laughs|\{the, dog\})=\frac{c(\{the, dog, laughs\})}{c(\{the, dog\})}$; if there is no phase "the dog laughs" in the sample set, then $q(laughs|\{the, dog\})=0$, that is not the case; And if there is no phase "the dog", then $c(\{the, dog\})=0$, it will cause a problem of division.
+
+\subsection{Evaluation of Language Models: Perplexity}
+According to Maximum Likelihood Estimation, a good model should assign probability: $\prod_{i=1}^{N}p(s_i)$ where $s_i \in S$ as as high as possible.
+\[
+Perplexity=2^{-\frac{1}{N}\sum_{i=1}^{N}log p(s_i)}
+\]
+So a better model should have a lower Perplexity.
+
+
+\renewcommand\refname{Reference}
+\bibliographystyle{plain}
+\bibliography{DL}
+
+  \clearpage
+\end{document}

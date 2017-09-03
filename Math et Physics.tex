@@ -1,0 +1,431 @@
+%\documentclass[12pt,draft]{article}
+\documentclass[12pt]{article}
+\usepackage{CJK}
+\usepackage{mathrsfs}
+\usepackage{amsmath,amsthm,amsfonts,amssymb}
+\usepackage{geometry}
+\usepackage{fancyhdr}
+\usepackage{indentfirst}
+\usepackage{float}
+\usepackage[dvips]{graphicx}
+\usepackage{subfigure}
+\usepackage[font=small]{caption}
+\usepackage{threeparttable}
+\usepackage{cases}
+\usepackage{multicol}
+\usepackage{url}
+\usepackage{amsmath}
+\usepackage{bm}
+\usepackage{xcolor}
+\usepackage{overpic}
+\usepackage{natbib}
+\usepackage[utf8]{inputenc}
+\usepackage[american]{babel}
+\usepackage{natbib}
+\usepackage{graphicx}
+\numberwithin{equation}{section}
+\geometry{left=1.5cm,right=1.5cm,top=1.5cm,bottom=1.5cm}
+\setlength{\parskip}{0.3\baselineskip}
+\setlength{\headheight}{15pt}
+\begin{document}\small
+ % \renewcommand\figurename{Fig.}
+  %\renewcommand\arraystretch{1.0}
+    \title{Math et Physics Notes}
+    \author{Yan JIN}
+    \pagestyle{fancy}\fancyhf{}
+    \lhead{}\rhead{JIN Yan}
+    \lfoot{\textit{}}\cfoot{}\rfoot{\thepage}
+    \renewcommand{\headrulewidth}{1.pt}
+    \renewcommand{\footrulewidth}{1.pt}
+  \maketitle
+  \tableofcontents
+%=======================================
+\section{Principles of Quantum Mechanics}
+\subsection{Dirac's four axioms of Quantum Mechanics}
+\subsubsection{Axiom I: Principle of superposition}
+\begin{enumerate}
+\item Definition of quantum states and the general principle of superposition
+\item Mathematical formulation of the principle
+\item Dirac's notation for vectors: the ket
+\item Dirac's introduction of inner product function and bra vectors
+\item The dual relationship between ket and bra
+\end{enumerate}
+\subsubsection{Axiom II: Principle of observables}
+\begin{enumerate}
+\item Linear operators (q-numbers)
+\item Operator operating on the bra vectors
+\item Conjugate relations
+
+If $\hat{H}^\dag=\hat{H}$, then we call $\hat{H}$ as \textbf{self-adjoint operator} or \textbf{Hermitian operator}.
+\item Eigenvalues, eigenvectors and eigenspace
+\item The eigenvalue problem of Hermitian operators
+
+For \textbf{Hermitian operator} $\hat{H}$:
+\begin{enumerate}
+	\item $\hat{H}$'s eigenvalues are real;
+	\item $\hat{H}$'s eigenvectors for different eigenvalues are orthogonal.
+\end{enumerate}
+\item Axioms of observables in quantum mechanics and explanation of the Stern-Gerlach experiment
+
+The connections between Quantum Theory and Experiments:
+\begin{enumerate}
+	\item Hermitian operators: \textbf{Observables};  
+	\item Eigenvectors: The states of the system after measurements;
+	\item Corresponding eigenvalues: The measurements' values from experiments.
+\end{enumerate}
+\end{enumerate}
+\subsubsection{Axiom III: Quantization conditions}
+\begin{enumerate}
+\item Sequential Stern-Gerlach experiment again
+\item Commutability and compatibility
+\item Uncertainty relation between incompatible observables
+\item Axiom of quantization conditions: Dirac canonical quantization
+\item Heisenberg uncertainty relation between x and p
+\item Uncertainty between x and p in the eigenenergy states of Planck oscillator
+\end{enumerate}
+\subsubsection{Axiom IV: Equation of motion}
+\begin{enumerate}
+\item The Heisenberg equation of motion
+\item The Schr\"{o}dinger equation of motion
+\end{enumerate}
+%----------------------------------------------------
+\subsection{Dirac's three rules of manipulations in Quantum Mechanics: 
+                       Representations, Transformations and Pictures}
+\subsubsection{Representations of discrete eigenvalue spectra - matrix mechanics}
+\begin{enumerate}
+\item The basis of a linear vector space and the basis vectors
+\item The eigenvectors of Hermitian operators as orthonormal basis of Hilbert space
+\item The discrete eigenvalue spectra and the matrix representation or matrix mechanics
+\item Matrix (energy or Heisenberg) representation of Planck oscillator
+\item Matrix representation of spin one half and the Stern-Gerlach experiment again
+\end{enumerate}
+\subsubsection{Transformations}
+\begin{enumerate}
+\item Spin operators along arbitrary direction and rotation of the basis vectors
+\item Transformation of representations of discrete eigenvalue spectra
+\item Infinitesimal spatial displacement and momentum operator
+\item Finite translation as unitary transformation
+\item Properties of unitary operator, infinitesimal unitary transformation and Hermitian operator, symmetry and invariance
+\end{enumerate}
+\subsubsection{Representations of continuous eigenvalue spectra}
+\begin{enumerate}
+\item Normalization of basis eigenvectors of the abstract linear vector space
+\item Dirac delta function
+\end{enumerate}
+\subsubsection{The coordinate representation and the wave function}
+\begin{enumerate}
+\item The basis and the wave function
+\item The coordinate representation of momentum operator
+\item The "matrix elements" of the canonical quantization condition in the coordinate representation
+\item The eigenfunction of momentum operator
+\end{enumerate}
+\subsubsection{Derivation of stationary state Schr\"{o}dinger's wave equation}
+\begin{enumerate}
+\item The non-relativistic Hamiltonian
+\item The eigenequation of the Hamiltonian
+\item The coordinate representation of the eigenequation of the Hamiltonian and
+    the stationary state Schr\"{o}dinger's wave equation
+\end{enumerate}
+\subsubsection{Solution of eigenfunctions of Planck oscillator}
+\begin{enumerate}
+\item The wave function of the ground state   
+\item The wave function of all eigenstates      
+\end{enumerate}
+\subsubsection{Representations of mixing discrete and continuous eigenvalue spectra}
+\subsubsection{Complete set of dynamical quantities and simultaneous measurement of compatible observables}
+\subsubsection{Pictures and Axiom IV of quantum mechanics-quantum dynamics}
+\begin{enumerate}
+\item The time evolution of quantum states
+\item The Schr\"{o}dinger equation of motion of quantum states
+\item The Schr\"{o}dinger picture
+\item Derivation of the time-dependent Schr\"{o}dinger wave equation
+\item The stationary state 
+\item The Heisenberg picture
+\item The Heisenberg equation of motion of Planck oscillator
+\item The Ehrenfest theorem
+\item Conservation laws in quantum mechanics
+\end{enumerate}
+\subsubsection{Coherent states of Planck oscillator}
+\begin{enumerate}
+\item The coherent state
+\item The fourth Dirac ladder operators
+\item Expansion in Heisenberg representation
+\item Over-completeness
+\item Non-orthogonality
+\item The least uncertainty states in QM
+\item The time-dependent coherent state
+\item The coherent state Gaussian wave packet
+\end{enumerate}
+%----------------------------------------------------
+\subsection{Dirac's theory of electron}
+\subsubsection{Dirac equation}
+\begin{enumerate}
+\item The special theory of relativity
+\item The four vectors and mass-energy equivalence \\
+	\begin{equation}x_1=x, x_2=y, x_3=z, x_4=ict;\end{equation}
+	\begin{equation}x_\mu x_\mu = \sum_{\mu=1}^{4} x_\mu x_\mu = x^2-c^2 t^2; \end{equation}
+	\begin{equation}p_1=p_x, p_2=p_y, p_3=p_z, p_4=i\frac{E}{c};\end{equation}
+	\begin{equation}p_\mu p_\mu = \sum_{\mu=1}^{4} p_\mu p_\mu = p^2-\frac{E^2}{c^2};\end{equation}
+	Lorenz transformation requires that $x_\mu x_\mu$ and $p_\mu p_\mu$ etc. remain constant.\\
+	Now, choose a special coordinate with $p'=0$ and $E'=E_0$, then 
+	$p_\mu p_\mu=p'_\mu p'_\mu=0-\frac{E_0^2}{c^2}$, and define $m_0=\frac{E_0^2}{c^2}$, 
+	then we have the mass-energy equivalence:
+	\begin{equation}E^2=c^2p^2+m_0^2c^4\end{equation}
+	From the definition: $p=\frac{m_0v}{\sqrt{1-\frac{v^2}{c^2}}}$, we get:
+	\begin{equation}E=mc^2=\frac{m_0c^2}{\sqrt{1-\frac{v^2}{c^2}}}\end{equation}
+\item The Klein-Gordon equation \\
+	Replace mass-energy equivalence equation with:
+	\begin{equation}E \rightarrow i\hbar \frac{\partial}{\partial{t}}, 
+	\hat{\mathbf{p}} \rightarrow \frac{\hbar}{i} \hat{\mathbf{\nabla}}\end{equation}
+	we get the Klein-Gordon equation:
+	\begin{equation}-\hbar^2\frac{\partial^2{\psi(\mathbf{x},t)}}{\partial{t}^2}=
+	(-\hbar^2 c^2\hat{\mathbf{\nabla}}^2+m^2_{0}c^4)\psi(\mathbf{x},t)\end{equation}
+	use nature unit: $\hbar=c=1$, and introduce $\partial_{\mu}=\frac{\partial}{\partial{x}_{\mu}}$, 
+	we have a more elegant form of this equation:
+	\begin{equation}(\partial_{\mu}\partial_{\mu}-m^2_0)\psi(\mathbf{x},t)=0\end{equation}
+	Solve this equation with: 
+	$\psi(\mathbf{x},t)=(2\pi\hbar)^{-\frac{3}{2}}e^{\frac{i}{\hbar} p_\mu x_\mu}=
+	(2\pi\hbar)^{-\frac{3}{2}}e^{\frac{i}{\hbar} (\mathbf{p}\cdot\mathbf{x}-Et)}$, 
+	we have:$E^2=c^2p^2+m_0^2c^4$, that means the eigenvalues have two values:
+	\begin{equation}E=\pm\sqrt{c^2p^2+m_0^2c^4}\end{equation}
+\item Derivation of Dirac equation based on the four axioms of QM
+	\begin{equation}\hat{H}=\sqrt{c^2\hat{p}^2+m_0^2c^4}
+	=c\hat{\mathbf{\alpha}}\cdot\hat{\mathbf{p}}+\hat{\beta} m_0c^2\end{equation}
+	that means:
+	\begin{equation} c^2\hat{p}^2+m_0^2c^4
+	=(c\hat{\mathbf{\alpha}}\cdot\hat{\mathbf{p}}+\hat{\beta} m_0c^2)^2\end{equation}
+	Then we have:
+	\begin{equation}\begin{split}
+	\hat{\alpha_1^2}=\hat{\alpha_2^2}=\hat{\alpha_3^2}=\hat{\beta^2}=1 \\
+	\hat{\mathbf{\alpha}}\hat{\beta}+\hat{\beta}\hat{\mathbf{\alpha}}=0 \\
+	\hat{\alpha_1}\hat{\alpha_2}+\hat{\alpha_2}\hat{\alpha_1}=0 \\
+	\hat{\alpha_2}\hat{\alpha_3}+\hat{\alpha_3}\hat{\alpha_2}=0 \\
+	\hat{\alpha_3}\hat{\alpha_1}+\hat{\alpha_1}\hat{\alpha_3}=0 \\
+	\end{split}\end{equation}
+	Replace this into the Schr\"{o}dinger equation of motion, then we have dirac equation of motion:
+	\begin{equation}i\hbar\frac{d|A,t>}{dt}=
+	(c\hat{\mathbf{\alpha}}\cdot\hat{\mathbf{p}}+\hat{\beta} m_0c^2)|A,t>\end{equation}
+	For $\hat{\mathbf{\alpha}}$ and $\hat{\beta}$, we choose a 4-dimension vector space, and the base vectors are:
+	\[|1>=\begin{bmatrix}1\\ 0\\ 0\\ 0\\\end{bmatrix}, |2>=\begin{bmatrix}0\\ 1\\ 0\\ 0\\\end{bmatrix},
+	|3>=\begin{bmatrix}0\\ 0\\ 1\\ 0\\\end{bmatrix}, |4>=\begin{bmatrix}0\\ 0\\ 0\\ 1\\\end{bmatrix}\]
+	To calculate the dirac equation of motion, we choose the base vectors as:
+	\begin{equation}|x,y,z;n>=|n>|x,y,z>\end{equation}
+	where,
+	\[|x,y,z;1>=\begin{bmatrix}|x,y,z>\\ 0\\ 0\\ 0\\ \end{bmatrix},
+	|x,y,z;2>=\begin{bmatrix}0\\ |x,y,z>\\ 0\\ 0\\ \end{bmatrix},
+	|x,y,z;3>=\begin{bmatrix}0\\ 0\\ |x,y,z>\\ 0\\ \end{bmatrix},
+	|x,y,z;4>=\begin{bmatrix}0\\ 0\\ 0\\ |x,y,z>\\ \end{bmatrix}\]
+	These base vectors are orthogonal and complete, so for each state vector of Dirac's electron $|A,t>$:
+	\[|A,t>=\sum_{n=1}^4\iiint dxdydx |x,y,z;n><x,y,z;n|A,t>=\sum_{n=1}^4\iiint dxdydx\psi_n(x,y,z,t) |x,y,z;n>\]
+	where,
+	\[\psi_n(x,y,z,t)=<x,y,z;n|A,t>\]
+	Then the dirac equation of motion becomes :
+	\begin{equation}i\hbar\frac{\partial{\psi}}{dt}=
+	(c\hat{\mathbf{\alpha}}\cdot\frac{\hbar}{i}\hat{\mathbf{\nabla}}+\hat{\beta} m_0c^2)\psi\end{equation}
+	where,
+	\[\psi=\psi(x,y,z,t)=\begin{bmatrix}\psi_1(x,y,z,t) \\ \psi_2(x,y,z,t) \\ \psi_3(x,y,z,t) \\ \psi_4(x,y,z,t) \\\end{bmatrix}
+	=\begin{bmatrix}\psi_1 \\ \psi_2 \\ \psi_3 \\ \psi_4 \end{bmatrix}\]
+\item Playing with the Pauli matrices \\
+	Let $\hat{\alpha}_4=\hat{\beta}$, we could rewrite the relations using anti-exchange notation:
+	\begin{equation}\{\hat{\alpha}_\mu, \hat{\alpha}_\nu \}=
+	\hat{\alpha}_\mu \hat{\alpha}_\nu + \hat{\alpha}_\nu \hat{\alpha}_\mu = 
+	2 \delta_{\mu \nu}\end{equation}
+	This is just like the relation between pauli matrix.\\
+	Now we assume $m_0=0$, the static mass is zero:
+	\begin{equation}\hat{H}=\sqrt{c^2\hat{p}^2+m_0^2c^4}
+	=c\sqrt{\hat{p}^2}=c\sqrt{\hat{\mathbf{p}}\cdot\hat{\mathbf{p}}}
+	=c\sqrt{(\hat{\mathbf{\sigma}}\cdot\hat{\mathbf{p}})^2}
+	=c(\hat{\mathbf{\sigma}}\cdot\hat{\mathbf{p}})\end{equation}
+	Replace it into the the Schr\"{o}dinger equation of motion:
+	\begin{equation}i\hbar\frac{d|A,t>}{dt}
+	=c(\hat{\mathbf{\sigma}}\cdot\hat{\mathbf{p}})|A,t>\end{equation}
+	This is the equation for particles with spin 1/2 and zero static mass. If we constrain the $\hat{\mathbf{p}}=(\hat{p}_x,\hat{p}_y)$, then it's the 2010 Nobel Prize's work on graphene, the weyl equation. \\
+	Pauli matrix:
+	\begin{equation}
+	\hat{\sigma}_x=\begin{bmatrix}0&1\\1&0\end{bmatrix},
+	\hat{\sigma}_x=\begin{bmatrix}0&-i\\i&0\end{bmatrix},
+	\hat{\sigma}_x=\begin{bmatrix}1&0\\0&-1\end{bmatrix}
+	\end{equation}
+	it has relation:
+	\begin{equation}
+	(\hat{\mathbf{\sigma}}\cdot\mathbf{a})(\hat{\mathbf{\sigma}}\cdot\mathbf{b})
+	=\mathbf{a}\cdot\mathbf{b}+i\hat{\mathbf{\sigma}}\cdot(\mathbf{a}\times\mathbf{b})
+	\end{equation}
+\item Dirac equation in Dirac representation
+	\begin{equation}
+	\hat{\mathbf{\alpha}}=\begin{bmatrix}0&\hat{\mathbf{\sigma}}\\\hat{\mathbf{\sigma}}&0\end{bmatrix},
+	\hat{\mathbf{\beta}}=\begin{bmatrix}\hat{\mathbf{1}}&0\\0&-\hat{\mathbf{1}}\end{bmatrix},
+	\end{equation}
+	so we have the Dirac equation in Dirac representation:
+	\begin{equation}
+	i\hbar\frac{\partial \psi}{\partial t}=
+	[c\begin{bmatrix}0&\hat{\mathbf{\sigma}}\\\hat{\mathbf{\sigma}}&0\end{bmatrix}\cdot(\frac{\hbar}{i}\hat{\mathbf{\nabla}})+\begin{bmatrix}\hat{\mathbf{1}}&0\\0&-\hat{\mathbf{1}}\end{bmatrix}m_0c^2]\psi
+	\end{equation}
+\item Dirac equation in Weyl representation
+	\begin{equation}
+	\hat{\mathbf{\alpha}}=\begin{bmatrix}\hat{\mathbf{\sigma}}&0\\0&-\hat{\mathbf{\sigma}}\end{bmatrix},
+	\hat{\mathbf{\beta}}=\begin{bmatrix}0&\hat{\mathbf{1}}\\\hat{\mathbf{1}}&0\end{bmatrix},
+	\end{equation}
+	so we have the Dirac equation in Weyl representation:
+	\begin{equation}
+	i\hbar\frac{\partial \psi}{\partial t}=
+	[c\begin{bmatrix}\hat{\mathbf{\sigma}}&0\\0&-\hat{\mathbf{\sigma}}\end{bmatrix}\cdot(\frac{\hbar}{i}\hat{\mathbf{\nabla}})+\begin{bmatrix}0&\hat{\mathbf{1}}\\\hat{\mathbf{1}}&0\end{bmatrix}m_0c^2]\psi
+	\end{equation}
+	Mr. Nambu found the similarity between the Weyl representation and the BCS superconductivity theory, and do his Nobel Prize work.
+\end{enumerate}
+\subsubsection{The motion of a free electron}
+\begin{enumerate}
+\item The velocity of Dirac electron and zitterbewegung
+\item The current conservation of a Dirac electron
+\item Conservation of angular momentum of a Dirac electron and spin
+\item Complete set of dynamical quantities of Dirac electron and helicity
+\item The plane wave solution of a free Dirac electron
+\end{enumerate}
+\subsubsection{Dirac sea, Dirac hole and Modern Concept of Particles}
+\begin{enumerate}
+\item The concept of Dirac sea based on the Pauli exclusion principle
+\item The assumption about observables   
+\item The concept of particles in QM
+\item Dirac's hole theory, concept of anti-particle and prediction of positron
+\item The electron-positron pair production
+\end{enumerate}
+\subsubsection{Quantum field theoretical formulation of Dirac hole theory}
+\begin{enumerate}
+\item The energy of many Dirac electrons as eigenenergy of a new Hamiltonian
+\item The Fock representation
+\item The quantum field theoretical Hamiltonian of electrons and positrons
+\item The second quantization method
+\end{enumerate}
+\subsubsection{The non-relativistic limit of Dirac equation}
+\begin{enumerate}
+\item A Dirac electron in electromagnetic field
+\item Eliminating the rest mass of electron
+\item The Pauli equation
+\item The magnetic moment of Dirac electron
+\item The spin-orbit coupling
+\end{enumerate}
+\subsubsection{Covariance of Dirac equation under symmetrical transformations}
+\begin{enumerate}
+\item Covariance of Dirac equation under Lorentzian and rotational transformations
+\item Dirac matrix, Dirac algebra and Dirac spinor
+\item Lorentzian transformations
+\item Rotational transformation around z axis
+\item Properties of the coordinate transformation matrices
+\item Coordinate transformation of Dirac equation
+\item Direct transformation of Dirac spinor and Dirac matrices
+\item Combined rotational transformations of Dirac spinor
+\end{enumerate}
+\subsubsection{Neutrino, Dirac Fermion, Photon}
+\begin{enumerate}
+\item Neutrino
+\item Dirac Fermion
+\item Spin of photon
+\end{enumerate}
+%----------------------------------------------------
+\subsection{Dirac Picture}
+\subsubsection{Path integral}
+\begin{enumerate}
+\item Propagator as kernel of time-evolution of wave function
+\item The moving basis of coordinate representation
+\item The infinitesimal propagator
+\item The Feynman path integral
+\item Path integral of free particle
+\end{enumerate}
+\subsubsection{Green's function}
+\begin{enumerate}
+\item Propagator and time-dependent Green?s function
+\item Differential equation of time-dependent Green?s function
+\item Time-retarded and time-advanced Green?s function
+\item Heaviside step function
+\item Differential equation of time-retarded and time-advanced GF
+\item Fourier transformation of time-retarded and time-advanced GF
+\item Green?s functions as coordinate representation of Green?s operators
+\end{enumerate}
+\subsubsection{General properties of Green's function}
+\begin{enumerate}
+\item Green?s function as resolvant of the eigenenergies
+\item Analytical behavior of stationary state retarded and advanced Green?s functions
+\item Dyson?s equation and transition operator
+\end{enumerate}
+\subsubsection{Green's function method for bound state and scattering state problems}
+\begin{enumerate}
+\item Zeroth order Green?s functions
+\item Finding bound state in vanishing potential well by GF method
+\item Finding elastic scattering states by GF method
+\end{enumerate}
+\subsubsection{Lippmann-Schwinger equation and elastic potential scattering}
+\begin{enumerate}
+\item Lippmann-Schwinger equation for elastic potential scattering
+\item The scattering amplitudes of short-range central potential field
+\item Transition operator and Born approximation
+\item Orthogonality relations
+\end{enumerate}
+\subsubsection{Dirac picture}
+\begin{enumerate}
+\item The Dirac(interaction)picture
+\item Dyson operator and Tomonaga-Schwinger equation
+\item Dyson series
+\item The adiabatic ansatz of Born and Fock
+\item The S-matrix of Wheeler
+\item Relation between S-matrix and T-matrix
+\item Fermi Golden rule first derived by Dirac
+\end{enumerate}
+%----------------------------------------------------
+\subsection{Dirac second quantization method}
+\subsubsection{Identical particle system}
+\begin{enumerate}
+\item Bosons: photon as the first one
+\item Bosons: the material particles
+\item Fermions
+\item Anyon and Laughlin ansatz
+\item Spin-statistics connection
+\end{enumerate}
+\subsubsection{Quantum Statistics}
+\begin{enumerate}
+\item The probability density of statistical mechanics
+\item The Gibbs ensemble of statistical mechanics
+\item Liouville's theorem and equation
+\item The mixed ensemble and density matrix of quantum statistics
+\item Deriving Bose-Einstein statistics and Fermi-dirac statistics
+\item Direct derivation of QM statistics
+\item Path integral and partition function
+\end{enumerate}
+\subsubsection{Phonon and electron-phonon interaction}
+\begin{enumerate}
+\item The Born?Oppenheimer approximation and the harmonic approximation
+\item Phonon as the quantized lattice vibrational mode
+\item The electron-phonon interaction
+\item The effective electron-electron interaction due to electron-phonon coupling
+\end{enumerate}
+\subsubsection{BCS theory of superconductivity}
+\begin{enumerate}
+\item The effective attraction
+\item The Fermi surface
+\item The BCS model of  superconductor
+\item The mean-field approximation
+\item The equation of motion and Nambu's discovery
+\item The Bogoliubov-Valatin transformation
+\item The ground state of BCS superconductor
+\item The energy gap of BCS superconductor
+\end{enumerate}
+\subsubsection{Bogoliubov theory of superfluidity}
+\begin{enumerate}
+\item The interacting-boson model of superfluid of helium-4
+\item The u-v transformation
+\item The ground state
+\end{enumerate}                     
+%=======================================
+\section{Quantum Field theory}
+
+%=======================================
+\section{General Relativity}
+
+%=======================================
+\section{Math}
+
+\renewcommand\refname{Reference}
+\bibliographystyle{plain}
+\bibliography{DL}
+
+  \clearpage
+\end{document}
