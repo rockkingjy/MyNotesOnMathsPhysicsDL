@@ -122,7 +122,7 @@
 \item The Hamiltonian mechanics \\
 	Legendre transformation:
 	\begin{equation}
-	H=\dot{q}\frac{\partial L}{\partial \dot{q}}-L=\dot{q}p-L=\frac{p^2}{2m}+V(q)=H(q,p)
+	H=\dot{q}\frac{\partial L}{\partial \dot{q}}-L=\dot{q}p-L=\frac{p^2}{2m}+V(q)=H(q, p)
 	\end{equation}
 	Hamilton equation:
 	\begin{equation}\begin{aligned}
@@ -147,10 +147,40 @@ Thomas Kuhn
 \end{enumerate}
 \subsubsection{Paradigm shifts: the recipe to comprehend and command Quantum Mechanics}
 \begin{enumerate}
-\item Example one of paradigm shifts in quantum physics:\\
-	Planck oscillator\\
-     	From c-number to q-number \\
-	From visible physical space to abstract mathematical space 
+\item Example one of paradigm shifts in quantum physics\\
+     	From c-number to q-number from visible physical space to abstract mathematical space: \\
+	{\color{blue} c-number Hamiltonian:
+    	\[H=\frac{p^2}{2m}+\frac{1}{2}m\omega^2q^2\]}
+	{\color{red} q-number Hamiltonian:
+	\[\hat{H}=\frac{\hat{p}^2}{2m}+\frac{1}{2}m\omega^2\hat{q}^2\]}
+	The general quantization rule derived by Dirac in 1925:
+	\begin{equation}\begin{split}
+	{\color{red}[\hat{u},\hat{v}]}&={\color{blue}i\hbar \{u, v\}}, \\
+	{\color{red}Quantum\ bracket} &= {\color{blue}Poisson\ bracket}
+	\end{split}\end{equation}
+	Dirac canonical quantization:
+	\begin{equation}[\hat{q},\hat{p}]=i\hbar \{q, p\}=i\hbar\end{equation}
+	{\color{blue} Hamilton equation of motion:
+	\begin{equation}\frac{dq}{dt}=\{q, H\}\end{equation}}
+	{\color{red} Quantum equation of motion - Heisenberg equation:
+	\begin{equation}\frac{d\hat{q}}{dt}=\frac{1}{i\hbar}[\hat{q}, H]\end{equation}}
+	Dirac ladder operators:
+	\begin{equation}\begin{split}
+	\hat{a}^\dag=&\frac{\hat{p}}{\sqrt{2\hbar m\omega}}+i\sqrt{\frac{m\omega}{2\hbar}}\hat{q},\\
+	\hat{a}=&\frac{\hat{p}}{\sqrt{2\hbar m\omega}}-i\sqrt{\frac{m\omega}{2\hbar}}\hat{q}
+	\end{split}\end{equation}
+	\begin{equation}\hat{a}^\dag\hat{a}=\frac{1}{\hbar\omega}(\frac{\hat{p}^2}{2m}+\frac{1}{2}m\omega^2\hat{q}^2)-\frac{1}{2}\end{equation}
+	Planck oscillator is written as:
+	\begin{equation}\hat{H}=(\hat{a}^\dag\hat{a}+\frac{1}{2})\hbar\omega\end{equation}
+	\begin{equation}[\hat{a},\hat{a}^\dag]=1,[\hat{a}^\dag\hat{a},\hat{a}^\dag]=\hat{a}^\dag,
+	 [\hat{a}^\dag\hat{a},\hat{a}]=-\hat{a}\end{equation}
+	 For vector $|n\rangle$ in Hilbert space:
+	 \begin{equation}\begin{split}
+	 \hat{H}|n\rangle=&E_n|n\rangle \\
+	 \hat{a}^\pm|n\rangle=&C_\pm|n\pm1\rangle \\
+	 \hat{H}(\hat{a}^\pm|n\rangle)=&(E_n\pm\hbar\omega)(\hat{a}^\pm|n\rangle)
+	 \end{split}\end{equation}
+	 where $\hat{a}^-=\hat{a}$, $\hat{a}^+=\hat{a}^\dag$.
 \item Example two of paradigm shifts in quantum physics: \\
 	The Stern-Gerlach experiment and spin\\
 	Paradigm of quantum measurement \\
@@ -191,19 +221,64 @@ Thomas Kuhn
 \begin{enumerate}
 \item Sequential Stern-Gerlach experiment again
 \item Commutability and compatibility
-\item Uncertainty relation between incompatible observables
-\item Axiom of quantization conditions: Dirac canonical quantization
-\item Heisenberg uncertainty relation between x and p
-\item Uncertainty between x and p in the eigenenergy states of Planck oscillator
+\item Uncertainty relation between incompatible observables \\
+	The mean value of Hermitian operator $\hat{u}$ for state $|A\rangle$ is: $\langle\hat{u}\rangle=\langle A|\hat{u}|A\rangle$; \\
+	Define: $\Delta \hat{u}=\hat{u}-\langle\hat{u}\rangle$; \\
+	Mean square deviation: $\langle(\Delta \hat{u})^2\rangle=\langle(\hat{u}-\langle\hat{u}\rangle)^2\rangle=\langle\hat{u}^2\rangle-\langle\hat{u}\rangle^2$; \\
+	Uncertainty relation: for any two Hermitian operator $\hat{u}$ and $\hat{v}$: 
+	\begin{equation}
+	\langle (\Delta \hat{u})^2\rangle\langle(\Delta \hat{v})^2\rangle \geq \frac{1}{4}|\langle[\hat{u},\hat{v}]\rangle|^2.
+	\end{equation}
+\item Axiom of quantization conditions: Dirac canonical quantization \\
+	The general quantization rule derived by Dirac in 1925:
+	\begin{equation}[\hat{u},\hat{v}]=i\hbar \{u, v\}\end{equation}
+	Dirac canonical quantization:
+	\begin{equation}[\hat{q},\hat{p}]=i\hbar \{q, p\}=i\hbar\end{equation}
+\item Heisenberg uncertainty relation between x and p \\
+	For x and p, define root mean square deviation:
+	\begin{equation}\Delta x=\sqrt{\langle(\Delta \hat{x})^2 \rangle}, \Delta p=\sqrt{\langle(\Delta \hat{p})^2 \rangle}\end{equation}
+	Then we have:
+	\begin{equation}\Delta x \Delta p \geq \frac{\hbar}{2}\end{equation}
+\item Uncertainty between x and p in the eigenenergy states of Planck oscillator \\
+	Dirac ladder operators:
+	\begin{equation}\begin{split}
+	\hat{a}^\dag=&\frac{\hat{p}}{\sqrt{2\hbar m\omega}}+i\sqrt{\frac{m\omega}{2\hbar}}\hat{q},\\
+	\hat{a}=&\frac{\hat{p}}{\sqrt{2\hbar m\omega}}-i\sqrt{\frac{m\omega}{2\hbar}}\hat{q}
+	\end{split}\end{equation}
+	Then we have:
+	\[2i\sqrt{\frac{m\omega}{2\hbar}}\langle n|\hat{q}|n\rangle=\langle n|(\hat{a}^\dag-\hat{a})|n\rangle=0\]
+	\[(2i\sqrt{\frac{m\omega}{2\hbar}})^2\langle n|\hat{q}^2|n\rangle
+	=\langle n|(\hat{a}^\dag-\hat{a})^2|n\rangle
+	=\langle n|(\hat{a}^\dag)^2+\hat{a}^2-\hat{a}^{\dag} \hat{a}-\hat{a}\hat{a}^{\dag}|n\rangle
+	=\langle n|-2\hat{a}^\dag\hat{a}-1|n \rangle=-2n-1\]
+	So:
+	\[(2i\sqrt{\frac{m\omega}{2\hbar}})^2(\langle n|\hat{q}^2|n\rangle-\langle n|\hat{q}|n\rangle^2)=-(2n+1)\]
+	And:
+	\[\frac{2}{\sqrt{2\hbar m\omega}}\langle n|\hat{p}|n\rangle=\langle n|(\hat{a}^\dag-\hat{a})|n\rangle=0\]
+	\[(\frac{2}{\sqrt{2\hbar m\omega}})^2\langle n|\hat{p}^2|n\rangle
+	=\langle n|(\hat{a}^\dag+\hat{a})^2|n\rangle
+	=\langle n|(\hat{a}^\dag)^2+\hat{a}^2+\hat{a}^{\dag} \hat{a}+\hat{a}\hat{a}^{\dag}|n\rangle
+	=\langle n|2\hat{a}^\dag\hat{a}+1|n \rangle=2n+1\]
+	So:
+	\[(\frac{2}{\sqrt{2\hbar m\omega}})^2(\langle n|\hat{p}^2|n\rangle-\langle n|\hat{p}|n\rangle^2)=2n+1\]
+	Then:
+	\[(\Delta x)^2(\Delta p)^2=\langle(\Delta \hat{x})^2 \rangle \langle(\Delta \hat{p})^2 \rangle=-(2n+1)^2(2i\sqrt{\frac{m\omega}{2\hbar}})^{-2}(\frac{2}{\sqrt{2\hbar m\omega}})^{-2}=(n+\frac{1}{2})^2\hbar^2\]
+	At last we have the uncertainty between x and p in the eigenenergy states of Planck oscillator:
+	\begin{equation}\Delta x\Delta p=(n+\frac{1}{2})\hbar\end{equation}
 \end{enumerate}
 \subsubsection{Axiom IV: Equation of motion}
 \begin{enumerate}
 \item The Heisenberg equation of motion
+	\begin{equation}\frac{d\hat{\alpha}(t)}{dt}=\frac{1}{i\hbar}[\hat{\alpha}(t), \hat{H}(t)]\end{equation}
 \item The Schr\"{o}dinger equation of motion
+	\begin{equation}i\hbar\frac{d|A, t\rangle}{dt}=\hat{H}(t)|A, t\rangle\end{equation}
 \end{enumerate}
 %----------------------------------------------------
 \subsection{Dirac's three rules of manipulations in Quantum Mechanics: 
                        Representations, Transformations and Pictures}
+	Representations: digitization;\par
+	Transformation: symmetry;\par   
+	Pictures: time evolution.                               
 \subsubsection{Representations of discrete eigenvalue spectra - matrix mechanics}
 \begin{enumerate}
 \item The basis of a linear vector space and the basis vectors
@@ -245,15 +320,38 @@ Thomas Kuhn
 \item The wave function of all eigenstates      
 \end{enumerate}
 \subsubsection{Representations of mixing discrete and continuous eigenvalue spectra}
-\subsubsection{Complete set of dynamical quantities and simultaneous measurement of compatible observables}
+\subsubsection{Complete set of dynamical quantities and simultaneous measurement of compatible observables}	
 \subsubsection{Pictures and Axiom IV of quantum mechanics-quantum dynamics}
+	Heisenberg Representation(Energy Representation): eigenvectors of Hamilton operator as basis vectors;\par
+	Schr\"{o}dinger Representation(Coordinate Representation): eigenvectors of Coordinate operator as basis vectors.
 \begin{enumerate}
 \item The time evolution of quantum states
+	\begin{equation}|A,t\rangle=\hat{T}|A,t_0\rangle\end{equation}
+	where $\hat{T}$ is time revolution operator. \\
+	Time is not a observer, because time is not a eigenvalue of any Hermitian Operator.\\
+	Assumption: 
+	\begin{equation}\langle A, t|A, t\rangle=\langle A, t_0|A, t_0\rangle\end{equation}
+	Then:
+	\begin{equation}\hat{T}^\dag\hat{T}=1, \hat{T}^{-1}=\hat{T}^\dag\end{equation}
 \item The Schr\"{o}dinger equation of motion of quantum states
-\item The Schr\"{o}dinger picture
+	\begin{equation}i\hbar\frac{d|A, t\rangle}{dt}=\hat{H}(t)|A, t\rangle\end{equation}
+\item The Schr\"{o}dinger picture\\
+	Only consider the moving ket, not considering the moving of operator.
 \item Derivation of the time-dependent Schr\"{o}dinger wave equation
 \item The stationary state 
-\item The Heisenberg picture
+\item The Heisenberg picture\\
+	We denote Schr\"{o}dinger picture as:
+	\begin{equation}\begin{split}
+	|A,t\rangle_S&=|A,t\rangle=\hat{T}(t, t_0)|A,t_0\rangle \\
+	\hat{\alpha}_S(t)&=\hat{\alpha}(t_0)=\hat{\alpha}
+	\end{split}\end{equation}
+	For Heisenberg picture:
+	\begin{equation}\begin{split}
+	|A,t\rangle_H&=\hat{T}^{-1}(t,t_0)|A,t\rangle_S\\
+	\hat{\alpha}_H(t)&=\hat{T}^{-1}(t,t_0)\hat{\alpha}_S(t)\hat{T}(t,t_0)
+	\end{split}\end{equation}
+	Heisenberg equation of motion:
+	\begin{equation}\frac{d\hat{\alpha}_H(t)}{dt}=\frac{1}{i\hbar}[\hat{\alpha}_H(t), \hat{H}(t)]\end{equation}
 \item The Heisenberg equation of motion of Planck oscillator
 \item The Ehrenfest theorem
 \item Conservation laws in quantum mechanics
@@ -446,23 +544,23 @@ Thomas Kuhn
 \end{enumerate}
 \subsubsection{Green's function}
 \begin{enumerate}
-\item Propagator and time-dependent Green?s function
-\item Differential equation of time-dependent Green?s function
-\item Time-retarded and time-advanced Green?s function
+\item Propagator and time-dependent Green's function
+\item Differential equation of time-dependent Green's function
+\item Time-retarded and time-advanced Green's function
 \item Heaviside step function
 \item Differential equation of time-retarded and time-advanced GF
 \item Fourier transformation of time-retarded and time-advanced GF
-\item Green?s functions as coordinate representation of Green?s operators
+\item Green's functions as coordinate representation of Green's operators
 \end{enumerate}
 \subsubsection{General properties of Green's function}
 \begin{enumerate}
-\item Green?s function as resolvant of the eigenenergies
-\item Analytical behavior of stationary state retarded and advanced Green?s functions
-\item Dyson?s equation and transition operator
+\item Green's function as resolvant of the eigenenergies
+\item Analytical behavior of stationary state retarded and advanced Green's functions
+\item Dyson's equation and transition operator
 \end{enumerate}
 \subsubsection{Green's function method for bound state and scattering state problems}
 \begin{enumerate}
-\item Zeroth order Green?s functions
+\item Zeroth order Green's functions
 \item Finding bound state in vanishing potential well by GF method
 \item Finding elastic scattering states by GF method
 \end{enumerate}
