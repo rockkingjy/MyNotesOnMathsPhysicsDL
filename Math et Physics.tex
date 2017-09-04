@@ -41,6 +41,122 @@
   \tableofcontents
 %=======================================
 \section{Principles of Quantum Mechanics}
+\subsection{Recipe to comprehend and command Quantum Mechanics: Deductive Reasoning and  Paradigm Shifts}
+\subsubsection{Brief history of quantum physics}
+\begin{enumerate}
+\item Experimental discoveries leading to quantum mechanics \\
+	\begin{enumerate}
+	\item Discovery of \textbf{electron} - 1896, Thomson \\
+		Electron, like quark, is a basic scientific concept that \textbf{we believe}! No one has ever seen an electron!
+	\item Discovery of \textbf{Black-body radiation} - 1860, Kirchhoff
+	\item Discovery of \textbf{Photoelectric effect} - 1887, Hertz
+	\item Discovery of \textbf{Electromagnetic wave} - 1888, Hertz
+	\end{enumerate}	
+\item Theoretical innovations in quantum era
+	\begin{enumerate}
+	\item 1900 Plank equation, energy quantization hypothesis;
+	\item 1905 Einstein light quanta hypothesis - rejected at first and accepted in 1919, with Millikan's detailed experiments on the photoelectric effect and the measurement of Compton scattering;
+	\item 1925 Heisenberg, Born and Jordan formulate matrix mechanics;
+	\item 1925 Dirac introduces canonical quantization, Heisenberg equation, ladder operators;
+	\item 1925 Pauli states the quantum exclusion principle;
+	\item 1925 Uhlenbeck and Goudsmit postulate spin;
+	\item 1926 Schro\"{o}dinger formulates wave mechanics;
+	\item 1926 Fermi discovers the spin-statistics connection;
+	\item 1926 Dirac introduces superposition principle, Slater determinant, Fermi-Dirac statistics;
+	\item 1927 Born interprets the probabilistic nature of wave functions;
+	\item 1927 Heisenberg states the quantum uncertainty relation;
+	\item 1927 Dirac introduces the Transformation theory;
+	\item 1927 Dirac introduces the quantum electrodynamics;
+	\item 1928 Dirac states Dirac equation - the fundamental equation of electron;
+	\item 1930 Dirac introduces Dirac sea and hole theory;
+	\item 1930 Dirac publishes \textit{Principles of Quantum Mechanics} to complete the quantum mechanical system;
+	\item 1931 Dirac predicts the existence of positron;
+	\item 1933 The completion of Quantum Mechanics was declared by two Nobel Prizes due to the discovery of positron as the experimental verification of Dirac electron theory.
+	\end{enumerate}
+\end{enumerate}
+\subsubsection{Scientific Method}
+\begin{enumerate}
+\item Definition of science as given by Einstein
+\item Greek philosophers: From Thales to Aristotle
+\item Euclidean geometry and formal logical system
+\item Renaissance and scientific revolution: From Copernicus to Newton
+\item Descartes' Method of Science: The four precepts
+\item The Cartesian geometry
+\end{enumerate}
+\subsubsection{Review of Classical Mechanics}
+\begin{enumerate}
+\item Newton's Principia
+\item Einstein's critical review of Newtonian mechanics
+	Four axioms:
+	\begin{enumerate}
+	\item Mass point hypothesis: the motion of an object can be depicted by Descartes' coordinators;
+	\item Axiom of inertial;
+	\item Axiom of motion of mass point;
+	\item Axiom of interaction and anti-interaction between mass points;
+	\end{enumerate}
+\item From Newton to Hamilton
+	Kant's two kinds of judgments:
+	\begin{enumerate}
+	\item \textbf{Analytic judgment}: a judgment whose truth can be determined just by analyzing the term in it;
+	\item \textbf{Synthetic judgment}: a judgment whose truth requires looking outside of its terms.
+	\end{enumerate}
+	Kant said: The judgment of Euclidean geometry is \textbf{a priori synthetic}.\\
+	Newton's Principia is \textbf{a priori synthetic}.\\
+	Analytic Mechanics is \textbf{analytic judgment.}
+\item The Lagrangian mechanics
+	\textbf{Fermat's principle} has served as a guiding principle in the formulation of physical laws with the use of variational calculus. \\
+	\textbf{Principle of least action}: in all natural phenomena a quantity called \textbf{action} tends to be minimized. \\
+	The action functional: 
+	\begin{equation}S[q]=\int_{t_1}^{t_2}Ldt\end{equation}
+	\begin{equation}L=L(q(t),\dot{q}(t))=\frac{m\dot{q}^2}{2}-V(q)\end{equation}
+	\begin{equation}\frac{\delta S[q]}{\delta q(t)}=0\end{equation}
+	\begin{equation}\begin{aligned}
+	\delta S =& \int_{t_1}^{t_2}dt[L(q+\delta q, \dot{q}+\delta \dot{q})-L(q,\dot{q})] \\
+	=&\int_{t_1}^{t_2}dt[\delta q \frac{\partial L}{\partial q}+\delta \dot{q} \frac{\partial L}{\partial \dot{q}}] \\
+	=&\int_{t_1}^{t_2}dt\delta q \frac{\partial L}{\partial q}+\int_{t_1}^{t_2}d(\delta q) \frac{\partial L}{\partial \dot{q}} \\
+	=&[\delta q \frac{\partial L}{\partial \dot{q}}]_{t_1}^{t_2}+\int_{t_1}^{t_2}dt(\frac{\partial L}{\partial q}-\frac{d}{dt}\frac{\partial L}{\partial \dot{q}}) \\
+	=&0
+	\end{aligned}\end{equation}
+	Euler-Lagrange equation:
+	\begin{equation}\frac{\partial L}{\partial q}-\frac{d}{dt}\frac{\partial L}{\partial \dot{q}}=0\end{equation}
+\item The Hamiltonian mechanics \\
+	Legendre transformation:
+	\begin{equation}
+	H=\dot{q}\frac{\partial L}{\partial \dot{q}}-L=\dot{q}p-L=\frac{p^2}{2m}+V(q)=H(q,p)
+	\end{equation}
+	Hamilton equation:
+	\begin{equation}\begin{aligned}
+	\frac{dq}{dt}&=\frac{\partial H}{\partial p},\\
+	\frac{dp}{dt}&=-\frac{\partial H}{\partial q}.
+	\end{aligned}\end{equation}
+	Poisson bracket:
+	\begin{equation}
+	\{A, B\}=\frac{\partial A}{\partial q}\frac{\partial B}{\partial p} -\frac{\partial A}{\partial p}\frac{\partial B}{\partial q} 
+	\end{equation}
+	Hamilton equation then:
+	\begin{equation}\begin{aligned}
+	\frac{dq}{dt}&=\{q, H\},\\
+	\frac{dp}{dt}&=\{p, H\}.
+	\end{aligned}\end{equation}
+\end{enumerate}
+\subsubsection{Paradigm in science and paradigm shifts in scientific revolutions}
+\begin{enumerate}
+\item Paradigm in science\\
+Thomas Kuhn
+\item Paradigm shifts in scientific revolutions
+\end{enumerate}
+\subsubsection{Paradigm shifts: the recipe to comprehend and command Quantum Mechanics}
+\begin{enumerate}
+\item Example one of paradigm shifts in quantum physics:\\
+	Planck oscillator\\
+     	From c-number to q-number \\
+	From visible physical space to abstract mathematical space 
+\item Example two of paradigm shifts in quantum physics: \\
+	The Stern-Gerlach experiment and spin\\
+	Paradigm of quantum measurement \\
+	Pauli matrix approach to two-level system
+\end{enumerate}
+%----------------------------------------------------
 \subsection{Dirac's four axioms of Quantum Mechanics}
 \subsubsection{Axiom I: Principle of superposition}
 \begin{enumerate}
@@ -54,25 +170,22 @@
 \begin{enumerate}
 \item Linear operators (q-numbers)
 \item Operator operating on the bra vectors
-\item Conjugate relations
-
-If $\hat{H}^\dag=\hat{H}$, then we call $\hat{H}$ as \textbf{self-adjoint operator} or \textbf{Hermitian operator}.
+\item Conjugate relations \\
+	If $\hat{H}^\dag=\hat{H}$, then we call $\hat{H}$ as \textbf{self-adjoint operator} or \textbf{Hermitian operator}.
 \item Eigenvalues, eigenvectors and eigenspace
-\item The eigenvalue problem of Hermitian operators
-
-For \textbf{Hermitian operator} $\hat{H}$:
-\begin{enumerate}
+\item The eigenvalue problem of Hermitian operators \\
+	For \textbf{Hermitian operator} $\hat{H}$:
+	\begin{enumerate}
 	\item $\hat{H}$'s eigenvalues are real;
 	\item $\hat{H}$'s eigenvectors for different eigenvalues are orthogonal.
-\end{enumerate}
-\item Axioms of observables in quantum mechanics and explanation of the Stern-Gerlach experiment
-
-The connections between Quantum Theory and Experiments:
-\begin{enumerate}
+	\end{enumerate}
+\item Axioms of observables in quantum mechanics and explanation of the Stern-Gerlach experiment \\
+	The connections between Quantum Theory and Experiments:
+	\begin{enumerate}
 	\item Hermitian operators: \textbf{Observables};  
 	\item Eigenvectors: The states of the system after measurements;
 	\item Corresponding eigenvalues: The measurements' values from experiments.
-\end{enumerate}
+	\end{enumerate}
 \end{enumerate}
 \subsubsection{Axiom III: Quantization conditions}
 \begin{enumerate}
