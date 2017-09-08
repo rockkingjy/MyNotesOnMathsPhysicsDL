@@ -1,6 +1,7 @@
 %\documentclass[12pt,draft]{article}
 \documentclass[12pt]{article}
 \usepackage{CJK}
+\AtBeginDvi{\input{zhwinfonts}}
 \usepackage{mathrsfs}
 \usepackage{amsmath,amsthm,amsfonts,amssymb}
 \usepackage{geometry}
@@ -27,26 +28,32 @@
 \geometry{left=1.5cm,right=1.5cm,top=1.5cm,bottom=1.5cm}
 \setlength{\parskip}{0.3\baselineskip}
 \setlength{\headheight}{15pt}
+\usepackage{color}   %May be necessary if you want to color links
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true, %set true if you want colored links
+    linktoc=all,     %set to all if you want both sections and subsections linked
+    linkcolor=blue,  %choose some color if you want links to stand out
+}
+\setlength{\parindent}{10ex}
 \begin{document}\small
- % \renewcommand\figurename{Fig.}
-  %\renewcommand\arraystretch{1.0}
-    \title{Math et Physics Notes}
-    \author{Yan JIN}
-    \pagestyle{fancy}\fancyhf{}
-    \lhead{}\rhead{JIN Yan}
-    \lfoot{\textit{}}\cfoot{}\rfoot{\thepage}
-    \renewcommand{\headrulewidth}{1.pt}
-    \renewcommand{\footrulewidth}{1.pt}
-  \maketitle
-  \tableofcontents
+\title{Math et Physics Notes}
+\author{Yan JIN}
+\pagestyle{fancy}\fancyhf{}
+\lhead{}\rhead{JIN Yan}
+\lfoot{\textit{}}\cfoot{}\rfoot{\thepage}
+\renewcommand{\headrulewidth}{1.pt}
+\renewcommand{\footrulewidth}{1.pt}
+\maketitle
+\tableofcontents
 %=======================================
 \section{Principles of Quantum Mechanics}
 \subsection{Recipe to comprehend and command Quantum Mechanics: Deductive Reasoning and  Paradigm Shifts}
 \subsubsection{Brief history of quantum physics}
 \begin{enumerate}
-\item Experimental discoveries leading to quantum mechanics \\
+\item Experimental discoveries leading to quantum mechanics \par
 	\begin{enumerate}
-	\item Discovery of \textbf{electron} - 1896, Thomson \\
+	\item Discovery of \textbf{electron} - 1896, Thomson \par
 		Electron, like quark, is a basic scientific concept that \textbf{we believe}! No one has ever seen an electron!
 	\item Discovery of \textbf{Black-body radiation} - 1860, Kirchhoff
 	\item Discovery of \textbf{Photoelectric effect} - 1887, Hertz
@@ -100,150 +107,262 @@
 	\item \textbf{Analytic judgment}: a judgment whose truth can be determined just by analyzing the term in it;
 	\item \textbf{Synthetic judgment}: a judgment whose truth requires looking outside of its terms.
 	\end{enumerate}
-	Kant said: The judgment of Euclidean geometry is \textbf{a priori synthetic}.\\
-	Newton's Principia is \textbf{a priori synthetic}.\\
+	Kant said: The judgment of Euclidean geometry is \textbf{a priori synthetic}.\par
+	Newton's Principia is \textbf{a priori synthetic}.\par
 	Analytic Mechanics is \textbf{analytic judgment.}
-\item The Lagrangian mechanics
-	\textbf{Fermat's principle} has served as a guiding principle in the formulation of physical laws with the use of variational calculus. \\
-	\textbf{Principle of least action}: in all natural phenomena a quantity called \textbf{action} tends to be minimized. \\
+\item The Lagrangian mechanics\par
+	\textbf{Fermat's principle(or principle of least time)} has served as a guiding principle in the formulation of physical laws with the use of variational calculus. \par
+	{\color{red}\textbf{Principle of least action}}: in all natural phenomena a quantity called \textbf{action} tends to be minimized. \par
 	The action functional: 
-	\begin{equation}S[q]=\int_{t_1}^{t_2}Ldt\end{equation}
-	\begin{equation}L=L(q(t),\dot{q}(t))=\frac{m\dot{q}^2}{2}-V(q)\end{equation}
-	\begin{equation}\frac{\delta S[q]}{\delta q(t)}=0\end{equation}
-	\begin{equation}\begin{aligned}
-	\delta S =& \int_{t_1}^{t_2}dt[L(q+\delta q, \dot{q}+\delta \dot{q})-L(q,\dot{q})] \\
-	=&\int_{t_1}^{t_2}dt[\delta q \frac{\partial L}{\partial q}+\delta \dot{q} \frac{\partial L}{\partial \dot{q}}] \\
-	=&\int_{t_1}^{t_2}dt\delta q \frac{\partial L}{\partial q}+\int_{t_1}^{t_2}d(\delta q) \frac{\partial L}{\partial \dot{q}} \\
-	=&[\delta q \frac{\partial L}{\partial \dot{q}}]_{t_1}^{t_2}+\int_{t_1}^{t_2}dt(\frac{\partial L}{\partial q}-\frac{d}{dt}\frac{\partial L}{\partial \dot{q}}) \\
-	=&0
-	\end{aligned}\end{equation}
-	Euler-Lagrange equation:
-	\begin{equation}\frac{\partial L}{\partial q}-\frac{d}{dt}\frac{\partial L}{\partial \dot{q}}=0\end{equation}
-\item The Hamiltonian mechanics \\
+	\begin{equation}
+		S[q]=\int_{t_1}^{t_2}Ldt
+	\end{equation}
+	\begin{equation}
+		L=L(q(t),\dot{q}(t))=\frac{m\dot{q}^2}{2}-V(q)
+	\end{equation}
+	\begin{equation}
+		\frac{\delta S[q]}{\delta q(t)} = 0
+	\end{equation}
+	\begin{equation} \begin{aligned}
+		\delta S =& \int_{t_1}^{t_2}dt[L(q+\delta q, \dot{q}+\delta \dot{q})-L(q,\dot{q})] \\
+		=&\int_{t_1}^{t_2}dt[\delta q \frac{\partial L}{\partial q}+\delta \dot{q} \frac{\partial L}{\partial \dot{q}}] \\
+		=&\int_{t_1}^{t_2}dt\delta q \frac{\partial L}{\partial q}+\int_{t_1}^{t_2}d(\delta q) \frac{\partial L}{\partial \dot{q}} \\
+		=&[\delta q \frac{\partial L}{\partial \dot{q}}]_{t_1}^{t_2}+\int_{t_1}^{t_2}dt(\frac{\partial L}{\partial q}-\frac{d}{dt}\frac{\partial L}{\partial \dot{q}}) \\
+		=&0
+	\end{aligned} \end{equation}
+	{\color{blue}Euler-Lagrange equation}:
+	\begin{equation}
+		\frac{\partial L}{\partial q}-\frac{d}{dt}\frac{\partial L}{\partial \dot{q}}=0
+	\end{equation}
+\item The Hamiltonian mechanics \par
 	Legendre transformation:
 	\begin{equation}
-	H=\dot{q}\frac{\partial L}{\partial \dot{q}}-L=\dot{q}p-L=\frac{p^2}{2m}+V(q)=H(q, p)
+		H=\dot{q}\frac{\partial L}{\partial \dot{q}}-L=\dot{q}p-L=\frac{p^2}{2m}+V(q)=H(q, p)
 	\end{equation}
 	Hamilton equation:
 	\begin{equation}\begin{aligned}
-	\frac{dq}{dt}&=\frac{\partial H}{\partial p},\\
-	\frac{dp}{dt}&=-\frac{\partial H}{\partial q}.
+		\frac{dq}{dt}&=\frac{\partial H}{\partial p},\\
+		\frac{dp}{dt}&=-\frac{\partial H}{\partial q}.
 	\end{aligned}\end{equation}
 	Poisson bracket:
 	\begin{equation}
-	\{A, B\}=\frac{\partial A}{\partial q}\frac{\partial B}{\partial p} -\frac{\partial A}{\partial p}\frac{\partial B}{\partial q} 
+		\{A, B\}=\frac{\partial A}{\partial q}\frac{\partial B}{\partial p} -\frac{\partial A}{\partial p}\frac{\partial B}{\partial q} 
 	\end{equation}
-	Hamilton equation then:
+	{\color{blue}Hamilton equation again}:
 	\begin{equation}\begin{aligned}
-	\frac{dq}{dt}&=\{q, H\},\\
-	\frac{dp}{dt}&=\{p, H\}.
+		\frac{dq}{dt}&=\{q, H\},\\
+		\frac{dp}{dt}&=\{p, H\}.
 	\end{aligned}\end{equation}
 \end{enumerate}
 \subsubsection{Paradigm in science and paradigm shifts in scientific revolutions}
 \begin{enumerate}
-\item Paradigm in science\\
-Thomas Kuhn
+\item Paradigm in science \par
+	Thomas Kuhn
 \item Paradigm shifts in scientific revolutions
 \end{enumerate}
 \subsubsection{Paradigm shifts: the recipe to comprehend and command Quantum Mechanics}
 \begin{enumerate}
-\item Example one of paradigm shifts in quantum physics\\
-     	From c-number to q-number from visible physical space to abstract mathematical space: \\
-	{\color{blue} c-number Hamiltonian:
-    	\[H=\frac{p^2}{2m}+\frac{1}{2}m\omega^2q^2\]}
-	{\color{red} q-number Hamiltonian:
-	\[\hat{H}=\frac{\hat{p}^2}{2m}+\frac{1}{2}m\omega^2\hat{q}^2\]}
-	The general quantization rule derived by Dirac in 1925:
-	\begin{equation}\begin{split}
-	{\color{red}[\hat{u},\hat{v}]}&={\color{blue}i\hbar \{u, v\}}, \\
-	{\color{red}Quantum\ bracket} &= {\color{blue}Poisson\ bracket}
-	\end{split}\end{equation}
-	Dirac canonical quantization:
-	\begin{equation}[\hat{q},\hat{p}]=i\hbar \{q, p\}=i\hbar\end{equation}
-	{\color{blue} Hamilton equation of motion:
-	\begin{equation}\frac{dq}{dt}=\{q, H\}\end{equation}}
-	{\color{red} Quantum equation of motion - Heisenberg equation:
-	\begin{equation}\frac{d\hat{q}}{dt}=\frac{1}{i\hbar}[\hat{q}, H]\end{equation}}
+\item Paradigm shifts in theoretical quantum physics \par
+	\begin{enumerate}
+     	\item From {\color{blue}c-number} to {\color{red}q-number} \par
+		{\color{blue} c-number Hamiltonian:
+    		\[H=\frac{p^2}{2m}+\frac{1}{2}m\omega^2q^2\]} \par
+		{\color{red} q-number Hamiltonian:
+		\[\hat{H}=\frac{\hat{p}^2}{2m}+\frac{1}{2}m\omega^2\hat{q}^2\]} \par
+	\item From {\color{blue}Poisson Bracket} to {\color{red}Quantum Bracket} \par
+		The general quantization rule derived by Dirac in 1925:
+		\begin{equation}\begin{split}
+			{\color{red}[\hat{u},\hat{v}]}&={\color{blue}i\hbar \{u, v\}}, \\
+			{\color{red}Quantum\ bracket} &= {\color{blue}Poisson\ bracket}
+		\end{split}\end{equation} \par
+		Dirac canonical quantization:
+		\begin{equation}
+			[{\color{red}\hat{q},\hat{p}]}={\color{blue}i\hbar \{q, p\}=i\hbar}
+		\end{equation}
+		{\color{blue} Hamilton equation of motion:
+		\begin{equation}
+			\frac{dq}{dt}=\{q, H\}
+		\end{equation}} \par
+		{\color{red}Quantum equation of motion - Heisenberg equation of motion(in Heisenberg picture):
+		\begin{equation}
+			\frac{d\hat{q}}{dt}=\frac{1}{i\hbar}[\hat{q}, \hat{H}]
+		\end{equation}} \par
+	\item From {\color{blue}visible physical space} to {\color{red}abstract mathematical space} \par
+		{\color{blue}Classical mechanics: Euclidean space} $\leftrightarrow$ {\color{red}Quantum mechanics: Hilbert(Banach) space} \par
+		{\color{blue}Classical mechanics: Mass point} $\leftrightarrow$ {\color{red}Quantum mechanics: State vector}
+
+	\end{enumerate}
+	===============================\par
 	Dirac ladder operators:
 	\begin{equation}\begin{split}
-	\hat{a}^\dag=&\frac{\hat{p}}{\sqrt{2\hbar m\omega}}+i\sqrt{\frac{m\omega}{2\hbar}}\hat{q},\\
-	\hat{a}=&\frac{\hat{p}}{\sqrt{2\hbar m\omega}}-i\sqrt{\frac{m\omega}{2\hbar}}\hat{q}
+		\hat{a}^\dag=&\frac{\hat{p}}{\sqrt{2\hbar m\omega}}+i\sqrt{\frac{m\omega}{2\hbar}}\hat{q},\\
+		\hat{a}=&\frac{\hat{p}}{\sqrt{2\hbar m\omega}}-i\sqrt{\frac{m\omega}{2\hbar}}\hat{q}
 	\end{split}\end{equation}
-	\begin{equation}\hat{a}^\dag\hat{a}=\frac{1}{\hbar\omega}(\frac{\hat{p}^2}{2m}+\frac{1}{2}m\omega^2\hat{q}^2)-\frac{1}{2}\end{equation}
+	\begin{equation}
+		\hat{a}^\dag\hat{a}
+		=\frac{1}{\hbar\omega}(\frac{\hat{p}^2}{2m}+\frac{1}{2}m\omega^2\hat{q}^2)-\frac{1}{2}
+	\end{equation}
 	Planck oscillator is written as:
-	\begin{equation}\hat{H}=(\hat{a}^\dag\hat{a}+\frac{1}{2})\hbar\omega\end{equation}
-	\begin{equation}[\hat{a},\hat{a}^\dag]=1,[\hat{a}^\dag\hat{a},\hat{a}^\dag]=\hat{a}^\dag,
-	 [\hat{a}^\dag\hat{a},\hat{a}]=-\hat{a}\end{equation}
+	\begin{equation}
+		\hat{H}=(\hat{a}^\dag\hat{a}+\frac{1}{2})\hbar\omega
+	\end{equation}
+	\begin{equation}
+		[\hat{a},\hat{a}^\dag]=1,[\hat{a}^\dag\hat{a},\hat{a}^\dag]=\hat{a}^\dag,
+	 	[\hat{a}^\dag\hat{a},\hat{a}]=-\hat{a}
+	 \end{equation} 
 	 For vector $|n\rangle$ in Hilbert space:
 	 \begin{equation}\begin{split}
-	 \hat{H}|n\rangle=&E_n|n\rangle \\
-	 \hat{a}^\pm|n\rangle=&C_\pm|n\pm1\rangle \\
-	 \hat{H}(\hat{a}^\pm|n\rangle)=&(E_n\pm\hbar\omega)(\hat{a}^\pm|n\rangle)
+	 	\hat{H}|n\rangle=&E_n|n\rangle \\
+	 	\hat{a}^\pm|n\rangle=&C_\pm|n\pm1\rangle \\
+		 \hat{H}(\hat{a}^\pm|n\rangle)=&(E_n\pm\hbar\omega)(\hat{a}^\pm|n\rangle)
 	 \end{split}\end{equation}
 	 where $\hat{a}^-=\hat{a}$, $\hat{a}^+=\hat{a}^\dag$.
-\item Example two of paradigm shifts in quantum physics: \\
-	The Stern-Gerlach experiment and spin\\
-	Paradigm of quantum measurement \\
-	Pauli matrix approach to two-level system
+\item Paradigm shifts in experimental quantum physics: \par
+	The Stern-Gerlach experiment was performed in Frankfurt, Germany in 1922. The separation into distinct orbits was referred to as space-quantization between 1922-1927. However the correct explanation of this experiment was only given in 1927 when the atomic structure of Silver(Ag,Z=47)was clarified with one single electron outside filled shells. It's {\color{orange}the first direct experimental evidence of the electron spin}. And the direct observation of the spin is {\color{orange}the most direct proof of Quantization} in quantum mechanics. So the Stern-Gerlach experiment has become a {\color{orange}paradigm of quantum measurement}. \par
+	Pauli matrix from two-level system (ref. Sakurai)
 \end{enumerate}
 %----------------------------------------------------
 \subsection{Dirac's four axioms of Quantum Mechanics}
 \subsubsection{Axiom I: Principle of superposition}
 \begin{enumerate}
-\item Definition of quantum states and the general principle of superposition
-\item Mathematical formulation of the principle
-\item Dirac's notation for vectors: the ket
-\item Dirac's introduction of inner product function and bra vectors
-\item The dual relationship between ket and bra
+\item Definition of {\color{red}quantum states} \par
+	In order to give {\color{orange}an absolute meaning to size}, we have to assume that there is {\color{orange}a limit to the fineness of our powers of observation} and the smallness of the accompanying disturbance - a limit which is inherent in the nature of things and can never be surpassed by improved technique or increased skill on the part of the observer. \par
+	If the object under observation is such that the unavoidable limiting disturbance is negligible, then the object is big in the absolute sense and {\color{orange}we may apply classical mechanics} to it. \par
+	If, on the other hand, the limiting disturbance is not negligible, then the object is small in the absolute sense and {\color{orange}we require a new theory} for dealing with it. \par
+	A consequence of the preceding discussion is that we must revise our ideas of causality. {\color{orange}Causality applies only to a system which is left undisturbed}. If a system is small, we cannot observe it without producing a serious disturbance and hence we cannot expect to find any causal connection between the results of our observations. Causality will still be assumed to apply to undisturbed system and the equation which will be set up to describe an undisturbed system will be differential equations expressing a causal connection between conditions at one time and conditions at a later time. These equations will be in close correspondence with the equations of classical mechanics, but they will be connected only indirectly with the results of observation. There is an unavoidable indeterminacy in the calculation of observational results, the theory enabling us to calculate in general only the probability of our obtaining a particular result when we make an observation. \par
+\item The general {\color{red}principle of superposition} \par
+\item Mathematical formulation of the principle \par
+	In mathematical physics, the Dirac-von Neumann axioms give a mathematical formulation of quantum mechanics in terms of operators on a Hilbert space. \par
+\item Dirac's notation for vectors: the {\color{red}ket vectors} \par
+	It is desirable to have a special name for describing the vectors which are connected with the states of a system in quantum mechanics. We shall call them ket vectors, or simply kets, denoted $|ket \rangle$. \par
+	Linear dependency:
+	\begin{equation}
+		c_1|A\rangle+c_2|B\rangle=|C\rangle
+	\end{equation}
+	where $c_1$, $c_2$ are complex number. \par
+	We now assume that each state of a dynamical system at a particular time corresponds to a ket vector, the correspondence being such that if a state results from the superposition of certain other states, its corresponding ket vector is expressible linearly in terms of the corresponding ket vectors of the other states, and conversely.
+\item Dirac's introduction of inner product function and {\color{red}bra vectors} 
+	\begin{equation}\begin{split}
+		\langle B|(c|A\rangle) &= c\langle B|A\rangle, \\
+		\langle B|(|A\rangle+|A'\rangle) &= \langle B|A\rangle + \langle B|A'\rangle
+	\end{split}\end{equation}
+\item The dual relationship between ket and bra \par
+	We make the assumption that there is a one-one correspondence between the bras and kets:
+	\begin{equation}
+		c_1|A\rangle + c_2|B\rangle \leftrightarrow c_1^*\langle A| + c_2^*\langle B|
+	\end{equation}
+	Axioms of inner product:
+	\begin{equation}\begin{split}
+		\langle A|B \rangle &= \langle B|A \rangle^*, \\
+		\langle A|B \rangle &> 0
+	\end{split}\end{equation}
+	If 
+	\begin{equation}\begin{split}
+		\langle A|B \rangle = 0
+	\end{split}\end{equation}
+	we call A and B orthogonal.
 \end{enumerate}
 \subsubsection{Axiom II: Principle of observables}
 \begin{enumerate}
-\item Linear operators (q-numbers)
-\item Operator operating on the bra vectors
-\item Conjugate relations \\
-	If $\hat{H}^\dag=\hat{H}$, then we call $\hat{H}$ as \textbf{self-adjoint operator} or \textbf{Hermitian operator}.
-\item Eigenvalues, eigenvectors and eigenspace
-\item The eigenvalue problem of Hermitian operators \\
-	For \textbf{Hermitian operator} $\hat{H}$:
+\item {\color{red}Linear operators (q-numbers)} \par
+	\begin{equation}\begin{split}
+		\hat{O}|(c|A\rangle) &= c\hat{O}|A\rangle, \\
+		\hat{O}|(|A\rangle+|A'\rangle) &= \hat{O}|A\rangle + \hat{O}|A'\rangle
+	\end{split}\end{equation}
+\item Operator operating on the bra vectors \par
+	\begin{equation}
+		\langle B'| = \langle B|\hat{O}
+	\end{equation}
+	We now have a complete algebraic scheme involving three kinds of quantities, {\color{red}bra vectors}, {\color{red}ket vectors} and {\color{red}linear operators}. They can be multiplied together in the various ways discussed above, and the associative and distributive axioms of multiplication always hold, but the commutative axiom of multiplication does not hold.
+\item Conjugate relations \par
+	Adjoint operator $\hat{O}^\dag$:
+	\begin{equation}
+		\hat{O} |A\rangle \leftrightarrow \langle A|\hat{O}^\dag
+	\end{equation}
+	\begin{equation}
+		\langle A|\hat{O}^\dag|B\rangle = \langle B |\hat{O} |A\rangle^*
+	\end{equation}
+	If $\hat{H}^\dag=\hat{H}$, then we call $\hat{H}$ as \textbf{self-adjoint operator} or {\color{red}\textbf{Hermitian operator}}.
+\item Eigenvalues and eigenvectors
+	\begin{equation}
+		\hat{\alpha} |\alpha \rangle = \alpha|\alpha \rangle
+	\end{equation}
+\item The eigenvalue problem of Hermitian operators \par
+	Two properties of Hermitian operator $\hat{H}$:
 	\begin{enumerate}
-	\item $\hat{H}$'s eigenvalues are real;
-	\item $\hat{H}$'s eigenvectors for different eigenvalues are orthogonal.
+		\item $\hat{H}$'s eigenvalues are real;
+		\item $\hat{H}$'s eigenvectors for different eigenvalues are orthogonal.
 	\end{enumerate}
-\item Axioms of observables in quantum mechanics and explanation of the Stern-Gerlach experiment \\
+\item {\color{red}Axioms of observables} in quantum mechanics: \par
 	The connections between Quantum Theory and Experiments:
 	\begin{enumerate}
-	\item Hermitian operators: \textbf{Observables};  
-	\item Eigenvectors: The states of the system after measurements;
-	\item Corresponding eigenvalues: The measurements' values from experiments.
+		\item Hermitian operators: \textbf{Observables};  
+		\item Eigenvectors: The states of the system;
+		\item Corresponding eigenvalues: The measurements' values from experiments.
 	\end{enumerate}
+	Explanation of the Stern-Gerlach experiment: \par
+	The separation into two distinct orbits in SGz apparatus is caused by the two eigenstates of $\hat{S}_z$:
+	\begin{equation}
+		|\uparrow \rangle = |+\frac{\hbar}{2}\rangle=\begin{bmatrix}1\\0\end{bmatrix},
+		|\downarrow \rangle = |-\frac{\hbar}{2}\rangle=\begin{bmatrix}0\\1\end{bmatrix}
+	\end{equation}
+	\begin{equation}
+		\hat{S}_z=\begin{bmatrix}\frac{\hbar}{2}&0\\0&-\frac{\hbar}{2}\end{bmatrix}
+	\end{equation}
+	The magnetic fields in Stern-Gerlach experiment:
+	\begin{equation}
+		\bm{B}(z)=[0,0,B(z)]
+	\end{equation}
+	So with the $\hat{\bm{\mu}}=-g\mu_B\hat{\bm{S}}/\hbar$, we have:
+	\begin{equation}
+		\hat{H}=-\hat{\bm{\mu}}\cdot\bm{B}(z)=g\mu_BB(z)\hat{S_z}/\hbar
+	\end{equation}
+	{\color{orange}Before Ag atom goes into the magnetic fields}, it is in the state of superposition of two eigenstates:
+	\begin{equation}
+		|Ag \rangle = c_+|+\frac{\hbar}{2}\rangle+ c_-|-\frac{\hbar}{2}\rangle
+	\end{equation}
+	{\color{orange}When Ag atom just goes into the magnetic fields}, it collapse into one of the eigenstates, and accelerate as the eigenstate it jumped into by the magnetic fields.\par
+	{\color{orange}After Ag atom goes out of the magnetic fields}, it keeps the speed and direction.
 \end{enumerate}
 \subsubsection{Axiom III: Quantization conditions}
 \begin{enumerate}
 \item Sequential Stern-Gerlach experiment again
-\item Commutability and compatibility
-\item Uncertainty relation between incompatible observables \\
-	The mean value of Hermitian operator $\hat{u}$ for state $|A\rangle$ is: $\langle\hat{u}\rangle=\langle A|\hat{u}|A\rangle$; \\
-	Define: $\Delta \hat{u}=\hat{u}-\langle\hat{u}\rangle$; \\
-	Mean square deviation: $\langle(\Delta \hat{u})^2\rangle=\langle(\hat{u}-\langle\hat{u}\rangle)^2\rangle=\langle\hat{u}^2\rangle-\langle\hat{u}\rangle^2$; \\
+\item Commutability and compatibility \par
+	The commutable operators are compatible(they should have the same eigenvector). \par
+	The incommutable Hermitian operators are incompatible(they have no complete eigenvectors).
+\item Uncertainty relation between incompatible observables \par
+	The mean value of Hermitian operator $\hat{u}$ for state $|A\rangle$ is: $\langle\hat{u}\rangle=\langle A|\hat{u}|A\rangle$; \par
+	Define: $\Delta \hat{u}=\hat{u}-\langle\hat{u}\rangle$; \par
+	Mean square deviation: $\langle(\Delta \hat{u})^2\rangle=\langle(\hat{u}-\langle\hat{u}\rangle)^2\rangle=\langle\hat{u}^2\rangle-\langle\hat{u}\rangle^2$; \par
 	Uncertainty relation: for any two Hermitian operator $\hat{u}$ and $\hat{v}$: 
 	\begin{equation}
-	\langle (\Delta \hat{u})^2\rangle\langle(\Delta \hat{v})^2\rangle \geq \frac{1}{4}|\langle[\hat{u},\hat{v}]\rangle|^2.
+		\langle (\Delta \hat{u})^2\rangle\langle(\Delta \hat{v})^2\rangle 
+		\geq \frac{1}{4}|\langle[\hat{u},\hat{v}]\rangle|^2.
 	\end{equation}
-\item Axiom of quantization conditions: Dirac canonical quantization \\
+\item {\color{red}Axiom of quantization conditions}: Dirac canonical quantization \par
 	The general quantization rule derived by Dirac in 1925:
-	\begin{equation}[\hat{u},\hat{v}]=i\hbar \{u, v\}\end{equation}
+	\begin{equation}
+		{\color{red}[\hat{u},\hat{v}]=i\hbar \{u, v\}}
+	\end{equation}
 	Dirac canonical quantization:
-	\begin{equation}[\hat{q},\hat{p}]=i\hbar \{q, p\}=i\hbar\end{equation}
-\item Heisenberg uncertainty relation between x and p \\
+	\begin{equation}
+		[\hat{q},\hat{p}]=i\hbar \{q, p\}=i\hbar
+	\end{equation}
+\item Heisenberg uncertainty relation between x and p \par
 	For x and p, define root mean square deviation:
-	\begin{equation}\Delta x=\sqrt{\langle(\Delta \hat{x})^2 \rangle}, \Delta p=\sqrt{\langle(\Delta \hat{p})^2 \rangle}\end{equation}
+	\begin{equation}
+		\Delta x=\sqrt{\langle(\Delta \hat{x})^2 \rangle}, 
+		\Delta p=\sqrt{\langle(\Delta \hat{p})^2 \rangle}
+	\end{equation}
 	Then we have:
-	\begin{equation}\Delta x \Delta p \geq \frac{\hbar}{2}\end{equation}
-\item Uncertainty between x and p in the eigenenergy states of Planck oscillator \\
+	\begin{equation}
+		\Delta x \Delta p \geq \frac{\hbar}{2}
+	\end{equation}
+\item Uncertainty between x and p in the eigenenergy states of Planck oscillator \par
 	Dirac ladder operators:
 	\begin{equation}\begin{split}
-	\hat{a}^\dag=&\frac{\hat{p}}{\sqrt{2\hbar m\omega}}+i\sqrt{\frac{m\omega}{2\hbar}}\hat{q},\\
-	\hat{a}=&\frac{\hat{p}}{\sqrt{2\hbar m\omega}}-i\sqrt{\frac{m\omega}{2\hbar}}\hat{q}
+		\hat{a}^\dag=&\frac{\hat{p}}{\sqrt{2\hbar m\omega}}+i\sqrt{\frac{m\omega}{2\hbar}}\hat{q},\\
+		\hat{a}=&\frac{\hat{p}}{\sqrt{2\hbar m\omega}}-i\sqrt{\frac{m\omega}{2\hbar}}\hat{q}
 	\end{split}\end{equation}
 	Then we have:
 	\[2i\sqrt{\frac{m\omega}{2\hbar}}\langle n|\hat{q}|n\rangle=\langle n|(\hat{a}^\dag-\hat{a})|n\rangle=0\]
@@ -264,20 +383,28 @@ Thomas Kuhn
 	Then:
 	\[(\Delta x)^2(\Delta p)^2=\langle(\Delta \hat{x})^2 \rangle \langle(\Delta \hat{p})^2 \rangle=-(2n+1)^2(2i\sqrt{\frac{m\omega}{2\hbar}})^{-2}(\frac{2}{\sqrt{2\hbar m\omega}})^{-2}=(n+\frac{1}{2})^2\hbar^2\]
 	At last we have the uncertainty between x and p in the eigenenergy states of Planck oscillator:
-	\begin{equation}\Delta x\Delta p=(n+\frac{1}{2})\hbar\end{equation}
+	\begin{equation}
+		\Delta x\Delta p=(n+\frac{1}{2})\hbar
+	\end{equation}
 \end{enumerate}
 \subsubsection{Axiom IV: Equation of motion}
 \begin{enumerate}
-\item The Heisenberg equation of motion
-	\begin{equation}\frac{d\hat{\alpha}(t)}{dt}=\frac{1}{i\hbar}[\hat{\alpha}(t), \hat{H}(t)]\end{equation}
-\item The Schr\"{o}dinger equation of motion
-	\begin{equation}i\hbar\frac{d|A, t\rangle}{dt}=\hat{H}(t)|A, t\rangle\end{equation}
+\item The Heisenberg equation of motion \par
+	The states are fixed: 
+	\begin{equation}
+		\frac{d\hat{\alpha}(t)}{dt}=\frac{1}{i\hbar}[\hat{\alpha}(t), \hat{H}(t)]
+	\end{equation}
+\item The Schr\"{o}dinger equation of motion \par
+	The operator are fixed:
+	\begin{equation}
+		i\hbar\frac{d|A, t\rangle}{dt}=\hat{H}(t)|A, t\rangle
+	\end{equation}
 \end{enumerate}
 %----------------------------------------------------
 \subsection{Dirac's three rules of manipulations in Quantum Mechanics: 
                        Representations, Transformations and Pictures}
-	Representations: digitization;\par
-	Transformation: symmetry;\par   
+	Representations: digitization; \par
+	Transformation: symmetry; \par   
 	Pictures: time evolution.                               
 \subsubsection{Representations of discrete eigenvalue spectra - matrix mechanics}
 \begin{enumerate}
@@ -322,36 +449,48 @@ Thomas Kuhn
 \subsubsection{Representations of mixing discrete and continuous eigenvalue spectra}
 \subsubsection{Complete set of dynamical quantities and simultaneous measurement of compatible observables}	
 \subsubsection{Pictures and Axiom IV of quantum mechanics-quantum dynamics}
-	Heisenberg Representation(Energy Representation): eigenvectors of Hamilton operator as basis vectors;\par
+	Heisenberg Representation(Energy Representation): eigenvectors of Hamilton operator as basis vectors; \par
 	Schr\"{o}dinger Representation(Coordinate Representation): eigenvectors of Coordinate operator as basis vectors.
 \begin{enumerate}
 \item The time evolution of quantum states
-	\begin{equation}|A,t\rangle=\hat{T}|A,t_0\rangle\end{equation}
-	where $\hat{T}$ is time revolution operator. \\
-	Time is not a observer, because time is not a eigenvalue of any Hermitian Operator.\\
+	\begin{equation}
+		|A, t\rangle = \hat{T}|A,t_0\rangle
+	\end{equation}
+	where $\hat{T}$ is a time revolution operator. \par
+	Time is not a observer, because time is not a eigenvalue of any Hermitian Operator. \par
 	Assumption: 
-	\begin{equation}\langle A, t|A, t\rangle=\langle A, t_0|A, t_0\rangle\end{equation}
+	\begin{equation}
+		\langle A, t|A, t\rangle = \langle A, t_0|A, t_0\rangle
+	\end{equation}
 	Then:
-	\begin{equation}\hat{T}^\dag\hat{T}=1, \hat{T}^{-1}=\hat{T}^\dag\end{equation}
+	\begin{equation}
+		\hat{T}^\dag\hat{T} = 1, 
+		\hat{T}^{-1} = \hat{T}^\dag
+	\end{equation}
 \item The Schr\"{o}dinger equation of motion of quantum states
-	\begin{equation}i\hbar\frac{d|A, t\rangle}{dt}=\hat{H}(t)|A, t\rangle\end{equation}
-\item The Schr\"{o}dinger picture\\
-	Only consider the moving ket, not considering the moving of operator.
+	\begin{equation}
+		i\hbar\frac{d|A, t\rangle}{dt} = \hat{H}(t)|A, t\rangle
+	\end{equation}
+\item The Schr\"{o}dinger picture \par
+	Ket: not fixed, operator: fixed.
 \item Derivation of the time-dependent Schr\"{o}dinger wave equation
 \item The stationary state 
-\item The Heisenberg picture\\
-	We denote Schr\"{o}dinger picture as:
-	\begin{equation}\begin{split}
-	|A,t\rangle_S&=|A,t\rangle=\hat{T}(t, t_0)|A,t_0\rangle \\
-	\hat{\alpha}_S(t)&=\hat{\alpha}(t_0)=\hat{\alpha}
-	\end{split}\end{equation}
+\item The Heisenberg picture \par
+	Ket: fixed, operator: not fixed. \par
+	Here we denote Schr\"{o}dinger picture as:
+	\begin{equation} \begin{split}
+		|A, t\rangle_S &= |A, t\rangle = \hat{T}(t, t_0)|A,t_0\rangle \\
+		\hat{\alpha}_S(t) &= \hat{\alpha}(t_0) = \hat{\alpha}
+	\end{split} \end{equation}
 	For Heisenberg picture:
-	\begin{equation}\begin{split}
-	|A,t\rangle_H&=\hat{T}^{-1}(t,t_0)|A,t\rangle_S\\
-	\hat{\alpha}_H(t)&=\hat{T}^{-1}(t,t_0)\hat{\alpha}_S(t)\hat{T}(t,t_0)
-	\end{split}\end{equation}
+	\begin{equation} \begin{split}
+		|A, t\rangle_H &= \hat{T}^{-1}(t, t_0)|A, t\rangle_S \\
+		\hat{\alpha}_H(t) &= \hat{T}^{-1}(t, t_0)\hat{\alpha}_S(t)\hat{T}(t, t_0)
+	\end{split} \end{equation}
 	Heisenberg equation of motion:
-	\begin{equation}\frac{d\hat{\alpha}_H(t)}{dt}=\frac{1}{i\hbar}[\hat{\alpha}_H(t), \hat{H}(t)]\end{equation}
+	\begin{equation}
+		\frac{d\hat{\alpha}_H(t)}{dt} = \frac{1}{i\hbar}[\hat{\alpha}_H(t), \hat{H}(t)]
+	\end{equation}
 \item The Heisenberg equation of motion of Planck oscillator
 \item The Ehrenfest theorem
 \item Conservation laws in quantum mechanics
@@ -371,116 +510,173 @@ Thomas Kuhn
 \subsection{Dirac's theory of electron}
 \subsubsection{Dirac equation}
 \begin{enumerate}
-\item The special theory of relativity
-\item The four vectors and mass-energy equivalence \\
+\item The special theory of relativity\par
+	What is time?\par
+	Two basic Axioms:
+	\begin{enumerate}
+		\item The Principle of Relativity\par
+		The laws of physics are the same in all inertial frames of reference;
+		\item The Constancy of Speed of Light in Vacuum\par
+		The speed of light in vacuum has the same value c in all inertial frames of reference;			\end{enumerate}
+\item The four vectors and mass-energy equivalence \par
 	\begin{equation}x_1=x, x_2=y, x_3=z, x_4=ict;\end{equation}
 	\begin{equation}x_\mu x_\mu = \sum_{\mu=1}^{4} x_\mu x_\mu = x^2-c^2 t^2; \end{equation}
 	\begin{equation}p_1=p_x, p_2=p_y, p_3=p_z, p_4=i\frac{E}{c};\end{equation}
 	\begin{equation}p_\mu p_\mu = \sum_{\mu=1}^{4} p_\mu p_\mu = p^2-\frac{E^2}{c^2};\end{equation}
-	Lorenz transformation requires that $x_\mu x_\mu$ and $p_\mu p_\mu$ etc. remain constant.\\
+	Lorenz transformation requires that $x_\mu x_\mu$ and $p_\mu p_\mu$ etc. remain constant.\par
 	Now, choose a special coordinate with $p'=0$ and $E'=E_0$, then 
 	$p_\mu p_\mu=p'_\mu p'_\mu=0-\frac{E_0^2}{c^2}$, and define $m_0=\frac{E_0^2}{c^2}$, 
 	then we have the mass-energy equivalence:
-	\begin{equation}E^2=c^2p^2+m_0^2c^4\end{equation}
-	From the definition: $p=\frac{m_0v}{\sqrt{1-\frac{v^2}{c^2}}}$, we get:
-	\begin{equation}E=mc^2=\frac{m_0c^2}{\sqrt{1-\frac{v^2}{c^2}}}\end{equation}
-\item The Klein-Gordon equation \\
+	\begin{equation}
+		E^2=c^2p^2+m_0^2c^4
+	\end{equation} \par
+	From the definition: $p=\frac{m_0v}{\sqrt{1-\frac{v^2}{c^2}}}$, we get(get rid of the minus one):
+	\begin{equation}
+		E=mc^2=\frac{m_0c^2}{\sqrt{1-\frac{v^2}{c^2}}}
+	\end{equation}
+\item The Klein-Gordon equation \par
 	Replace mass-energy equivalence equation with:
-	\begin{equation}E \rightarrow i\hbar \frac{\partial}{\partial{t}}, 
-	\hat{\mathbf{p}} \rightarrow \frac{\hbar}{i} \hat{\mathbf{\nabla}}\end{equation}
+	\begin{equation}
+		E \rightarrow i\hbar \frac{\partial}{\partial{t}}, 
+		\hat{\mathbf{p}} \rightarrow \frac{\hbar}{i} \hat{\bm{\nabla}}
+	\end{equation}
 	we get the Klein-Gordon equation:
-	\begin{equation}-\hbar^2\frac{\partial^2{\psi(\mathbf{x},t)}}{\partial{t}^2}=
-	(-\hbar^2 c^2\hat{\mathbf{\nabla}}^2+m^2_{0}c^4)\psi(\mathbf{x},t)\end{equation}
+	\begin{equation}
+		-\hbar^2\frac{\partial^2{\psi(\mathbf{x},t)}}{\partial{t}^2}=
+		(-\hbar^2 c^2\hat{\bm{\nabla}}^2+m^2_{0}c^4)\psi(\mathbf{x},t)
+	\end{equation}
 	use nature unit: $\hbar=c=1$, and introduce $\partial_{\mu}=\frac{\partial}{\partial{x}_{\mu}}$, 
 	we have a more elegant form of this equation:
-	\begin{equation}(\partial_{\mu}\partial_{\mu}-m^2_0)\psi(\mathbf{x},t)=0\end{equation}
+	\begin{equation}
+		(\partial_{\mu}\partial_{\mu}-m^2_0)\psi(\mathbf{x},t)=0
+	\end{equation}
+	We can see that it's invariant under Lorentz transformations.\par
 	Solve this equation with: 
 	$\psi(\mathbf{x},t)=(2\pi\hbar)^{-\frac{3}{2}}e^{\frac{i}{\hbar} p_\mu x_\mu}=
 	(2\pi\hbar)^{-\frac{3}{2}}e^{\frac{i}{\hbar} (\mathbf{p}\cdot\mathbf{x}-Et)}$, 
-	we have:$E^2=c^2p^2+m_0^2c^4$, that means the eigenvalues have two values:
-	\begin{equation}E=\pm\sqrt{c^2p^2+m_0^2c^4}\end{equation}
-\item Derivation of Dirac equation based on the four axioms of QM
-	\begin{equation}\hat{H}=\sqrt{c^2\hat{p}^2+m_0^2c^4}
-	=c\hat{\mathbf{\alpha}}\cdot\hat{\mathbf{p}}+\hat{\beta} m_0c^2\end{equation}
+	we have:$E^2=c^2p^2+m_0^2c^4$ again, but that means the eigenvalues have two values:
+	\begin{equation}
+		E=\pm\sqrt{c^2p^2+m_0^2c^4}
+	\end{equation}
+	We have no reason to throw out the negative one, because all the two are the eigenvalues, so all of  them are physical values.\par
+	 But {\color{orange}the big problem for Klein-Gordon equation is that it can not define Probabilistic Density}:\par
+	The current in form of four-vectors:
+	\begin{equation}j_\mu=(\mathbf{j}, i\rho)\end{equation}
+	And it keeps the consistency equation:
+	\begin{equation}\partial_\mu j_\mu=0\end{equation}
+	In non-relativistic quantum mechanics, from Schr\"{o}dinger equation, the Probability Density is:
+	\begin{equation}\rho=\psi^\dag\psi\end{equation}
+	and the probability current is:
+	\begin{equation}
+		\mathbf{j}=\frac{i}{2m}(\psi\nabla\psi^\dag-\psi^\dag\nabla\psi)
+	\end{equation}
+	But here from Klein-Gordon equation:
+	\begin{equation}
+		\rho=i[\psi^\dag\frac{\partial \psi}{\partial t}-\psi\frac{\partial \psi^\dag}{\partial t}]
+	\end{equation}
+	\begin{equation}
+		\mathbf{j}=i(\psi\nabla\psi^\dag-\psi^\dag\nabla\psi)
+	\end{equation}
+	we can see that {\color{orange}$\rho$ need not to be positive}.
+\item Derivation of Dirac equation based on the four axioms of QM \par
+	Now we need a equation that fits both Schr\"{o}dinger equation and Lorentz transformation.\par
+	\begin{equation}
+		\hat{H}=\sqrt{c^2\hat{p}^2+m_0^2c^4}
+		=c\hat{\bm{\alpha}}\cdot\hat{\mathbf{p}}+\hat{\beta} m_0c^2
+	\end{equation}
 	that means:
-	\begin{equation} c^2\hat{p}^2+m_0^2c^4
-	=(c\hat{\mathbf{\alpha}}\cdot\hat{\mathbf{p}}+\hat{\beta} m_0c^2)^2\end{equation}
+	\begin{equation} 
+		c^2\hat{p}^2+m_0^2c^4
+		=(c\hat{\bm{\alpha}}\cdot\hat{\mathbf{p}}+\hat{\beta} m_0c^2)^2
+	\end{equation}
 	Then we have:
 	\begin{equation}\begin{split}
-	\hat{\alpha_1^2}=\hat{\alpha_2^2}=\hat{\alpha_3^2}=\hat{\beta^2}=1 \\
-	\hat{\mathbf{\alpha}}\hat{\beta}+\hat{\beta}\hat{\mathbf{\alpha}}=0 \\
-	\hat{\alpha_1}\hat{\alpha_2}+\hat{\alpha_2}\hat{\alpha_1}=0 \\
-	\hat{\alpha_2}\hat{\alpha_3}+\hat{\alpha_3}\hat{\alpha_2}=0 \\
-	\hat{\alpha_3}\hat{\alpha_1}+\hat{\alpha_1}\hat{\alpha_3}=0 \\
+		\hat{\alpha_1^2}=\hat{\alpha_2^2}=\hat{\alpha_3^2}=\hat{\beta^2}=1 \\
+		\hat{\bm{\alpha}}\hat{\beta}+\hat{\beta}\hat{\bm{\alpha}}=0 \\
+		\hat{\alpha_1}\hat{\alpha_2}+\hat{\alpha_2}\hat{\alpha_1}=0 \\
+		\hat{\alpha_2}\hat{\alpha_3}+\hat{\alpha_3}\hat{\alpha_2}=0 \\
+		\hat{\alpha_3}\hat{\alpha_1}+\hat{\alpha_1}\hat{\alpha_3}=0 \\
 	\end{split}\end{equation}
 	Replace this into the Schr\"{o}dinger equation of motion, then we have dirac equation of motion:
-	\begin{equation}i\hbar\frac{d|A,t>}{dt}=
-	(c\hat{\mathbf{\alpha}}\cdot\hat{\mathbf{p}}+\hat{\beta} m_0c^2)|A,t>\end{equation}
-	For $\hat{\mathbf{\alpha}}$ and $\hat{\beta}$, we choose a 4-dimension vector space, and the base vectors are:
-	\[|1>=\begin{bmatrix}1\\ 0\\ 0\\ 0\\\end{bmatrix}, |2>=\begin{bmatrix}0\\ 1\\ 0\\ 0\\\end{bmatrix},
-	|3>=\begin{bmatrix}0\\ 0\\ 1\\ 0\\\end{bmatrix}, |4>=\begin{bmatrix}0\\ 0\\ 0\\ 1\\\end{bmatrix}\]
+	\begin{equation}
+		i\hbar\frac{d|A,t\rangle}{dt}=
+		(c\hat{\bm{\alpha}}\cdot\hat{\mathbf{p}}+\hat{\beta} m_0c^2)|A,t\rangle
+	\end{equation}
+	For $\hat{\bm{\alpha}}$ and $\hat{\beta}$, we choose a 4-dimension vector space, and the base vectors are:
+	\[|1\rangle=\begin{bmatrix}1\\ 0\\ 0\\ 0\\\end{bmatrix}, 
+	|2\rangle=\begin{bmatrix}0\\ 1\\ 0\\ 0\\\end{bmatrix},
+	|3\rangle=\begin{bmatrix}0\\ 0\\ 1\\ 0\\\end{bmatrix}, 
+	|4\rangle=\begin{bmatrix}0\\ 0\\ 0\\ 1\\\end{bmatrix}\]
 	To calculate the dirac equation of motion, we choose the base vectors as:
-	\begin{equation}|x,y,z;n>=|n>|x,y,z>\end{equation}
+	\begin{equation}|x,y,z;n\rangle=|n\rangle|x,y,z\rangle\end{equation}
 	where,
-	\[|x,y,z;1>=\begin{bmatrix}|x,y,z>\\ 0\\ 0\\ 0\\ \end{bmatrix},
-	|x,y,z;2>=\begin{bmatrix}0\\ |x,y,z>\\ 0\\ 0\\ \end{bmatrix},
-	|x,y,z;3>=\begin{bmatrix}0\\ 0\\ |x,y,z>\\ 0\\ \end{bmatrix},
-	|x,y,z;4>=\begin{bmatrix}0\\ 0\\ 0\\ |x,y,z>\\ \end{bmatrix}\]
-	These base vectors are orthogonal and complete, so for each state vector of Dirac's electron $|A,t>$:
-	\[|A,t>=\sum_{n=1}^4\iiint dxdydx |x,y,z;n><x,y,z;n|A,t>=\sum_{n=1}^4\iiint dxdydx\psi_n(x,y,z,t) |x,y,z;n>\]
+	\[|x,y,z;1\rangle=\begin{bmatrix}|x,y,z\rangle\\ 0\\ 0\\ 0\\ \end{bmatrix},
+	|x,y,z;2\rangle=\begin{bmatrix}0\\ |x,y,z\rangle\\ 0\\ 0\\ \end{bmatrix},
+	|x,y,z;3\rangle=\begin{bmatrix}0\\ 0\\ |x,y,z\rangle\\ 0\\ \end{bmatrix},
+	|x,y,z;4\rangle=\begin{bmatrix}0\\ 0\\ 0\\ |x,y,z\rangle\\ \end{bmatrix}\]
+	These base vectors are orthogonal and complete, so for each state vector of Dirac's electron $|A,t\rangle$:
+	\[|A,t\rangle=\sum_{n=1}^4\iiint dxdydx |x,y,z;n\rangle\langle x,y,z;n|A,t\rangle=\sum_{n=1}^4\iiint dxdydx\psi_n(x,y,z,t) |x,y,z;n\rangle\]
 	where,
-	\[\psi_n(x,y,z,t)=<x,y,z;n|A,t>\]
+	\[\psi_n(x,y,z,t)=\langle x,y,z;n|A,t\rangle\]
 	Then the dirac equation of motion becomes :
-	\begin{equation}i\hbar\frac{\partial{\psi}}{dt}=
-	(c\hat{\mathbf{\alpha}}\cdot\frac{\hbar}{i}\hat{\mathbf{\nabla}}+\hat{\beta} m_0c^2)\psi\end{equation}
+	\begin{equation}
+		i\hbar\frac{\partial{\psi}}{dt}=
+		(c\hat{\bm{\alpha}}\cdot\frac{\hbar}{i}\hat{\bm{\nabla}}+\hat{\beta} m_0c^2)\psi
+	\end{equation}
 	where,
 	\[\psi=\psi(x,y,z,t)=\begin{bmatrix}\psi_1(x,y,z,t) \\ \psi_2(x,y,z,t) \\ \psi_3(x,y,z,t) \\ \psi_4(x,y,z,t) \\\end{bmatrix}
 	=\begin{bmatrix}\psi_1 \\ \psi_2 \\ \psi_3 \\ \psi_4 \end{bmatrix}\]
-\item Playing with the Pauli matrices \\
-	Let $\hat{\alpha}_4=\hat{\beta}$, we could rewrite the relations using anti-exchange notation:
-	\begin{equation}\{\hat{\alpha}_\mu, \hat{\alpha}_\nu \}=
-	\hat{\alpha}_\mu \hat{\alpha}_\nu + \hat{\alpha}_\nu \hat{\alpha}_\mu = 
-	2 \delta_{\mu \nu}\end{equation}
-	This is just like the relation between pauli matrix.\\
+\item Playing with the Pauli matrices \par
+	Let $\hat{\alpha}_4=\hat{\beta}$, we could rewrite the relations before:
+	\begin{equation}
+		\{\hat{\alpha}_\mu, \hat{\alpha}_\nu \}=
+		\hat{\alpha}_\mu \hat{\alpha}_\nu + \hat{\alpha}_\nu \hat{\alpha}_\mu = 
+		2 \delta_{\mu \nu}
+	\end{equation}
+	This is just like the relation between pauli matrix.\par
 	Now we assume $m_0=0$, the static mass is zero:
-	\begin{equation}\hat{H}=\sqrt{c^2\hat{p}^2+m_0^2c^4}
-	=c\sqrt{\hat{p}^2}=c\sqrt{\hat{\mathbf{p}}\cdot\hat{\mathbf{p}}}
-	=c\sqrt{(\hat{\mathbf{\sigma}}\cdot\hat{\mathbf{p}})^2}
-	=c(\hat{\mathbf{\sigma}}\cdot\hat{\mathbf{p}})\end{equation}
+	\begin{equation}
+		\hat{H}=\sqrt{c^2\hat{p}^2+m_0^2c^4}
+		=c\sqrt{\hat{p}^2}=c\sqrt{\hat{\mathbf{p}}\cdot\hat{\mathbf{p}}}
+		=c\sqrt{(\hat{\bm{\sigma}}\cdot\hat{\mathbf{p}})^2}
+		=c(\hat{\bm{\sigma}}\cdot\hat{\mathbf{p}})
+	\end{equation}
 	Replace it into the the Schr\"{o}dinger equation of motion:
-	\begin{equation}i\hbar\frac{d|A,t>}{dt}
-	=c(\hat{\mathbf{\sigma}}\cdot\hat{\mathbf{p}})|A,t>\end{equation}
+	\begin{equation}
+		i\hbar\frac{d|A,t\rangle}{dt}
+		=c(\hat{\bm{\sigma}}\cdot\hat{\mathbf{p}})|A,t\rangle
+	\end{equation}
 	This is the equation for particles with spin 1/2 and zero static mass. If we constrain the $\hat{\mathbf{p}}=(\hat{p}_x,\hat{p}_y)$, then it's the 2010 Nobel Prize's work on graphene, the weyl equation. \\
 	Pauli matrix:
 	\begin{equation}
-	\hat{\sigma}_x=\begin{bmatrix}0&1\\1&0\end{bmatrix},
-	\hat{\sigma}_x=\begin{bmatrix}0&-i\\i&0\end{bmatrix},
-	\hat{\sigma}_x=\begin{bmatrix}1&0\\0&-1\end{bmatrix}
+		\hat{\sigma}_x=\begin{bmatrix}0&1\\1&0\end{bmatrix},
+		\hat{\sigma}_y=\begin{bmatrix}0&-i\\i&0\end{bmatrix},
+		\hat{\sigma}_z=\begin{bmatrix}1&0\\0&-1\end{bmatrix}
 	\end{equation}
 	it has relation:
 	\begin{equation}
-	(\hat{\mathbf{\sigma}}\cdot\mathbf{a})(\hat{\mathbf{\sigma}}\cdot\mathbf{b})
-	=\mathbf{a}\cdot\mathbf{b}+i\hat{\mathbf{\sigma}}\cdot(\mathbf{a}\times\mathbf{b})
+		(\hat{\bm{\sigma}}\cdot\mathbf{a})(\hat{\bm{\sigma}}\cdot\mathbf{b})
+		=\mathbf{a}\cdot\mathbf{b}+i\hat{\bm{\sigma}}\cdot(\mathbf{a}\times\mathbf{b})
 	\end{equation}
 \item Dirac equation in Dirac representation
 	\begin{equation}
-	\hat{\mathbf{\alpha}}=\begin{bmatrix}0&\hat{\mathbf{\sigma}}\\\hat{\mathbf{\sigma}}&0\end{bmatrix},
-	\hat{\mathbf{\beta}}=\begin{bmatrix}\hat{\mathbf{1}}&0\\0&-\hat{\mathbf{1}}\end{bmatrix},
+		\hat{\mathbf{\alpha}}=\begin{bmatrix}0&\hat{\bm{\sigma}}\\\hat{\bm{\sigma}}&0\end{bmatrix},
+		\hat{\bm{\beta}}=\begin{bmatrix}\hat{\mathbf{1}}&0\\0&-\hat{\mathbf{1}}\end{bmatrix},
 	\end{equation}
 	so we have the Dirac equation in Dirac representation:
 	\begin{equation}
-	i\hbar\frac{\partial \psi}{\partial t}=
-	[c\begin{bmatrix}0&\hat{\mathbf{\sigma}}\\\hat{\mathbf{\sigma}}&0\end{bmatrix}\cdot(\frac{\hbar}{i}\hat{\mathbf{\nabla}})+\begin{bmatrix}\hat{\mathbf{1}}&0\\0&-\hat{\mathbf{1}}\end{bmatrix}m_0c^2]\psi
+		i\hbar\frac{\partial \psi}{\partial t}=
+		[c\begin{bmatrix}0&\hat{\bm{\sigma}}\\\hat{\bm{\sigma}}&0\end{bmatrix}\cdot(\frac{\hbar}{i}		\hat{\bm{\nabla}})+\begin{bmatrix}\hat{\mathbf{1}}&0\\0&-\hat{\mathbf{1}}\end{bmatrix}m_0c^2]\psi
 	\end{equation}
 \item Dirac equation in Weyl representation
 	\begin{equation}
-	\hat{\mathbf{\alpha}}=\begin{bmatrix}\hat{\mathbf{\sigma}}&0\\0&-\hat{\mathbf{\sigma}}\end{bmatrix},
-	\hat{\mathbf{\beta}}=\begin{bmatrix}0&\hat{\mathbf{1}}\\\hat{\mathbf{1}}&0\end{bmatrix},
+		\hat{\mathbf{\alpha}}=\begin{bmatrix}\hat{\bm{\sigma}}&0\\0&-\hat{\bm{\sigma}}\end{bmatrix},
+		\hat{\mathbf{\beta}}=\begin{bmatrix}0&\hat{\mathbf{1}}\\\hat{\mathbf{1}}&0\end{bmatrix},
 	\end{equation}
 	so we have the Dirac equation in Weyl representation:
 	\begin{equation}
-	i\hbar\frac{\partial \psi}{\partial t}=
-	[c\begin{bmatrix}\hat{\mathbf{\sigma}}&0\\0&-\hat{\mathbf{\sigma}}\end{bmatrix}\cdot(\frac{\hbar}{i}\hat{\mathbf{\nabla}})+\begin{bmatrix}0&\hat{\mathbf{1}}\\\hat{\mathbf{1}}&0\end{bmatrix}m_0c^2]\psi
+		i\hbar\frac{\partial \psi}{\partial t}=
+		[c\begin{bmatrix}\hat{\bm{\sigma}}&0\\0&-\hat{\bm{\sigma}}\end{bmatrix}\cdot(\frac{\hbar}{i}		\hat{\bm{\nabla}})+\begin{bmatrix}0&\hat{\mathbf{1}}\\\hat{\mathbf{1}}&0\end{bmatrix}m_0c^2]\psi
 	\end{equation}
 	Mr. Nambu found the similarity between the Weyl representation and the BCS superconductivity theory, and do his Nobel Prize work.
 \end{enumerate}
@@ -528,16 +724,140 @@ Thomas Kuhn
 \end{enumerate}
 \subsubsection{Neutrino, Dirac Fermion, Photon}
 \begin{enumerate}
-\item Neutrino
-\item Dirac Fermion
-\item Spin of photon
+\item Neutrino\par
+	A neutrino is an electrically neutral, weakly interacting elementary subatomic particle with half-integer spin. The neutrino is denoted by the Greek letter $\nu$. All evidence suggests that neutrinos have mass but their mass is tiny even by the standards of subatomic particles. Their mass has never been measured accurately.\par
+	The neutrino was postulated first by Wolfgang Pauli in 1930 to explain how beta decay could conserve energy, momentum, and angular momentum(spin).\par
+	In quantum field theory, the Weyl equation is a relativistic wave equation for describing massless spin -1/2 particles:
+	\begin{equation}
+		i\hbar\frac{\partial \psi(\bm{r},t)}{\partial t}=
+		c\bm{\sigma}\cdot(\frac{\hbar}{i}\hat{\bm{\nabla}})\psi(\bm{r},t)
+	\end{equation}
+	Assume the plan-wave: $\psi(\mathbf{r},t)=e^{\frac{i}{\hbar}(\bm{p} \cdot \bm{r}-Et)}\phi(\bm{p})$, replace it into Weyl equation:
+	\begin{equation}
+		c\bm{\sigma}\cdot\bm{p}\phi(\bm{p})=E\phi(\bm{p})
+	\end{equation}
+	Hamilton operator: $\hat{H}=c\bm{\sigma}\cdot\bm{p}$\par
+	Spin operator in direction $\bm{n}=(sin\theta cos\phi, sin\theta sin\phi, cos\theta)$: 
+	$\hat{S}_n=\frac{\hbar}{2}\bm{\sigma}\cdot\bm{n}
+	=\frac{\hbar}{2}\frac{\bm{\sigma}\cdot\bm{p}}{p}=\frac{\hbar}{2}\hat{h}$ \par
+	we have: $[\hat{H},\hat{h}]=0$, so we have a complete set of operators.\par
+	solve the equation: 
+	\begin{equation}\begin{split}
+		E_1=cp, h=+1, \psi_1(\bm{p})&=\begin{bmatrix}cos\frac{\theta}{2}e^{-i\frac{\phi}{2}} \\ sin\frac{\theta}{2}e^{i\frac{\phi}{2}} \end{bmatrix}\\
+		E_2=-cp, h=-1, \psi_2(\bm{p})&=\begin{bmatrix}-sin\frac{\theta}{2}e^{-i\frac{\phi}{2}} \\ cos\frac{\theta}{2}e^{i\frac{\phi}{2}} \end{bmatrix}
+	\end{split}\end{equation}
+	For both positive and negative energy solutions, only one kind of spin, the parity conservation is broken!
+\item Dirac Fermion\par
+	2010 Nobel Prize on Graphene
+	2D-Dirac equation:
+	\begin{equation}
+		i\hbar\frac{\partial \psi(\bm{r},t)}{\partial t}=
+		v\bm{\sigma}\cdot(\frac{\hbar}{i}\hat{\bm{\nabla}})\psi(\bm{r},t)
+	\end{equation}
+	where $\bm{r}=x\bm{e_x}+y\bm{e_y}$ is 2D vector, v is a constant.\par
+	Assume the plan-wave: $\psi(\mathbf{r},t)=e^{\frac{i}{\hbar}(\bm{p} \cdot \bm{r}-Et)}\phi(\bm{p})$, replace it into 2D-Dirac equation:
+	\begin{equation}
+		v\bm{\sigma}\cdot\bm{p}\phi(\bm{p})=E\phi(\bm{p})
+	\end{equation}
+	we choose $\bm{p}=p_x\bm{e_x}+p_y\bm{e_y}=p(cos\theta\bm{e_x}+sin\theta\bm{e_y})$, then $\bm{\sigma}\cdot\bm{p}=p_x\sigma_x+p_y\sigma_y=p\begin{bmatrix}0&e^{-i\theta}\\e^{i\theta}&0\end{bmatrix}$\par
+	Hamilton operator: $\hat{H}=v\bm{\sigma}\cdot\bm{p}$\par
+	Spin operator in direction $\bm{n}=(sin\theta cos\phi, sin\theta sin\phi, cos\theta)$: 
+	$\hat{S}_n=\frac{\hbar}{2}\bm{\sigma}\cdot\bm{n}
+	=\frac{\hbar}{2}\frac{\bm{\sigma}\cdot\bm{p}}{p}=\frac{\hbar}{2}\hat{h}$ \par
+	we have: $[\hat{H},\hat{h}]=0$, so we have a complete set of operators.\par
+	solve the equation: 
+	\begin{equation}\begin{split}
+		E_1=vp, h=+1, \psi_1(\bm{p})&=\frac{1}{\sqrt{2}}\begin{bmatrix}e^{-i\theta} \\ 1\end{bmatrix}\\
+		E_2=-vp, h=-1, \psi_2(\bm{p})&=\frac{1}{\sqrt{2}}\begin{bmatrix}1 \\ -e^{i\theta}\end{bmatrix}
+	\end{split}\end{equation}
+\item Spin of photon\par
+	Maxwell equation in vacuum:
+	\begin{equation}
+		\bm{\nabla}\times\bm{E}=-\frac{1}{c}\frac{\partial\bm{B}}{\partial t},
+		\bm{\nabla}\times\bm{B}=\frac{1}{c}\frac{\partial\bm{E}}{\partial t}
+	\end{equation}
+	Kramer vector:
+	\begin{equation}\bm{F}=\bm{E}+i\bm{B}\end{equation}
+	then we have:
+	\begin{equation}
+		\bm{\nabla}\times\bm{F}=\bm{\nabla}\times\bm{E}+i\bm{\nabla}\times\bm{B}
+		=-\frac{1}{c}\frac{\partial\bm{B}}{\partial t}+\frac{i}{c}\frac{\partial\bm{E}}{\partial t}
+		=\frac{i}{c}\frac{\partial\bm{F}}{\partial t}
+	\end{equation}
+	from the definition:
+	\begin{equation}
+		(\bm{\nabla}\times\bm{F})_\alpha=\epsilon_{\alpha\beta\gamma}\partial_\beta F_\gamma
+	\end{equation}
+	and:
+	\begin{equation}p_\beta=\frac{\hbar}{i}\partial_\beta\end{equation}
+	and:
+	\begin{equation}\bm{S}=(S^1,S^2,S^3)\end{equation}
+	where:
+	\begin{equation}S^\beta_{\alpha\gamma}=i\epsilon_{\alpha\beta\gamma}\end{equation}
+	Levi-Civita Symbol:
+	\begin{equation}
+		\epsilon_{\alpha\beta\gamma}=
+		\begin{cases}
+		+1 & \text{if } (i,j,k) \text{ is } (1,2,3), (2,3,1), \text{ or } (3,1,2), \\
+       		-1 & \text{if } (i,j,k) \text{ is } (3,2,1), (1,3,2), \text{ or } (2,1,3), \\
+    		0 & \text{if } i = j, \text{ or } j = k, \text{ or } k = i
+    		\end{cases}
+	\end{equation}
+	\begin{equation}
+		S^1= i\begin{bmatrix}0&0&0\\0&0&-1\\0&1&0\end{bmatrix},
+		S^2= i\begin{bmatrix}0&0&1\\0&0&0\\-1&0&0\end{bmatrix},
+		S^3= i\begin{bmatrix}0&-1&0\\1&0&0\\0&0&0\end{bmatrix}
+	\end{equation}
+	\begin{equation}
+		\bm{S}\cdot\bm{S}= 2\begin{bmatrix}1&0&0\\0&1&0\\0&0&1\end{bmatrix},
+		\bm{S}\times\bm{S}= i\bm{S}
+	\end{equation}
+	So:
+	\begin{equation}
+		(\hat{\bm{p}}\cdot\bm{S})F_\alpha=p_\beta S^\beta_{\alpha\gamma}F_\gamma
+		=p_\beta(i\epsilon_{\alpha\beta\gamma})F_\gamma
+		=\frac{\hbar}{i}(i\epsilon_{\alpha\beta\gamma})\partial_\beta F_\gamma
+		=\hbar(\bm{\nabla}\times\bm{F})_\alpha
+		=\hbar\frac{i}{c}\frac{\partial F_\alpha}{\partial t}
+	\end{equation}	
+	Quantum equation for photon:
+	\begin{equation}
+		c(\hat{\bm{p}}\cdot\bm{S})F=i\hbar\frac{\partial F}{\partial t}
+	\end{equation}
 \end{enumerate}
 %----------------------------------------------------
 \subsection{Dirac Picture}
+2013-12-07
 \subsubsection{Path integral}
 \begin{enumerate}
-\item Propagator as kernel of time-evolution of wave function
+\item Propagator as kernel of time-evolution of wave function \par
+	Time operator $\hat{T}(t, t_0)$ is a unitary operator, so it has the equation:
+	\begin{equation}
+		i\hbar\frac{d\hat{T}(t, t_0)}{dt}=\hat{H}(t)\hat{T}(t,t_0)
+	\end{equation}
+	and:
+	\begin{equation}
+		\hat{T}(t, t')\hat{T}(t', t_0)=\hat{T}(t, t_0)
+	\end{equation}
+	It connects two states in Schr\"{o}dinger picture:
+	\begin{equation}
+		|A,t\rangle_S=\hat{T}(t, t')|A,t'\rangle_S
+	\end{equation}
+	Now assume $\hat{H}(t)=\hat{H}$, then we have:
+	\begin{equation}
+		\hat{T}(t, t')=e^{-i\hat{H}(t-t')/\hbar}
+	\end{equation}
+	\begin{equation}
+		\psi(x,t)=\langle x|A, t\rangle_S=\langle x|\hat{T}(t, t')|A,t'\rangle_S
+		=\int dx'\langle x|\hat{T}(t, t')|x'\rangle \langle|A,t'\rangle_S
+		=\int dx'K(xt,x't')\psi(x',t')
+	\end{equation}
+	where:
+	\begin{equation}
+		K(xt,x't') = \langle x|\hat{T}(t, t')|x'\rangle =\langle x| e^{-i\hat{H}(t-t')/\hbar} |x'\rangle
+	\end{equation}
 \item The moving basis of coordinate representation
+
 \item The infinitesimal propagator
 \item The Feynman path integral
 \item Path integral of free particle
@@ -585,7 +905,8 @@ Thomas Kuhn
 \subsection{Dirac second quantization method}
 \subsubsection{Identical particle system}
 \begin{enumerate}
-\item Bosons: photon as the first one
+\item Bosons: photon as the first one found by Planck, Einstein, Bose and Dirac
+	
 \item Bosons: the material particles
 \item Fermions
 \item Anyon and Laughlin ansatz
@@ -603,7 +924,7 @@ Thomas Kuhn
 \end{enumerate}
 \subsubsection{Phonon and electron-phonon interaction}
 \begin{enumerate}
-\item The Born?Oppenheimer approximation and the harmonic approximation
+\item The Born-Oppenheimer approximation and the harmonic approximation
 \item Phonon as the quantized lattice vibrational mode
 \item The electron-phonon interaction
 \item The effective electron-electron interaction due to electron-phonon coupling
@@ -642,8 +963,8 @@ Thomas Kuhn
 	\item So we can define \textbf{continuous} on the mappings of different Topologies(open subsets).
 	\item \textbf{Homeomorphism}: 
 		\begin{enumerate}
-		\item one-one-onto; 
-		\item \textbf{continuous}($C^0$) forward and backward;
+			\item one-one-onto; 
+			\item \textbf{continuous}($C^0$) forward and backward;
 		\end{enumerate}
 	\item Two Topologies \textbf{homeomorphic} to each other means, they are equal on the basis of 	\textbf{Topology};
 	\end{enumerate}
@@ -651,13 +972,13 @@ Thomas Kuhn
 	\begin{enumerate}
 	\item n-dimensional differentiable manifold M: 
 		\begin{enumerate}
-		\item exist a \textbf{open cover} of M, such that, for every \textbf{open subset} of the open cover, exist a homeomorphism to a open subset of $R^n$; 
-		\item the mappings from any two different coordinate systems are \textbf{infinity differencial}($C^\infty$);
+			\item exist a \textbf{open cover} of M, such that, for every \textbf{open subset} of the open cover, exist a homeomorphism to a open subset of $R^n$; 
+			\item the mappings from any two different coordinate systems are \textbf{infinity differencial}($C^\infty$);
 		\end{enumerate}
 	\item \textbf{Diffeomorphism}: 
 		\begin{enumerate}
-		\item one-one-onto; 
-		\item \textbf{infinity differential}($C^\infty$) forward and backward;
+			\item one-one-onto; 
+			\item \textbf{infinity differential}($C^\infty$) forward and backward;
 		\end{enumerate}
 	\item Two Manifolds \textbf{diffeomorphic} to each other means, they are equal on the basis of "Manifold";
 	\end{enumerate}
@@ -685,10 +1006,23 @@ Thomas Kuhn
 	\textbf{Tangent vector}: $T(f):=\frac{d(f\circ C))}{dt}|_{t_0}, \forall f \in \mathfrak{F}_M$.\par
 	$X_\mu$ is a "tangent vector" of $x^\mu$ coordinate line on point p;\par
 	All the elements of $V_p$ are also called \textbf{tangent vector}, v is called \textbf{tangent space} of point p;
-
+%=======================================
+\section{Addition-A Units}
+	Maxwell equation in Gauss convention:
+	\begin{equation}
+		\bm{\nabla}\cdot\bm{E}=4\pi \rho,\bm{\nabla}\cdot\bm{B}=0,	
+		\bm{\nabla}\times\bm{E}=-\frac{1}{c}\frac{\partial\bm{B}}{\partial t},
+		\bm{\nabla}\times\bm{B}=\frac{1}{c}\frac{\partial\bm{E}}{\partial t}+\frac{4\pi}{c} \bm{j}
+	\end{equation} \par
+	Maxwell equation in SI convention:
+	\begin{equation}
+		\bm{\nabla}\cdot\bm{E}=\rho/\epsilon_0,\bm{\nabla}\cdot\bm{B}=0,	
+		\bm{\nabla}\times\bm{E}=-\frac{\partial\bm{B}}{\partial t},
+		\bm{\nabla}\times\bm{B}=\frac{1}{c^2}\frac{\partial\bm{E}}{\partial t}+\mu_0 \bm{j}
+	\end{equation}
+%=======================================
 \renewcommand\refname{Reference}
 \bibliographystyle{plain}
-\bibliography{DL}
-
-  \clearpage
+\bibliography{DL} 
+\clearpage
 \end{document}

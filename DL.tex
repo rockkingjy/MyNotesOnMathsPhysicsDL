@@ -27,112 +27,102 @@
 \geometry{left=1.5cm,right=1.5cm,top=1.5cm,bottom=1.5cm}
 \setlength{\parskip}{0.3\baselineskip}
 \setlength{\headheight}{15pt}
+\usepackage{color}   %May be necessary if you want to color links
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true, %set true if you want colored links
+    linktoc=all,     %set to all if you want both sections and subsections linked
+    linkcolor=blue,  %choose some color if you want links to stand out
+}
 \begin{document}\small
- % \renewcommand\figurename{Fig.}
-  %\renewcommand\arraystretch{1.0}
-    \title{Deep Learning\cite{Goodfellow-et-al-2016-Book} Notes}
-    \author{Yan JIN}
-    \pagestyle{fancy}\fancyhf{}
-    \lhead{}\rhead{JIN Yan}
-    \lfoot{\textit{}}\cfoot{}\rfoot{\thepage}
-    \renewcommand{\headrulewidth}{1.pt}
-    \renewcommand{\footrulewidth}{1.pt}
-  \maketitle
-  \tableofcontents
-  
+\title{Deep Learning\cite{Goodfellow-et-al-2016-Book} Notes}
+\author{Yan JIN}
+\pagestyle{fancy}\fancyhf{}
+\lhead{}\rhead{JIN Yan}
+\lfoot{\textit{}}\cfoot{}\rfoot{\thepage}
+\renewcommand{\headrulewidth}{1.pt}
+\renewcommand{\footrulewidth}{1.pt}
+\maketitle
+\tableofcontents
 %=======================================
-\section{Matrix Derivative}
-
-Here we choose \textbf{Numerator layout}.
-
-\textbf{Scalar}: x, y;
-
-\textbf{Vector}:
-\[
-\mathbf{x} = 
-\begin{bmatrix}
-x_1\\ x_2\\ \vdots\\ x_3\\
-\end{bmatrix}, 
-\mathbf{y} = 
-\begin{bmatrix}
-y_1\\ y_2\\ \vdots\\ y_3\\
-\end{bmatrix};
-\]
-
+\section{Matrix Derivative} \par
+Here we choose \textbf{Numerator layout}. \par
+\textbf{Scalar}: x, y; \par
+\textbf{Vector}:\par
+\begin{equation}
+	\mathbf{x} = 
+	\begin{bmatrix}
+		x_1\\ x_2\\ \vdots\\ x_3\\
+	\end{bmatrix}, 
+	\mathbf{y} = 
+	\begin{bmatrix}
+		y_1\\ y_2\\ \vdots\\ y_3\\
+	\end{bmatrix};	
+\end{equation}
 \textbf{Derivatives with Vectors}:
-\[
-\nabla_{x} \mathbf{y} = \frac{\partial \mathbf{y}}{\partial x} =
-\begin{bmatrix}
-\frac{\partial y_1}{\partial x}\\
-\frac{\partial y_2}{\partial x}\\
-\vdots\\
-\frac{\partial y_n}{\partial x}\\
-\end{bmatrix},
-\nabla_{\mathbf{x}} y = \frac{\partial y}{\partial \mathbf{x}} =
-\begin{bmatrix}
-\frac{\partial y}{\partial x_1},
-\ \ \frac{\partial y}{\partial x_2},
-\ \ \cdots,
-\ \ \frac{\partial y}{\partial x_n}\\
-\end{bmatrix},
-\nabla_{\mathbf{x}} \mathbf{y} = \frac{\partial \mathbf{y}}{\partial \mathbf{x}} =
-\begin{bmatrix}
-\frac{\partial y_1}{\partial x_1} & \frac{\partial y_1}{\partial x_2} & \cdots & \frac{\partial y_1}{\partial x_n}\\
-\frac{\partial y_2}{\partial x_1} & \frac{\partial y_2}{\partial x_2} & \cdots & \frac{\partial y_2}{\partial x_n}\\
-\vdots & \vdots & \ddots & \vdots\\
-\frac{\partial y_m}{\partial x_1} & \frac{\partial y_m}{\partial x_2} & \cdots & \frac{\partial y_m}{\partial x_n}\\
-\end{bmatrix};
-\]
- 
-In \textbf{vector calculus}, the derivative of a vector function $\mathbf{y}$ with respect to a vector $\mathbf{x}$ whose components represent a space is known as the \textbf{Jacobian matrix}.
-
-The \textbf{directional derivative} of a scalar function $f(\mathbf{x})$ of the space vector $\mathbf{x}$ in the direction of the unit vector $\mathbf{u}$ is defined using the gradient as follows.
+\begin{equation}
+	\nabla_{x} \mathbf{y} = \frac{\partial \mathbf{y}}{\partial x} =
+	\begin{bmatrix}
+		\frac{\partial y_1}{\partial x}\\
+		\frac{\partial y_2}{\partial x}\\
+		\vdots\\
+		\frac{\partial y_n}{\partial x}\\
+	\end{bmatrix},
+	\nabla_{\mathbf{x}} y = \frac{\partial y}{\partial \mathbf{x}} =
+	\begin{bmatrix}
+		\frac{\partial y}{\partial x_1},
+		\ \ \frac{\partial y}{\partial x_2},
+		\ \ \cdots,
+		\ \ \frac{\partial y}{\partial x_n}\\
+	\end{bmatrix},
+	\nabla_{\mathbf{x}} \mathbf{y} = \frac{\partial \mathbf{y}}{\partial \mathbf{x}} =
+	\begin{bmatrix}
+		\frac{\partial y_1}{\partial x_1} & \frac{\partial y_1}{\partial x_2} & \cdots & \frac{\partial y_1}{\partial x_n}\\
+		\frac{\partial y_2}{\partial x_1} & \frac{\partial y_2}{\partial x_2} & \cdots & \frac{\partial y_2}{\partial x_n}\\
+		\vdots & \vdots & \ddots & \vdots\\
+		\frac{\partial y_m}{\partial x_1} & \frac{\partial y_m}{\partial x_2} & \cdots & \frac{\partial y_m}{\partial x_n}\\
+	\end{bmatrix};
+\end{equation}
+In \textbf{vector calculus}, the derivative of a vector function $\mathbf{y}$ with respect to a vector $\mathbf{x}$ whose components represent a space is known as the \textbf{Jacobian matrix}. \par
+The \textbf{directional derivative} of a scalar function $f(\mathbf{x})$ of the space vector $\mathbf{x}$ in the direction of the unit vector $\mathbf{u}$ is defined using the gradient as follows. \par
 \[\nabla_{\bold{u}}{f}(\bold{x}) = \nabla f(\bold{x}) \cdot \bold{u}\]
 Using the notation just defined for the derivative of a scalar with respect to a vector we can re-write the directional derivative as
 \[\nabla_\mathbf{u} f = \frac{\partial f}{\partial \mathbf{x}}\mathbf{u}.\]
-
 \textbf{Derivatives with Matrices}:
-\[
-\frac{\partial \mathbf{Y}}{\partial x} =
-\begin{bmatrix}
-\frac{\partial y_{11}}{\partial x} & \frac{\partial y_{12}}{\partial x} & \cdots & \frac{\partial y_{1n}}{\partial x}\\
-\frac{\partial y_{21}}{\partial x} & \frac{\partial y_{22}}{\partial x} & \cdots & \frac{\partial y_{2n}}{\partial x}\\
-\vdots & \vdots & \ddots & \vdots\\
-\frac{\partial y_{m1}}{\partial x} & \frac{\partial y_{m2}}{\partial x} & \cdots & \frac{\partial y_{mn}}{\partial x}\\
-\end{bmatrix},
-\frac{\partial y}{\partial \mathbf{X}} =
-\begin{bmatrix}
-\frac{\partial y}{\partial x_{11}} & \frac{\partial y}{\partial x_{21}} & \cdots & \frac{\partial y}{\partial x_{p1}}\\
-\frac{\partial y}{\partial x_{12}} & \frac{\partial y}{\partial x_{22}} & \cdots & \frac{\partial y}{\partial x_{p2}}\\
-\vdots & \vdots & \ddots & \vdots\\
-\frac{\partial y}{\partial x_{1q}} & \frac{\partial y}{\partial x_{2q}} & \cdots & \frac{\partial y}{\partial x_{pq}}\\
-\end{bmatrix};
-\]
+\begin{equation}
+	\frac{\partial \mathbf{Y}}{\partial x} =
+	\begin{bmatrix}
+		\frac{\partial y_{11}}{\partial x} & \frac{\partial y_{12}}{\partial x} & \cdots & \frac{\partial y_{1n}}{\partial x}\\
+		\frac{\partial y_{21}}{\partial x} & \frac{\partial y_{22}}{\partial x} & \cdots & \frac{\partial y_{2n}}{\partial x}\\
+		\vdots & \vdots & \ddots & \vdots\\
+		\frac{\partial y_{m1}}{\partial x} & \frac{\partial y_{m2}}{\partial x} & \cdots & \frac{\partial y_{mn}}{\partial x}\\
+	\end{bmatrix},
+	\frac{\partial y}{\partial \mathbf{X}} =
+	\begin{bmatrix}
+		\frac{\partial y}{\partial x_{11}} & \frac{\partial y}{\partial x_{21}} & \cdots & \frac{\partial y}{\partial x_{p1}}\\
+		\frac{\partial y}{\partial x_{12}} & \frac{\partial y}{\partial x_{22}} & \cdots & \frac{\partial y}{\partial x_{p2}}\\
+		\vdots & \vdots & \ddots & \vdots\\
+		\frac{\partial y}{\partial x_{1q}} & \frac{\partial y}{\partial x_{2q}} & \cdots & \frac{\partial y}{\partial x_{pq}}\\
+	\end{bmatrix};
+\end{equation}
 %=======================================
 \section{Chapter 2 Linear Algebra}
 %\addcontentsline{toc}{subsection}{Singular Value Decomposition (\$2.8)}
 \subsection{Singular Value Decomposition (\$2.8)}
 SVD(Singular Value Decomposition):
-\begin{align*}
-\mathbf{A=UDV}^{T}
-\end{align*}
-
-\textbf{A}: m x n matrix; \textbf{U}: m x m matrix; \textbf{D}: m x n matrix;  \textbf{V}: n x n matrix; 
-
-\textbf{U} and \textbf{V} are orthogonal; \textbf{D} is diagonal but not necessarily square.
-
+\begin{equation}
+	\mathbf{A=UDV}^{T}
+\end{equation}
+\textbf{A}: m x n matrix; \textbf{U}: m x m matrix; \textbf{D}: m x n matrix;  \textbf{V}: n x n matrix; \par
+\textbf{U} and \textbf{V} are orthogonal; \textbf{D} is diagonal but not necessarily square.\par
 The elements along the diagonal of \textbf{D} are \emph{singular values} of \textbf{A};
-the columns of \textbf{U} are the \emph{left-singular vectors}, the columns of \textbf{V} are the \emph{right-singular vectors}
-
-The left-singular vectors are the eigenvectors of $\mathbf{AA}^T$; the right-singular vectors are the eigenvectors of $\mathbf{A}^T\mathbf{A}$
-
+The columns of \textbf{U} are the \emph{left-singular vectors}, the columns of \textbf{V} are the \emph{right-singular vectors} \par
+The left-singular vectors are the eigenvectors of $\mathbf{AA}^T$; the right-singular vectors are the eigenvectors of $\mathbf{A}^T\mathbf{A}$ \par
 Every real matrix has a SVD. One of the usage of SVD is to generalize matrix inversion to non-square matrices.
 %-----------------------------------------
 \subsection{Example Principal Components Analysis (\$2.12)}
-Inputs: A collection of m points \{$\mathbf{x}^{(1)},...,\mathbf{x}^{(m)}$\} in $\mathbb{R}^{n}$.
-
-Target is to lossy compression to these points, that means to storing the points in a way that requires less memory but may lose some precision. We would like to lose as little precision as possible. So,
-
+Inputs: A collection of m points \{$\mathbf{x}^{(1)},...,\mathbf{x}^{(m)}$\} in $\mathbb{R}^{n}$. \par
+Target is to lossy compression to these points, that means to storing the points in a way that requires less memory but may lose some precision. We would like to lose as little precision as possible. So, \par
 Outputs: For each point $\mathbf{x}^{(i)} \in \mathbb{R}^{n}$ we will find:
 \begin{enumerate}
 	\item A $\mathbf{c}^{(i)} \in \mathbb{R}^{l}$, where $l < n$;
@@ -142,172 +132,146 @@ Outputs: For each point $\mathbf{x}^{(i)} \in \mathbb{R}^{n}$ we will find:
 %=======================================
 \section{Chapter 3 Probability and Information Theory}
 \subsection{Expectation, Variance and Covariance}
-\begin{align*}
-Expectation: \mathbb{E}_{X \sim P}[f(x)]&=\int p(x)f(x)dx \\
-Variance: Var(f(x))&=\mathbb{E}[(f(x)-\mathbb{E}[f(x)])^2] \\
-Covariance: Cov(f(x),g(x))&=\mathbb{E}[(f(x)-\mathbb{E}[f(x)])(g(x)-\mathbb{E}[g(x)])]
-\end{align*}
+\begin{equation}\begin{split}
+	Expectation: \mathbb{E}_{X \sim P}[f(x)]&=\int p(x)f(x)dx \\
+	Variance: Var(f(x))&=\mathbb{E}[(f(x)-\mathbb{E}[f(x)])^2] \\
+	Covariance: Cov(f(x),g(x))&=\mathbb{E}[(f(x)-\mathbb{E}[f(x)])(g(x)-\mathbb{E}[g(x)])]
+\end{split}\end{equation}
 %=======================================
 \section{Chapter 5 Machine Learning Basics}
 \subsection{Estimators, Bias and Variance (\$5.4)}
 \subsubsection{Point Estimation}
 \subsubsection{Bias}
-\[ bias(\hat{{\boldsymbol\theta}}_m)=\mathbb{E}(\hat{\boldsymbol\theta}_m)-\boldsymbol\theta
-\]
-
+\begin{equation}
+	bias(\hat{{\boldsymbol\theta}}_m)=\mathbb{E}(\hat{\boldsymbol\theta}_m)-\boldsymbol\theta
+\end{equation}
 Proof of formula (5.39):
-\begin{align*}
-\hat{\mu}_m&=\mathbb{E}[x^{(i)}]=\frac{1}{m}\sum_{i=1}^{m}x^{(i)} \\
-\mu&=\mathbb{E}[\hat{\mu}_m] \\
-Var(x^{(i)})&=\mathbb{E}[(x^{(i)}-\mu)^2]=\sigma^2 \\
-Var(\hat{\mu}_m)&=\mathbb{E}[(\hat{\mu}_m-\mu)^2] =\frac{\sigma^2}{m}
-\end{align*}
-
+\begin{equation}\begin{split}
+	\hat{\mu}_m&=\mathbb{E}[x^{(i)}]=\frac{1}{m}\sum_{i=1}^{m}x^{(i)} \\
+	\mu&=\mathbb{E}[\hat{\mu}_m] \\
+	Var(x^{(i)})&=\mathbb{E}[(x^{(i)}-\mu)^2]=\sigma^2 \\
+	Var(\hat{\mu}_m)&=\mathbb{E}[(\hat{\mu}_m-\mu)^2] =\frac{\sigma^2}{m}
+\end{split}\end{equation}
 so:
-\begin{align*}
-\mathbb{E}[\hat{\sigma}^2_m]
-&=\mathbb{E}[\frac{1}{m}\sum_{i=1}^{m}(x^{(i)}-\hat{\mu}_m)^2] \\
-&=\frac{1}{m}\mathbb{E}[\sum_{i=1}^{m}(x^{(i)}-\mu+\mu-\hat{\mu}_m)^2] \\
-&=\frac{1}{m}\mathbb{E}[\sum_{i=1}^{m}(x^{(i)}-\mu)^2+2\sum_{i=1}^{m}(x^{(i)}-\mu)(\mu-\hat{\mu}_m)+\sum_{i=1}^{m}(\mu-\hat{\mu}_m)^2] \\
-&=\frac{1}{m}\mathbb{E}[\sum_{i=1}^{m}(x^{(i)}-\mu)^2+2m(\hat{\mu}_m-\mu)(\mu-\hat{\mu}_m)+m(\mu-\hat{\mu}_m)^2] \\
-&=\frac{1}{m}\mathbb{E}[\sum_{i=1}^{m}(x^{(i)}-\mu)^2-m(\hat{\mu}_m-\mu)^2] \\
-&=\frac{1}{m}(\sum_{i=1}^{m}\mathbb{E}[(x^{(i)}-\mu)^2]-m\mathbb{E}[(\hat{\mu}_m-\mu)^2]) \\
-&=\frac{1}{m}(mVar(x^{(i)})-mVar(\hat{\mu}_m)) \\
-&=Var(x^{(i)})-Var(\hat{\mu}_m) \\
-&=\sigma^2-\frac{\sigma^2}{m}=\frac{m-1}{m}\sigma^2
-\end{align*}
-
+\begin{equation}\begin{split}
+	\mathbb{E}[\hat{\sigma}^2_m]
+	&=\mathbb{E}[\frac{1}{m}\sum_{i=1}^{m}(x^{(i)}-\hat{\mu}_m)^2] \\
+	&=\frac{1}{m}\mathbb{E}[\sum_{i=1}^{m}(x^{(i)}-\mu+\mu-\hat{\mu}_m)^2] \\
+	&=\frac{1}{m}\mathbb{E}[\sum_{i=1}^{m}(x^{(i)}-\mu)^2+2\sum_{i=1}^{m}(x^{(i)}-\mu)(\mu-\hat{\mu}_m)+\sum_{i=1}^{m}(\mu-\hat{\mu}_m)^2] \\
+	&=\frac{1}{m}\mathbb{E}[\sum_{i=1}^{m}(x^{(i)}-\mu)^2+2m(\hat{\mu}_m-\mu)(\mu-\hat{\mu}_m)+m(\mu-\hat{\mu}_m)^2] \\
+	&=\frac{1}{m}\mathbb{E}[\sum_{i=1}^{m}(x^{(i)}-\mu)^2-m(\hat{\mu}_m-\mu)^2] \\
+	&=\frac{1}{m}(\sum_{i=1}^{m}\mathbb{E}[(x^{(i)}-\mu)^2]-m\mathbb{E}[(\hat{\mu}_m-\mu)^2]) \\
+	&=\frac{1}{m}(mVar(x^{(i)})-mVar(\hat{\mu}_m)) \\
+	&=Var(x^{(i)})-Var(\hat{\mu}_m) \\
+	&=\sigma^2-\frac{\sigma^2}{m}=\frac{m-1}{m}\sigma^2
+\end{split}\end{equation}
 \subsubsection{Variance and Standard Error}
-Variance:$ Var(\hat{\theta})$
-
-Standard Error: $SE(\hat{\theta})=\sqrt{Var(\hat{\theta})}$
-
+Variance:$ Var(\hat{\theta})$ \par
+Standard Error: $SE(\hat{\theta})=\sqrt{Var(\hat{\theta})}$ \par
 \subsubsection{Trading off Bias and Variance to Minimize Mean Square Error}
-
 Proof (5.54):
-\begin{align*}
-MSE
-&=\mathbb{E}[(\hat{\theta}_m-\theta)^2] \\
-&=\mathbb{E}[\hat{\theta}_m^2]-2\theta\mathbb{E}(\hat{\theta}_m)+\theta^2 \\
-Bias(\hat{\theta}_m)^2
-&=(\mathbb{E}[\hat{\theta}_m]-\theta)^2 \\
-&=\mathbb{E}[\hat{\theta}_m]^2-2\mathbb{E}[\hat{\theta}_m]\theta+\theta^2 \\
-Var(\hat{\theta}_m)
-&=\mathbb{E}[(\hat{\theta}_m-\mathbb{E}[\hat{\theta}_m])^2]\\
-&=\mathbb{E}[\hat{\theta}_m^2-2\hat{\theta}_m\mathbb{E}[\hat{\theta}_m]+\mathbb{E}[\hat{\theta}_m]^2]\\
-&=\mathbb{E}[\hat{\theta}_m^2]-\mathbb{E}[\hat{\theta}_m]^2\\
-\Rightarrow
-MSE&=Bias(\hat{\theta}_m)^2+Var(\hat{\theta}_m)
-\end{align*}
+\begin{equation}\begin{split}
+	MSE&=\mathbb{E}[(\hat{\theta}_m-\theta)^2] \\
+	&=\mathbb{E}[\hat{\theta}_m^2]-2\theta\mathbb{E}(\hat{\theta}_m)+\theta^2 \\
+	Bias(\hat{\theta}_m)^2
+	&=(\mathbb{E}[\hat{\theta}_m]-\theta)^2 \\
+	&=\mathbb{E}[\hat{\theta}_m]^2-2\mathbb{E}[\hat{\theta}_m]\theta+\theta^2 \\
+	Var(\hat{\theta}_m)
+	&=\mathbb{E}[(\hat{\theta}_m-\mathbb{E}[\hat{\theta}_m])^2]\\
+	&=\mathbb{E}[\hat{\theta}_m^2-2\hat{\theta}_m\mathbb{E}[\hat{\theta}_m]+\mathbb{E}[\hat{\theta}_m]^2]\\
+	&=\mathbb{E}[\hat{\theta}_m^2]-\mathbb{E}[\hat{\theta}_m]^2\\
+	\Rightarrow
+	MSE&=Bias(\hat{\theta}_m)^2+Var(\hat{\theta}_m)
+\end{split}\end{equation}
 %=======================================
 \subsection{Frequentist Statistics and Baysian Statistics($\$5.5 \sim \$5.6$)}
-Frequentist: Estimate a single value of $\boldsymbol\theta$, then making all predictions 
-thereafter based on that \textbf{one} estimate;
-
-Baysian: Consider \textbf{all} possible values of $\boldsymbol\theta$ when making a prediction;
-
-Frequentist: The true parameter value $\boldsymbol\theta$ is \textbf{fixed but unknown}, while the point estimate $\hat{\boldsymbol\theta}$ is a random variable and a function of \textbf{the dataset}(which is seen as \textbf{random});
-
-Baysian: \textbf{Dataset} is directly observed and is \textbf{not random}; the true parameter value $\boldsymbol\theta$ is \textbf{unknown or uncertain} and thus is represented as a random variable;
-
+Frequentist: Estimate a single value of $\boldsymbol\theta$, then making all predictions thereafter based on that \textbf{one} estimate; \par
+Baysian: Consider \textbf{all} possible values of $\boldsymbol\theta$ when making a prediction; \par
+Frequentist: The true parameter value $\boldsymbol\theta$ is \textbf{fixed but unknown}, while the point estimate $\hat{\boldsymbol\theta}$ is a random variable and a function of \textbf{the dataset}(which is seen as \textbf{random}); \par
+Baysian: \textbf{Dataset} is directly observed and is \textbf{not random}; the true parameter value $\boldsymbol\theta$ is \textbf{unknown or uncertain} and thus is represented as a random variable; \par
 Differences between MLE(Maximum Likelihood Estimation) and Bayesian estimation:
 \begin{enumerate}
-	\item MLE: Make predictions using a \textbf{point estimate} of $\boldsymbol\theta$;
-	
+	\item MLE: Make predictions using a \textbf{point estimate} of $\boldsymbol\theta$; \par
 	Bayesian: Using a \textbf{full distribution} over $\boldsymbol\theta$;
-	\item MLE: Address the uncertainty on a given point estimate of $\boldsymbol\theta$ by evaluating its \textbf{variance};
-	
+	\item MLE: Address the uncertainty on a given point estimate of $\boldsymbol\theta$ by evaluating its \textbf{variance}; \par
 	Bayesian: Simply \textbf{integrate over it};
-	\item Baysian: Use a priori, which expresses a preference for \textbf{simpler and smooth models}, and seems as a source of \textbf{subjective human judgment} impacting the predictions;
+	\item Baysian: Use a priori, which expresses a preference for \textbf{simpler and smooth models}, and seems as a source of \textbf{subjective human judgment} impacting the predictions; \par
 	\item Baysian: \textbf{Generalize much better} when training data is \textbf{small}, but \textbf{high computation cost} when training data is \textbf{large};
 \end{enumerate}
 %-----------------------------------------
 \subsubsection{Frequentist Statistics - Maximum Likelihood Estimation (MLE)}
-$p_{data}(\boldsymbol{x})$: \textbf{The true but unknown} data generating distribution.
-
- $\mathbb{X}=\{x^{(1)},...,x^{(m)}\}$: Drawn independently from $p_{data}(\boldsymbol{x})$.
-
-$\hat{p}_{data}(\boldsymbol{x})$: The empirical distribution.
-
-$p_{model}(\boldsymbol{x;\theta})$: A parametric family of probability distribution over the space indexed by $\boldsymbol{\theta}$ for estimating the $p_{data}(\boldsymbol{x})$.
-
+$p_{data}(\boldsymbol{x})$: \textbf{The true but unknown} data generating distribution. \par
+ $\mathbb{X}=\{x^{(1)},...,x^{(m)}\}$: Drawn independently from $p_{data}(\boldsymbol{x})$. \par
+$\hat{p}_{data}(\boldsymbol{x})$: The empirical distribution. \par
+$p_{model}(\boldsymbol{x;\theta})$: A parametric family of probability distribution over the space indexed by $\boldsymbol{\theta}$ for estimating the $p_{data}(\boldsymbol{x})$. \par
 The maximum likelihood estimator for $\boldsymbol{\theta}$:
-
-\begin{align*}
-\boldsymbol{\theta_{ML}}&=\underset{\boldsymbol{\theta}}{argmax}\ p_{model}({\mathbb{X};\boldsymbol{\theta}}) \\
-&=\underset{\boldsymbol{\theta}}{argmax}\prod_{i=1}^{m}p_{model}(x^{(i)};\boldsymbol{\theta}) \\
-&=\underset{\boldsymbol{\theta}}{argmax}\sum_{i=1}^{m}log\ p_{model}(x^{(i)};\boldsymbol{\theta}) \\
-&=\underset{\boldsymbol{\theta}}{argmax}\frac{1}{m}\sum_{i=1}^{m}log\ p_{model}(x^{(i)};\boldsymbol{\theta}) \\
-&=\underset{\boldsymbol{\theta}}{argmax}\ \mathbb{E}_{\boldsymbol{x}\sim\hat{p}_{data}}log\ p_{model}(\boldsymbol{x};\boldsymbol{\theta}) \\
-\end{align*}
-
+\begin{equation}\begin{split}
+	\boldsymbol{\theta_{ML}}&=\underset{\boldsymbol{\theta}}{argmax}\ p_{model}({\mathbb{X};		\boldsymbol{\theta}}) \\
+	&=\underset{\boldsymbol{\theta}}{argmax}\prod_{i=1}^{m}p_{model}(x^{(i)};\boldsymbol{\theta}) \\
+	&=\underset{\boldsymbol{\theta}}{argmax}\sum_{i=1}^{m}log\ p_{model}(x^{(i)};\boldsymbol{\theta}) \\
+	&=\underset{\boldsymbol{\theta}}{argmax}\frac{1}{m}\sum_{i=1}^{m}log\ p_{model}(x^{(i)};\boldsymbol{\theta}) \\
+	&=\underset{\boldsymbol{\theta}}{argmax}\ \mathbb{E}_{\boldsymbol{x}\sim\hat{p}_{data}}log\ p_{model}(\boldsymbol{x};\boldsymbol{\theta}) \\
+\end{split}\end{equation} \par
 MLE is an attempt to make the $p_{model}$ match $\hat{p}_{data}$, because we have no direct access to $p_{data}$.
 %-----------------------------------------
 \subsubsection{Baysian Statistics}
-$p(\boldsymbol\theta)$: Prior probability distribution(the prior).
-
-$\{x^{(1)},...,x^{(m)}\}$: Data samples.
-
-we reform the belief about $\boldsymbol\theta$(the posterior $p(\boldsymbol\theta|x^{(1)},...,x^{(m)})$) by the data likelihood $p(x^{(1)},...,x^{(m)}|\boldsymbol\theta)$ and the prior $p(\boldsymbol\theta)$ via \textbf{Bayes' rule}: \[
-p(\boldsymbol\theta|x^{(1)},...,x^{(m)})=\frac{p(x^{(1)},...,x^{(m)}|\boldsymbol\theta)p(\boldsymbol\theta)}{p(x^{(1)},...,x^{(m)})}
-\]
+$p(\boldsymbol\theta)$: Prior probability distribution(the prior). \par
+$\{x^{(1)},...,x^{(m)}\}$: Data samples. \par
+We reform the belief about $\boldsymbol\theta$(the posterior $p(\boldsymbol\theta|x^{(1)},...,x^{(m)})$) by the data likelihood $p(x^{(1)},...,x^{(m)}|\boldsymbol\theta)$ and the prior $p(\boldsymbol\theta)$ via \textbf{Bayes' rule}: 
+\begin{equation}
+	p(\boldsymbol\theta|x^{(1)},...,x^{(m)})=\frac{p(x^{(1)},...,x^{(m)}|\boldsymbol\theta)p(\boldsymbol\theta)}{p(x^{(1)},...,x^{(m)})}
+\end{equation}
 %-----------------------------------------
 \subsubsection{Maximum A Posteriori (MAP) Estimation}
 The maximum a posteriori point estimate:
-\[
-\boldsymbol\theta_{MAP}=\underset{\boldsymbol\theta}{argmax} \  p(\boldsymbol{\theta|x})=\underset{\boldsymbol\theta}{argmax} \ log \  p(\boldsymbol{x|\theta})+log\ p(\boldsymbol{\theta})
-\]
-MAP has the advantage of leveraging information that is brought by \textbf{the prior} and cannot be found in \textbf{the training data}. This information helps to \textbf{reduce the variance} in the MAP point estimate (compare to MLE), but \textbf{increase bias}.
-
+\begin{equation}
+	\boldsymbol\theta_{MAP}=\underset{\boldsymbol\theta}{argmax} \  p(\boldsymbol{\theta|x})=\underset{\boldsymbol\theta}{argmax} \ log \  p(\boldsymbol{x|\theta})+log\ p(\boldsymbol{\theta})
+\end{equation}
+MAP has the advantage of leveraging information that is brought by \textbf{the prior} and cannot be found in \textbf{the training data}. This information helps to \textbf{reduce the variance} in the MAP point estimate (compare to MLE), but \textbf{increase bias}. \par
 \subsubsection{Relation between MLE and MAP}
 Some times:
-\[
+\begin{equation}
 MLE \ + \ Regularization\ with\ weight\ decay = MAP .
-\]
+\end{equation}
 %=======================================
 \section{Chapter 6 Deep Feedforward Networks}
 \subsection{Back-Propagation (\$6.5)}
-Training example: $(\mathbf{x}, \mathbf{y})$
-
-Forward propagation: Algorithm 6.3 
-
-Back-propagation: Algorithm 6.4
+Training example: $(\mathbf{x}, \mathbf{y})$ \par
+Forward propagation: Algorithm 6.3 \par
+Back-propagation: Algorithm 6.4 \par
 %=======================================
 \section{Chapter 10 Sequence modeling: Recurrent and recursive nets}
 For equation (10.18):
-\begin{align*}
-L^{(t)} =& -\sum_{i}y_{i}^{(t)}log[\hat{y}_{i}^{(t)}] \\
-\overset{(10.11)}{=}& -\sum_{i}y_{i}^{(t)}log[softmax(\mathbf{o^{(t)}})_{i}] \\
-=& -\sum_{i}y_{i}^{(t)}log[\frac{exp(\mathbf{o^{(t)}}_{i})}{\sum_{k}exp(\mathbf{o^{(t)}_{k}})}]
-\end{align*}
-\begin{align*}
-\frac{\partial L^{(t)}}{\partial o_i^{(t)}}
-&=-\frac{\partial}{\partial o_i^{(t)}} \sum_{i}y_{i}^{(t)} \{o_i^{(t)}-log[\sum_{k}exp(\mathbf{o^{(t)}_{k}})] \}\\
-&=-\frac{\partial}{\partial o_i^{(t)}} \{\sum_{i}y_{i}^{(t)} o_i^{(t)}-\sum_{i}y_{i}^{(t)} log[\sum_{k}exp(\mathbf{o^{(t)}_{k}})] \}\\
-&=-y_{i}^{(t)} + [\sum_{i}y_{i}^{(t)}] \cdot [\frac{exp(\mathbf{o^{(t)}}_{i})}{\sum_{k}exp(\mathbf{o^{(t)}_{k}})}]\\
-&=-y_{i}^{(t)} + \hat{y}_{i}^{(t)} = \hat{y}_{i}^{(t)} - y_{i}^{(t)} =  \hat{y}_{i}^{(t)} - \mathbf{1}_{y_{i}^{(t)}=1}
-\end{align*}
-
-For equation (10.19):
-
+\begin{equation}\begin{split}
+	L^{(t)} =& -\sum_{i}y_{i}^{(t)}log[\hat{y}_{i}^{(t)}] \\
+	\overset{(10.11)}{=}& -\sum_{i}y_{i}^{(t)}log[softmax(\mathbf{o^{(t)}})_{i}] \\
+	=& -\sum_{i}y_{i}^{(t)}log[\frac{exp(\mathbf{o^{(t)}}_{i})}{\sum_{k}exp(\mathbf{o^{(t)}_{k}})}]
+\end{split}\end{equation}
+\begin{equation}\begin{split}
+	\frac{\partial L^{(t)}}{\partial o_i^{(t)}}
+	&=-\frac{\partial}{\partial o_i^{(t)}} \sum_{i}y_{i}^{(t)} \{o_i^{(t)}-log[\sum_{k}exp(\mathbf{o^{(t)}_{k}})] \}\\
+	&=-\frac{\partial}{\partial o_i^{(t)}} \{\sum_{i}y_{i}^{(t)} o_i^{(t)}-\sum_{i}y_{i}^{(t)} log[\sum_{k}exp(\mathbf{o^{(t)}_{k}})] \}\\
+	&=-y_{i}^{(t)} + [\sum_{i}y_{i}^{(t)}] \cdot [\frac{exp(\mathbf{o^{(t)}}_{i})}{\sum_{k}exp(\mathbf{o^{(t)}_{k}})}]\\
+	&=-y_{i}^{(t)} + \hat{y}_{i}^{(t)} = \hat{y}_{i}^{(t)} - y_{i}^{(t)} =  \hat{y}_{i}^{(t)} - \mathbf{1}_{y_{i}^{(t)}=1}
+\end{split}\end{equation} \par
+For equation (10.19): \par
 Scalar L, matrix V, vectors \textbf{o} and \textbf{h} has the realation:  
-\[
-\mathbf{o}=\mathbf{Vh} \Leftrightarrow
-\begin{bmatrix}
-o_1\\ o_2\\ \vdots\\ o_m\\
-\end{bmatrix}=
-\begin{bmatrix}
-V_{11} & V_{12} & \cdots & V_{1n}\\
-V_{21} & V_{22} & \cdots & V_{2n}\\
-\vdots & \vdots & \ddots & \vdots\\
-V_{m1} & V_{m2} & \cdots & V_{mn}\\
-\end{bmatrix}
-\begin{bmatrix}
-h_1\\ h_2\\ \vdots\\ h_n\\
-\end{bmatrix};
-\]
-
-\begin{align*}
+\begin{equation}\begin{split}
+	\mathbf{o}=\mathbf{Vh} \Leftrightarrow
+	\begin{bmatrix}
+		o_1\\ o_2\\ \vdots\\ o_m\\
+	\end{bmatrix}=
+	\begin{bmatrix}
+		V_{11} & V_{12} & \cdots & V_{1n}\\
+		V_{21} & V_{22} & \cdots & V_{2n}\\
+		\vdots & \vdots & \ddots & \vdots\\
+		V_{m1} & V_{m2} & \cdots & V_{mn}\\
+	\end{bmatrix}
+	\begin{bmatrix}
+		h_1\\ h_2\\ \vdots\\ h_n\\
+	\end{bmatrix};
+\end{split}\end{equation}
+\begin{equation}\begin{split}
 \nabla_{\mathbf{h}} L &= 
 \begin{bmatrix}
 \frac{\partial L}{\partial h_1},
@@ -373,7 +337,7 @@ h_1\\ h_2\\ \vdots\\ h_n\\
 \frac{\partial o_{m}}{\partial h_1} & \frac{\partial o_{m}}{\partial h_2} & \cdots & \frac{\partial o_{m}}{\partial h_n}\\
 \end{bmatrix} \\&= 
 \nabla_{\mathbf{o}} L \ \mathbf{V}
-\end{align*}
+\end{split}\end{equation}
 %=======================================
 \section{Chapter 11 Practical Methodology}
 Practical design process:
@@ -383,44 +347,32 @@ Practical design process:
 	\item Determine bottlenecks in performance;
 	\item Repeatedly make incremental changes: gathering new data, adjusting hyperparameters, or changing algorithms;
 \end{enumerate}
-
 \subsection{Determining Whether to Gather More Data (\$11.3)}
 \begin{enumerate}
-	\item Determine whether the performance on the training set is acceptable; 
-	
+	\item Determine whether the performance on the training set is acceptable; \par
 	If performance on the training set is poor:
 	\item Increase the size of the model: add more layers; add more hidden unites to each layer; turning 
-	the learning rate etc.
-	
-	If still not work well: data needed to be cleaned or gathered;
-	
+	the learning rate etc. \par
+	If still not work well: data needed to be cleaned or gathered; \par
 	Else:
-	\item Measure performance on test set;
-	
-	If performance good, done!
-	
+	\item Measure performance on test set; \par
+	If performance good, done!\par
 	Else if test set performance is much worse than training set performance:
-	\item Gather data;
-	
+	\item Gather data;\par
 	If not easy to gather data:
-	\item Reduce the size of the model; Improve regularization(adjust weight decay coefficients or add dropout);
-	
+	\item Reduce the size of the model; Improve regularization(adjust weight decay coefficients or add dropout); \par
 	If test set performance is still unacceptable:
 	\item Gather data;
 \end{enumerate}
 %=======================================
 \section{NLP - Language Model}
-Finite set of all the words W; Ex: W = \{the, a, man, bag, dogs, ...\}.
-
-Set of all the REAL sequences of words L; Ex: L = \{the, a, the fan, the fan saw Beckham, the fan saw saw, ...\}.
-
-We have a sample set of sequences of words S.
-
+Finite set of all the words W; Ex: W = \{the, a, man, bag, dogs, ...\}. \par
+Set of all the REAL sequences of words L; Ex: L = \{the, a, the fan, the fan saw Beckham, the fan saw saw, ...\}.\par
+We have a sample set of sequences of words S.\par
 Now we need to learn the REAL probability distribution $p$, where:
 \[
 \sum_{x \in L} p(x) = 1
-\]
-
+\]\par
 Old method to calculate $p_{L}$:
 \begin{enumerate}
 	\item Assuming that $|S| = N$;
@@ -429,48 +381,354 @@ Old method to calculate $p_{L}$:
 \end{enumerate}
 Problem of this method: If a sequences of words $x \in S$ does not in sample set T, so $p(x)=0$;
 But if it exists in S, then $p(x) \neq 0$.
-
 \subsection{Markov Processes and N-gram}
-To solve this problem, we assume a random variables $X_1, X_2, X_3, ..., X_n$, for each of them can take
-any value in the word set W.
-
-The word sequence $x \in T$ can be represented by the words: $x = \{x_1, x_2, x_3, ..., x_n\}$, where $x_i \in W$;
-
+To solve this problem, we assume a random variables $X_1, X_2, X_3, ..., X_n$, for each of them can take any value in the word set W. \par
+The word sequence $x \in T$ can be represented by the words: $x = \{x_1, x_2, x_3, ..., x_n\}$, where $x_i \in W$;\par
 First-order Markov Processes(the probability of the word is depend only on ONE word before):
-\begin{align*}
+\begin{equation}\begin{split}
 &P(X_1=x_1, X_2=x_2, ..., X_n=x_n)\\ 
 =&P(X_1=x_1)\prod_{i=2}^{n}P(X_i=x_i|X_1=x_1, ..., X_{i-1}=x_{i-1})\\ 
 =&P(X_1=x_1)\prod_{i=2}^{n}P(X_i=x_i|X_{i-1}=x_{i-1}) 
-\end{align*}
-
+\end{split}\end{equation}
 Second-order Markov Processes(the probability of the word is depend only on TWO words before):
-\begin{align*}
-&P(X_1=x_1, X_2=x_2, ..., X_n=x_n)\\ 
-=&\prod_{i=1}^{n}P(X_i=x_i|X_{i-2}=x_{i-2}, X_{i-1}=x_{i-1}) 
-\end{align*}
-where $x_0=x_1=START$.
-
-Trigram Language Model:
-
+\begin{equation}
+	P(X_1=x_1, X_2=x_2, ..., X_n=x_n)=\prod_{i=1}^{n}P(X_i=x_i|X_{i-2}=x_{i-2}, X_{i-1}=x_{i-1}) 
+\end{equation}
+where $x_0=x_1=START$.\par
+Trigram Language Model:\par
 For every $x = \{x_1, x_2, x_3, ..., x_n\} \in T$, we have:
-\begin{align*}
+\begin{equation}
 p(\{x_1, x_2, ..., x_n\})=\prod_{i=1}^{n}q(x_i|\{x_{i-2}, x_{i-1}\}) 
-\end{align*}
-where $x_0=x_1=START$, and $q(x_i|\{x_{i-2}, x_{i-1}\})=\frac{c(\{x_i, x_{i-2}, x_{i-1}\})}{c(\{x_{i-2}, x_{i-1}\})}$
-
+\end{equation}
+where $x_0=x_1=START$, and $q(x_i|\{x_{i-2}, x_{i-1}\})=\frac{c(\{x_i, x_{i-2}, x_{i-1}\})}{c(\{x_{i-2}, x_{i-1}\})}$ \par
 Problem of this method: for example, $q(laughs|\{the, dog\})=\frac{c(\{the, dog, laughs\})}{c(\{the, dog\})}$; if there is no phase "the dog laughs" in the sample set, then $q(laughs|\{the, dog\})=0$, that is not the case; And if there is no phase "the dog", then $c(\{the, dog\})=0$, it will cause a problem of division.
-
 \subsection{Evaluation of Language Models: Perplexity}
 According to Maximum Likelihood Estimation, a good model should assign probability: $\prod_{i=1}^{N}p(s_i)$ where $s_i \in S$ as as high as possible.
-\[
+\begin{equation}
 Perplexity=2^{-\frac{1}{N}\sum_{i=1}^{N}log p(s_i)}
-\]
+\end{equation}
 So a better model should have a lower Perplexity.
-
-
+%=======================================
+\section{Course 3 Structuring Machine Learning Project} 
+\subsection{Bird recognition in the city of Peacetopia (case study)}
+You are a famous researcher in the City of Peacetopia. The people of Peacetopia have a common characteristic: they are afraid of birds. To save them, you have to build an algorithm that will detect any bird flying over Peacetopia and alert the population. \par
+The City Council gives you a dataset of 10,000,000 images of the sky above Peacetopia, taken from the city's security cameras. They are labelled:
+\begin{itemize}
+	\item y = 0: There is no bird on the image
+	\item y = 1: There is a bird on the image
+\end{itemize}
+Your goal is to build an algorithm able to classify new images taken by security cameras from Peacetopia.\par
+There are a lot of decisions to make:
+\begin{itemize}
+	\item What is the evaluation metric?
+	\item How do you structure your data into train/dev/test sets?
+\end{itemize}
+\begin{enumerate}
+	\item Metric of success \par
+	The City Council tells you the following that they want an algorithm that
+	\begin{enumerate}
+		\item Has high accuracy
+		\item Runs quickly and takes only a short time to classify a new image.
+		\item Can fit in a small amount of memory, so that it can run in a small processor that the city will attach to many different security cameras.
+	\end{enumerate}
+	Note: Having three evaluation metrics makes it harder for you to quickly choose between two different algorithms, and will slow down the speed with which your team can iterate. True/False? \par
+	Answer: True.
+	\item After further discussions, the city narrows down its criteria to: 
+	\begin{itemize}
+		\item "We need an algorithm that can let us know a bird is flying over Peacetopia as accurately as possible."
+		\item "We want the trained model to take no more than 10sec to classify a new image."
+		\item "We want the model to fit in 10MB of memory."
+	\end{itemize}
+	If you had the three following models, which one would you choose?
+	\begin{table}[h!]
+  		\centering
+  		\begin{tabular}{c|c|c|c}
+   			& Test Accuracy & Runtime & Memory size\\
+   			\hline
+    			1 & 97\% & 1 sec & 3MB\\
+			2 & 99\% & 13 sec & 9MB\\
+			3 & 97\% & 3 sec & 2MB\\
+			4 & 98\% & 9 sec & 9MB\\
+  		\end{tabular}
+	\end{table} \par
+	Answer: 4.
+	\item Based on the city's requests, which of the following would you say is true?
+		\begin{enumerate}
+		\item Accuracy is an optimizing metric; running time and memory size are a satisficing metrics.
+		\item Accuracy is a satisficing metric; running time and memory size are an optimizing metric.
+		\item Accuracy, running time and memory size are all optimizing metrics because you want to do well on all three.
+		\item Accuracy, running time and memory size are all satisficing metrics because you have to do sufficiently well on all three for your system to be acceptable.
+		\end{enumerate} \par
+	Answer: 1.
+	\item Structuring your data \par
+	Before implementing your algorithm, you need to split your data into train/dev/test sets. Which of these do you think is the best choice? 
+	\begin{table}[h!]
+  		\centering
+  		\begin{tabular}{c|c|c|c}
+   			& Train & Dev & Test \\
+   			\hline
+    			1 & 6,000,000 & 1,000,000 & 3,000,000\\
+			2 & 6,000,000 & 3,000,000 & 1,000,000\\
+			3 & 3,333,334 & 3,333,334 & 3,333,334\\
+			4 & 9,500,000 & 250,000 & 250,000\\
+  		\end{tabular}
+	\end{table} \par
+	Answer: 4.
+	\item After setting up your train/dev/test sets, the City Council comes across another 1,000,000 images, called the "citizens' data". Apparently the citizens of Peacetopia are so scared of birds that they volunteered to take pictures of the sky and label them, thus contributing these additional 1,000,000 images. These images are different from the distribution of images the City Council had originally given you, but you think it could help your algorithm. \par
+	You should not add the citizens' data to the \textbf{training set}, because this will cause the training and dev/test set distributions to become different, thus hurting dev and test set performance. True/False? \par
+	Answer: False. I should add the citizens' data to the \textbf{training set}. Adding this data to the training set will change the training set distribution. However, it is not a problem to have different training and dev distribution. On the contrary, it would be very problematic to have different dev and test set distributions.
+	\item One member of the City Council knows a little about machine learning, and thinks you should add the 1,000,000 citizens? data images to the \textbf{test set}. You object because:
+		\begin{enumerate}
+		\item The 1,000,000 citizens' data images do not have a consistent x-->y mapping as the rest of the data (similar to the New York City/Detroit housing prices example from lecture).
+		\item The test set no longer reflects the distribution of data (security cameras) you most care about.
+		\item A bigger test set will slow down the speed of iterating because of the computational expense of evaluating models on the test set.
+		\item This would cause the dev and test set distributions to become different. This is a bad idea because you're not aiming where you want to hit.
+		\end{enumerate} \par
+	Answer: 2,4.
+	\item You train a system, and its errors are as follows (error = 100\%-Accuracy):\par
+	Training set error: 4.0\%; Dev set error: 4.5\%. \par
+	This suggests that one good avenue for improving performance is to train a bigger network so as to drive down the 4.0\% training error. Do you agree? \par
+	Answer: No, because there is insufficient information to tell.
+	\item You ask a few people to label the dataset so as to find out what is human-level performance. You find the following levels of accuracy: \par
+	\begin{table}[h!]
+  		\centering
+  		\begin{tabular}{c|c}
+    			Bird watching expert \#1 & 0.3\% error\\ \hline
+			Bird watching expert \#2 & 0.5\% error\\ \hline
+			Normal person \#1 (not a bird watching expert) & 1.0\% error\\ \hline
+			Normal person \#2 (not a bird watching expert) & 1.2\% error\\
+  		\end{tabular}
+	\end{table} \par
+	If your goal is to have "human-level performance" be a proxy (or estimate) for Bayes error, how would you define "human-level performance"?\par
+	Answer: 0.3\% 
+	\item A learning algorithm's performance can be better human-level performance but it can never be better than Bayes error.
+	\item You find that a team of ornithologists debating and discussing an image gets an even better 0.1\% performance, so you define that as "human-level performance". After working further on your algorithm, you end up with the following:
+	\begin{table}[h!]
+  		\centering
+  		\begin{tabular}{c|c}
+    			Human-level performance & 0.1\% \\ \hline
+			Training set error & 2.0\% \\ \hline
+			Dev set error & 2.1\% \\ 
+  		\end{tabular}
+	\end{table} \par
+	Based on the evidence you have, which two of the following four options seem the most promising to try? (Check two options.)
+	\begin{enumerate}
+		\item Train a bigger model to try to do better on the training set.
+		\item Try decreasing regularization.
+		\item Try increasing regularization.
+		\item Get a bigger training set to reduce variance.
+	\end{enumerate} \par
+	Answer: 1,2.
+	\item You also evaluate your model on the test set, and find the following:
+	\begin{table}[h!]
+  		\centering
+  		\begin{tabular}{c|c}
+    			Human-level performance & 0.1\% \\ \hline
+			Training set error & 2.0\% \\ \hline
+			Dev set error & 2.1\% \\ \hline
+			Test set error & 7.0\% \\ 
+  		\end{tabular}
+	\end{table} \par
+	What does this mean? (Check the two best options.)
+	\begin{enumerate}
+		\item You have overfit to the dev set.
+		\item You should get a bigger test set.
+		\item You have underfit to the dev set.
+		\item You should try to get a bigger dev set.
+	\end{enumerate} \par
+	Answer: 1,4.
+	\item After working on this project for a year, you finally achieve:
+	\begin{table}[h!]
+  		\centering
+  		\begin{tabular}{c|c}
+    			Human-level performance & 0.10\% \\ \hline
+			Training set error & 0.05\% \\ \hline
+			Dev set error & 0.05\% \\ 
+  		\end{tabular}
+	\end{table} \par
+	What can you conclude? (Check all that apply.)
+	\begin{enumerate}
+		\item With only 0.09\% further progress to make, you should quickly be able to close the remaining gap to 0\%
+		\item If the test set is big enough for the 0,05\% error estimate to be accurate, this implies Bayes error is $\leqslant$ 0.05
+		\item It is now harder to measure avoidable bias, thus progress will be slower going forward.
+		\item This is a statistical anomaly (or must be the result of statistical noise) since it should not be possible to surpass human-level performance.
+	\end{enumerate} \par
+	Answer: 2,3.
+	\item It turns out Peacetopia has hired one of your competitors to build a system as well. Your system and your competitor both deliver systems with about the same running time and memory size. However, your system has higher accuracy! However, when Peacetopia tries out your and your competitor?s systems, they conclude they actually like your competitor?s system better, because even though you have higher overall accuracy, you have more false negatives (failing to raise an alarm when a bird is in the air). What should you do? \par
+	\begin{enumerate}
+		\item Look at all the models you?ve developed during the development process and find the one with the lowest false negative error rate.
+		\item Ask your team to take into account both accuracy and false negative rate during development.
+		\item Rethink the appropriate metric for this task, and ask your team to tune to the new metric.
+		\item Pick false negative rate as the new metric, and use this new metric to drive all further development.
+	\end{enumerate} \par
+	Answer: 3.
+	\item You've handily beaten your competitor, and your system is now deployed in Peacetopia and is protecting the citizens from birds! But over the last few months, a new species of bird has been slowly migrating into the area, so the performance of your system slowly degrades because your data is being tested on a new type of data. \par
+	You have only 1,000 images of the new species of bird. The city expects a better system from you within the next 3 months. Which of these should you do first?
+	\begin{enumerate}
+		\item Use the data you have to define a new evaluation metric (using a new dev/test set) taking into account the new species, and use that to drive further progress for your team.
+		\item Put the 1,000 images into the training set so as to try to do better on these birds.
+		\item Try data augmentation/data synthesis to get more images of the new type of bird.			\item Add the 1,000 images into your dataset and reshuffle into a new train/dev/test split.	\end{enumerate} \par
+	Answer: 1.
+	\item The City Council thinks that having more Cats in the city would help scare off birds. They are so happy with your work on the Bird detector that they also hire you to build a Cat detector. (Wow Cat detectors are just incredibly useful aren't they.) Because of years of working on Cat detectors, you have such a huge dataset of 100,000,000 cat images that training on this data takes about two weeks. Which of the statements do you agree with? (Check all that agree.)
+	\begin{enumerate}
+		\item Buying faster computers could speed up your teams' iteration speed and thus your team?s productivity.
+		\item Having built a good Bird detector, you should be able to take the same model and hyperparameters and just apply it to the Cat dataset, so there is no need to iterate.
+		\item Needing two weeks to train will limit the speed at which you can iterate.
+		\item If 100,000,000 examples is enough to build a good enough Cat detector, you might be better of training with just 10,000,000 examples to gain a $\approx$ 10x improvement in how quickly you can run experiments, even if each model performs a bit worse because it's trained on less data.
+	\end{enumerate} \par
+	Answer: 1, 3, 4.
+\end{enumerate}
+\subsection{Autonomous driving(case study)}
+	You are employed by a startup building self-driving cars. You are in charge of detecting road signs (stop sign, pedestrian crossing sign, construction ahead sign) and traffic signals (red and green lights) in images. The goal is to recognize which of these objects appear in each image. \par
+	Your 100,000 labeled images are taken using the front-facing camera of your car. This is also the distribution of data you care most about doing well on. You think you might be able to get a much larger dataset off the internet, that could be helpful for training even if the distribution of internet data is not the same.\par
+\begin{enumerate}
+	\item You are just getting started on this project. What is the first thing you do? Assume each of the steps below would take about an equal amount of time (a few days).
+	\begin{enumerate}
+		\item Spend a few days collecting more data using the front-facing camera of your car, to better understand how much data per unit time you can collect.
+		\item Spend a few days getting the internet data, so that you understand better what data is available.
+		\item Spend a few days training a basic model and see what mistakes it makes.
+		\item Spend a few days checking what is human-level performance for these tasks so that you can get an accurate estimate of Bayes error.
+	\end{enumerate} \par
+	Answer: 3. As discussed in lecture, applied ML is a highly iterative process. If you train a basic model and carry out error analysis (see what mistakes it makes) it will help point you in more promising directions.
+	\item Your goal is to detect road signs (stop sign, pedestrian crossing sign, construction ahead sign) and traffic signals (red and green lights) in images. The goal is to recognize which of these objects appear in each image. You plan to use a deep neural network with ReLU units in the hidden layers.\par
+For the output layer, a softmax activation would be a good choice for the output layer because this is a multi-task learning problem. True/False? \par
+	Answer: False. Softmax would be a good choice if one and only one of the possibilities (stop sign, speed bump, pedestrian crossing, green light and red light) was present in each image.
+	\item You are carrying out error analysis and counting up what errors the algorithm makes. Which of these datasets do you think you should manually go through and carefully examine, one image at a time?
+	\begin{enumerate}
+		\item 10,000 randomly chosen images
+		\item 500 images on which the algorithm made a mistake
+		\item 10,000 images on which the algorithm made a mistake
+		\item 500 randomly chosen images
+	\end{enumerate} \par
+	Answer: 2. Focus on images that the algorithm got wrong. Also, 500 is enough to give you a good initial sense of the error statistics. There?s probably no need to look at 10,000, which will take a long time.
+	\item After working on the data for several weeks, your team ends up with the following data:
+	\begin{enumerate}
+		\item 100,000 labeled images taken using the front-facing camera of your car.
+		\item 900,000 labeled images of roads downloaded from the internet.
+		\item Each image?s labels precisely indicate the presence of any specific road signs and traffic signals or combinations of them. For example, $y^{(i)} =\begin{bmatrix} 1\\0\\0\\1\\0\end{bmatrix}$ means the image contains a stop sign and a red traffic light.
+	\end{enumerate} \par
+Because this is a multi-task learning problem, you need to have all your $y^{(i)}$ vectors fully labeled. If one example is equal to  $y^{(i)} =\begin{bmatrix} 0\\?\\1\\1\\?\end{bmatrix}$ then the learning algorithm will not be able to use that example. True/False? \par
+	Answer: False. As seen in the lecture on multi-task learning, you can compute the cost such that it is not influenced by the fact that some entries haven't been labeled.
+	\item The distribution of data you care about contains images from your car's front-facing camera; which comes from a different distribution than the images you were able to find and download off the internet. How should you split the dataset into train/dev/test sets? \par
+	\begin{enumerate}
+		\item Choose the training set to be the 900,000 images from the internet along with 20,000 images from your car's front-facing camera. The 80,000 remaining images will be split equally in dev and test sets.
+		\item Choose the training set to be the 900,000 images from the internet along with 80,000 images from your car's front-facing camera. The 20,000 remaining images will be split equally in dev and test sets.
+		\item Mix all the 100,000 images with the 900,000 images you found online. Shuffle everything. Split the 1,000,000 images dataset into 980,000 for the training set, 10,000 for the dev set and 10,000 for the test set.
+		\item Mix all the 100,000 images with the 900,000 images you found online. Shuffle everything. Split the 1,000,000 images dataset into 600,000 for the training set, 200,000 for the dev set and 200,000 for the test set.
+	\end{enumerate} \par
+	Answer: 2. It is important that your dev and test set have the closest possible distribution to ?real?-data. It is also important for the training set to contain enough ?real?-data to avoid having a data-mismatch problem.
+	\item Assume you've finally chosen the following split between of the data:
+	\begin{table}[h!]
+  		\centering
+  		\begin{tabular}{c|c|c}
+   			Dataset & Contains & Error of the algorithm\\
+   			\hline
+    			Training & \begin{tabular}[x]{@{}c@{}}940,000 images randomly picked from (900,000 internet images  \\+ 60,000 car's front-facing camera images)\end{tabular} & 8.8\%\\
+			Training-Dev &\begin{tabular}[x]{@{}c@{}}940,000 images randomly picked from (900,000 internet images  \\+ 60,000 car's front-facing camera images)\end{tabular}  & 9.1\%\\
+			Dev & 20,000 images from your car's front-facing camera & 14.3\%\\
+			Test & 20,000 images from your car's front-facing camera & 14.8\%\\
+  		\end{tabular}
+	\end{table} \par
+	You also know that human-level error on the road sign and traffic signals classification task is around 0.5\%. Which of the following are True? (Check all that apply).
+	\begin{enumerate}
+		\item You have a large variance problem because your model is not generalizing well to data from the same training distribution but that it has never seen before.
+		\item You have a large data-mismatch problem because your model does a lot better on the training-dev set than on the dev set
+		\item You have a large avoidable-bias problem because your training error is quite a bit higher than the human-level error.
+		\item Your algorithm overfits the dev set because the error of the dev and test sets are very close.
+		\item You have a large variance problem because your training error is quite higher than the human-level error.
+	\end{enumerate} \par
+	Answer: 2, 3.
+	\item Based on table from the previous question, a friend thinks that the training data distribution is much easier than the dev/test distribution. What do you think?
+	\begin{enumerate}
+		\item Your friend is right. (I.e., Bayes error for the training data distribution is probably lower than for the dev/test distribution.)
+		\item Your friend is wrong. (I.e., Bayes error for the training data distribution is probably higher than for the dev/test distribution.)
+		\item There's insufficient information to tell if your friend is right or wrong.
+	\end{enumerate}\par
+	Answer: 3. The algorithm does better on the distribution of data it trained on. But you don't know if it's because it trained on that no distribution or if it really is easier. To get a better sense, measure human-level error separately on both distributions.\par
+	\item You decide to focus on the dev set and check by hand what are the errors due to. Here is a table summarizing your discoveries: \par
+	\begin{table}[H]
+  		\centering
+  		\begin{tabular}{l|c}
+   			Overall dev set error & 14.3\%\\ \hline
+    			Errors due to incorrectly labeled data & 4.1\%\\ \hline
+    			Errors due to foggy pictures & 8.0\%\\ \hline
+    			Errors due to rain drops stuck on your car?s front-facing camera & 2.2\%\\ \hline
+			Errors due to other causes & 1.0\% \\
+  		\end{tabular}
+	\end{table} \par
+	In this table, 4.1\%, 8.0\%, etc.are a fraction of the total dev set (not just examples your algorithm mislabeled). I.e. about 8.0/14.3 = 56\% of your errors are due to foggy pictures.\par
+	The results from this analysis implies that the team?s highest priority should be to bring more foggy pictures into the training set so as to address the 8.0\% of errors in that category. True/False?
+	\begin{enumerate}
+		\item True because it is the largest category of errors. As discussed in lecture, we should prioritize the largest category of error to avoid wasting the team?s time.
+		\item True because it is greater than the other error categories added together (8.0 > 4.1+2.2+1.0).
+		\item False because this would depend on how easy it is to add this data and how much you think your team thinks it'll help.
+		\item False because data augmentation (synthesizing foggy images by clean/non-foggy images) is more efficient.
+	\end{enumerate} \par
+	Answer: 3.	
+	\item You can buy a specially designed windshield wiper that help wipe off some of the raindrops on the front-facing camera. Based on the table from the previous question, which of the following statements do you agree with?
+	\begin{enumerate}
+		\item 2.2\% would be a reasonable estimate of the maximum amount this windshield wiper could improve performance.
+		\item 2.2\% would be a reasonable estimate of the minimum amount this windshield wiper could improve performance.
+		\item 2.2\% would be a reasonable estimate of how much this windshield wiper will improve performance.
+		\item 2.2\% would be a reasonable estimate of how much this windshield wiper could worsen performance in the worst case.
+	\end{enumerate}
+	Answer: 1. Yes. You will probably not improve performance by more than 2.2\% by solving the raindrops problem. If your dataset was infinitely big, 2.2\% would be a perfect estimate of the improvement you can achieve by purchasing a specially designed windshield wiper that removes the raindrops.
+	\item You decide to use data augmentation to address foggy images. You find 1,000 pictures of fog off the internet, and "add" them to clean images to synthesize foggy days, like this: \par
+	\begin{figure}[H]
+		\includegraphics[width=\linewidth]{fig_DL/autodrive.png}
+		\caption{}
+		\label{fig:}
+	\end{figure}
+	Which of the following statements do you agree with?
+	\begin{enumerate}
+		\item There is little risk of overfitting to the 1,000 pictures of fog so long as you are combing it with a much larger ($>>$1,000) of clean/non-foggy images.
+		\item Adding synthesized images that look like real foggy pictures taken from the front-facing camera of your car to training dataset won't help the model improve because it will introduce avoidable-bias.
+		\item So long as the synthesized fog looks realistic to the human eye, you can be confident that the synthesized data is accurately capturing the distribution of real foggy images, since human vision is very accurate for the problem you're solving.
+	\end{enumerate}
+	Answer: 3. Yes. If the synthesized images look realistic, then the model will just see them as if you had added useful data to identify road signs and traffic signals in a foggy weather. I will very likely help.
+	\item After working further on the problem, you've decided to correct the incorrectly labeled data on the dev set. Which of these statements do you agree with? (Check all that apply).
+	\begin{enumerate}
+		\item You should also correct the incorrectly labeled data in the test set, so that the dev and test sets continue to come from the same distribution
+		\item You should correct incorrectly labeled data in the training set as well so as to avoid your training set now being even more different from your dev set.
+		\item You should not correct the incorrectly labeled data in the test set, so that the dev and test sets continue to come from the same distribution
+		\item You should not correct incorrectly labeled data in the training set as well so as to avoid your training set now being even more different from your dev set.
+	\end{enumerate}
+	Answer: 1, 4. Deep learning algorithms are quite robust to having slightly different train and dev distributions.
+	\item So far your algorithm only recognizes red and green traffic lights. One of your colleagues in the startup is starting to work on recognizing a yellow traffic light. (Some countries call it an orange light rather than a yellow light; we'll use the US convention of calling it yellow.) Images containing yellow lights are quite rare, and she doesn't have enough data to build a good model. She hopes you can help her out using transfer learning. \par
+	What do you tell your colleague?
+	\begin{enumerate}
+		\item She should try using weights pre-trained on your dataset, and fine-tuning further with the yellow-light dataset.
+		\item If she has (say) 10,000 images of yellow lights, randomly sample 10,000 images from your dataset and put your and her data together. This prevents your dataset from ?swamping? the yellow lights dataset.
+		\item You cannot help her because the distribution of data you have is different from hers, and is also lacking the yellow label.
+		\item Recommend that she try multi-task learning instead of transfer learning using all the data.
+	\end{enumerate}
+	Answer: 1.You have trained your model on a huge dataset, and she has a small dataset. Although your labels are different, the parameters of your model have been trained to recognize many characteristics of road and traffic images which will be useful for her problem. This is a perfect case for transfer learning, she can start with a model with the same architecture as yours, change what is after the last hidden layer and initialize it with your trained parameters.
+	\item Another colleague wants to use microphones placed outside the car to better hear if there?re other vehicles around you. For example, if there is a police vehicle behind you, you would be able to hear their siren. However, they don?t have much to train this audio system. How can you help?
+	\begin{enumerate}
+		\item Transfer learning from your vision dataset could help your colleague get going faster. Multi-task learning seems significantly less promising.
+		\item Multi-task learning from your vision dataset could help your colleague get going faster. Transfer learning seems significantly less promising.
+		\item Either transfer learning or multi-task learning could help our colleague get going faster.
+		\item Neither transfer learning nor multi-task learning seems promising.
+	\end{enumerate}
+	Answer: 4. The problem he is trying to solve is quite different from yours. The different dataset structures make it probably impossible to use transfer learning or multi-task learning.
+	\item To recognize red and green lights, you have been using this approach: \par
+	(A) Input an image (x) to a neural network and have it directly learn a mapping to make a prediction as to whether there's a red light and/or green light (y). \par
+A teammate proposes a different, two-step approach:\par
+	(B) In this two-step approach, you would first (i) detect the traffic light in the image (if any), then (ii) determine the color of the illuminated lamp in the traffic light.\par
+	Between these two, Approach (B) is more of an end-to-end approach because it has distinct steps for the input end and the output end. True/False? \par
+	Answer: False.
+	\item Approach A (in the question above) tends to be more promising than approach B if you have a \underline{    \  \  \  \  }(fill in the blank).
+	\begin{enumerate}
+		\item Large training set
+		\item Multi-task learning problem.
+		\item Large bias problem.
+		\item Problem with a high Bayes error.
+	\end{enumerate}
+	Answer: 1. Yes. In many fields, it has been observed that end-to-end learning works better in practice, but requires a large amount of data.
+\end{enumerate}
+%=======================================
 \renewcommand\refname{Reference}
 \bibliographystyle{plain}
 \bibliography{DL}
-
-  \clearpage
+\clearpage
 \end{document}
