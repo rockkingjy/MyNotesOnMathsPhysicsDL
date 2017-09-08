@@ -1,0 +1,108 @@
+%\documentclass[12pt,draft]{article}
+\documentclass[12pt]{article}
+\usepackage{CJK}
+\AtBeginDvi{\input{zhwinfonts}}
+\usepackage{mathrsfs}
+\usepackage{amsmath,amsthm,amsfonts,amssymb}
+\usepackage{geometry}
+\usepackage{fancyhdr}
+\usepackage{indentfirst}
+\usepackage{float}
+\usepackage[dvips]{graphicx}
+\usepackage{subfigure}
+\usepackage[font=small]{caption}
+\usepackage{threeparttable}
+\usepackage{cases}
+\usepackage{multicol}
+\usepackage{url}
+\usepackage{amsmath}
+\usepackage{bm}
+\usepackage{xcolor}
+\usepackage{overpic}
+\usepackage{natbib}
+\usepackage[utf8]{inputenc}
+\usepackage[american]{babel}
+\usepackage{natbib}
+\usepackage{graphicx}
+\numberwithin{equation}{section}
+\geometry{left=1.5cm,right=1.5cm,top=1.5cm,bottom=1.5cm}
+\setlength{\parskip}{0.3\baselineskip}
+\setlength{\headheight}{15pt}
+\usepackage{color}   %May be necessary if you want to color links
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true, %set true if you want colored links
+    linktoc=all,     %set to all if you want both sections and subsections linked
+    linkcolor=blue,  %choose some color if you want links to stand out
+}
+\setlength{\parindent}{10ex}
+\begin{document}\small
+\title{Math Notes}
+\author{Yan JIN}
+\pagestyle{fancy}\fancyhf{}
+\lhead{}\rhead{JIN Yan}
+\lfoot{\textit{}}\cfoot{}\rfoot{\thepage}
+\renewcommand{\headrulewidth}{1.pt}
+\renewcommand{\footrulewidth}{1.pt}
+\maketitle
+\tableofcontents
+%=======================================
+\section{Geometry}
+\subsection{Set X}
+	\textbf{Set}: distinction between elements.
+\subsection{Topology(X,T)}
+	\begin{enumerate}
+	\item \textbf{Topology}: define what is a \textbf{open subset}, which separated from other subsets of set X;
+	\item A set with this definition(distinction between subsets of set X) above is called \textbf{topological space};
+	\item So we can define \textbf{continuous} on the mappings of different Topologies(open subsets).
+	\item \textbf{Homeomorphism}: 
+		\begin{enumerate}
+			\item one-one-onto; 
+			\item \textbf{continuous}($C^0$) forward and backward;
+		\end{enumerate}
+	\item Two Topologies \textbf{homeomorphic} to each other means, they are equal on the basis of 	\textbf{Topology};
+	\end{enumerate}
+\subsection{Manifold}
+	\begin{enumerate}
+	\item n-dimensional differentiable manifold M: 
+		\begin{enumerate}
+			\item exist a \textbf{open cover} of M, such that, for every \textbf{open subset} of the open cover, exist a homeomorphism to a open subset of $R^n$; 
+			\item the mappings from any two different coordinate systems are \textbf{infinity differencial}($C^\infty$);
+		\end{enumerate}
+	\item \textbf{Diffeomorphism}: 
+		\begin{enumerate}
+			\item one-one-onto; 
+			\item \textbf{infinity differential}($C^\infty$) forward and backward;
+		\end{enumerate}
+	\item Two Manifolds \textbf{diffeomorphic} to each other means, they are equal on the basis of "Manifold";
+	\end{enumerate}
+\subsection{Group}
+	\begin{enumerate}
+	\item \textbf{Group}: set G with a "product" $G\times G\rightarrow G$:associative, identity element, inverse element
+	\item \textbf{Homomorphism}: keep the "product" relationship;
+	\item \textbf{Isomorphism}: homomorphism + one-one-onto;
+	\item Two Group \textbf{isomorphic} to each other means, they are equal on the basis of Group;
+	\end{enumerate}
+\subsection{Lie Group}
+	\textbf{Lie group}: Group + Manifold + $C^\infty$ on "product" and "inverse" mappings;
+\subsection{Algebra}
+	\textbf{Algebra}: Vector space + product;
+\subsection{Lie Algebra}
+	\textbf{Lie algebra}: Vector space + Lie bracket(a special "product");	
+\subsection{continue}
+	\textbf{Scalar field on M}(function on M): $f:M \rightarrow R$; \par
+	$\mathfrak{F}_M$: all the scalar fields on M; \par
+	\textbf{Vector}: $\mathfrak{F}_M\rightarrow R$; \par
+	$V_p$: all the vectors on M of point p; \par
+	$X_\mu(f)=\frac{\partial f(x)}{\partial x^\mu}|_p = \frac{\partial F(x^1,...,x^n))}{\partial x^\mu}|_p, \forall f \in \mathfrak{F}_M$. \par
+	${X_\mu}$ of point p are coordinate basis, $v^\mu=v(x^\mu)$ are coordinate components of v;\par
+	\textbf{Curve}: a mapping of $I\rightarrow M, I\subseteq R$.\par
+	\textbf{Tangent vector}: $T(f):=\frac{d(f\circ C))}{dt}|_{t_0}, \forall f \in \mathfrak{F}_M$.\par
+	$X_\mu$ is a "tangent vector" of $x^\mu$ coordinate line on point p;\par
+	All the elements of $V_p$ are also called \textbf{tangent vector}, v is called \textbf{tangent space} of point p;
+%=======================================
+\renewcommand\refname{Reference}
+\bibliographystyle{plain}
+\bibliography{DL} 
+\clearpage
+\end{document}
