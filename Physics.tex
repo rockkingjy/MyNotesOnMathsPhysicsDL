@@ -35,7 +35,7 @@
     linktoc=all,     %set to all if you want both sections and subsections linked
     linkcolor=blue,  %choose some color if you want links to stand out
 }
-\setlength{\parindent}{10ex}
+\setlength{\parindent}{4ex}
 \begin{document}\small
 \title{Physics Notes}
 \author{Yan JIN}
@@ -222,7 +222,7 @@
 	Pauli matrix from two-level system (ref. Sakurai)
 \end{enumerate}
 %----------------------------------------------------
-\subsection{Dirac's four axioms of Quantum Mechanics}
+\subsection{Dirac's four axioms of Quantum Mechanics}2013-10-11
 \subsubsection{Axiom I: Principle of superposition}
 \begin{enumerate}
 \item Definition of {\color{red}quantum states} \par
@@ -254,7 +254,7 @@
 	Axioms of inner product:
 	\begin{equation}\begin{split}
 		\langle A|B \rangle &= \langle B|A \rangle^*, \\
-		\langle A|B \rangle &> 0
+		\langle A|A \rangle &> 0 
 	\end{split}\end{equation}
 	If 
 	\begin{equation}\begin{split}
@@ -403,6 +403,7 @@
 %----------------------------------------------------
 \subsection{Dirac's three rules of manipulations in Quantum Mechanics: 
                        Representations, Transformations and Pictures}
+         2013-10-29 \par
 	Representations: digitization; \par
 	Transformation: symmetry; \par   
 	Pictures: time evolution.                               
@@ -509,6 +510,7 @@
 %----------------------------------------------------
 \subsection{Dirac's theory of electron}
 \subsubsection{Dirac equation}
+2013-11-22
 \begin{enumerate}
 \item The special theory of relativity\par
 	What is time?\par
@@ -681,6 +683,7 @@
 	Mr. Nambu found the similarity between the Weyl representation and the BCS superconductivity theory, and do his Nobel Prize work.
 \end{enumerate}
 \subsubsection{The motion of a free electron}
+2013-11-29
 \begin{enumerate}
 \item The velocity of Dirac electron and zitterbewegung
 \item The current conservation of a Dirac electron
@@ -865,12 +868,94 @@
 \subsubsection{Green's function}
 \begin{enumerate}
 \item Propagator and time-dependent Green's function
+	\begin{equation}
+		iG(xt,x't')=\langle x|\hat{T}(t,t')|x' \rangle
+	\end{equation}
 \item Differential equation of time-dependent Green's function
-\item Time-retarded and time-advanced Green's function
-\item Heaviside step function
+	\begin{equation}
+		i\hbar \frac{\partial}{\partial t}G(xt,x't')=\hat{H}_x G(xt,x't')
+	\end{equation}
+\item Time-retarded and time-advanced Green's function \par
+	Time-retarded Green Function:
+	\begin{equation}
+		G^{(+)}(xt,x't')=
+		\begin{cases}
+		G(xt,x't') & \text{if } t > t', \\
+        		0 & \text{if } t < t'
+    		\end{cases}
+	\end{equation}
+	Time-advanced Green Function:
+	\begin{equation}
+		G^{(-)}(xt,x't')=
+		\begin{cases}
+		0 & \text{if } t > t', \\
+        		-G(xt,x't') & \text{if } t < t'
+    		\end{cases}
+	\end{equation}	
+\item Heaviside step function\par
+	Heaviside step function:
+	\begin{equation}
+		\theta (x)=
+		\begin{cases}
+		1 & \text{if } x > 0, \\
+        		0 & \text{if } x < 0
+    		\end{cases}
+	\end{equation}	
+	So we can express the Green function as:
+	\begin{equation}\begin{split}
+		G^{(+)}(xt,x't')&=\theta (t-t')G(xt,x't') \\
+		G^{(-)}(xt,x't')&=-\theta (t'-t)G(xt,x't')
+	\end{split}\end{equation}	
+	An important expression of Heaviside step function:
+	\begin{equation}
+		\theta (x)=-\frac{1}{2\pi i}\int_{-\infty}^{+\infty}\frac{e^{-i\epsilon x}}{\epsilon+i \eta}d\epsilon
+	\end{equation}	
+	where $\eta=0^{+}$. \par
+	From Sokhatsky-Weierstrass theorem:
+	\begin{equation}
+		\int^{g_1}_{-g_2}\frac{f(x)}{x-i \eta}dx=P\int^{g_1}_{-g_2}\frac{f(x)}{x}dx+i\pi f(0)
+	\end{equation}	
+	we have this important equation:
+	\begin{equation}
+		\frac{1}{x-i \eta}dx=\frac{P}{x}+i\pi \sigma(x)
+	\end{equation}		
 \item Differential equation of time-retarded and time-advanced GF
-\item Fourier transformation of time-retarded and time-advanced GF
-\item Green's functions as coordinate representation of Green's operators
+	\begin{equation}
+		(i\hbar \frac{\partial}{\partial t}-\hat{H}_x)G^{(\pm)}(xt,x't')=\hbar \theta(t-t')\theta(x-x')
+	\end{equation}		
+\item Fourier transformation of time-retarded and time-advanced GF \par
+	The Fourier transformation of delta function:
+	\begin{equation}
+		\delta(x)=\int_{-\infty}^{+\infty}\frac{dq}{2\pi}e^{iqx}
+	\end{equation}	
+	And for green function:
+	\begin{equation}
+		G^{(\pm)}(xt,x't')=\int_{-\infty}^{+\infty}\frac{d\omega}{2\pi}e^{-i\omega(t-t')}G^{(\pm)}(x,x';\omega)
+	\end{equation}	\par
+	So we have teh differential equation of time-retarded and time-advanced GF:
+	\begin{equation}
+		(\hbar \omega-\hat{H}_x)G^{(\pm)}(x,x',\omega)=\hbar \delta(x-x')
+	\end{equation}	\par	
+\item Green's functions as coordinate representation of Green's operators\par
+	\begin{equation}
+		iG^{(+)}(x't',x''t'')=\langle x'|i\hat{G}^{(+)}(t',t'')|x''\rangle
+	\end{equation}	\par
+	where:
+	\begin{equation}
+		i\hat{G}^{(+)}(t',t'')=\theta(t'-t'')\hat{T}(t',t'')
+	\end{equation}	\par
+	the Fourier transformation of it:
+	\begin{equation}
+		i\hat{G}^{(+)}(t',t'')=\int_{-\infty}^{+\infty}\frac{d\omega}{2\pi}e^{-i\omega(t'-t'')}i\hat{G}^{(+)}(\omega)
+	\end{equation}	\par
+	So we have:
+	\begin{equation}
+		G^{(\pm)}(x,x';\omega)=\langle x|\hat{G}^{(\pm)}(\omega)|x'\rangle
+	\end{equation}	\par
+	where:
+	\begin{equation}
+		G^{(\pm)}(\omega)=\frac{\hbar}{\hbar\omega-\hat{H}\pm i\eta}
+	\end{equation}	\par
 \end{enumerate}
 \subsubsection{General properties of Green's function}
 \begin{enumerate}

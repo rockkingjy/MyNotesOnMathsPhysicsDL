@@ -58,7 +58,7 @@ Here we choose \textbf{Numerator layout}. \par
 	\begin{bmatrix}
 		y_1\\ y_2\\ \vdots\\ y_3\\
 	\end{bmatrix};	
-\end{equation}
+\end{equation}\par
 \textbf{Derivatives with Vectors}:
 \begin{equation}
 	\nabla_{x} \mathbf{y} = \frac{\partial \mathbf{y}}{\partial x} =
@@ -82,12 +82,8 @@ Here we choose \textbf{Numerator layout}. \par
 		\vdots & \vdots & \ddots & \vdots\\
 		\frac{\partial y_m}{\partial x_1} & \frac{\partial y_m}{\partial x_2} & \cdots & \frac{\partial y_m}{\partial x_n}\\
 	\end{bmatrix};
-\end{equation}
-In \textbf{vector calculus}, the derivative of a vector function $\mathbf{y}$ with respect to a vector $\mathbf{x}$ whose components represent a space is known as the \textbf{Jacobian matrix}. \par
-The \textbf{directional derivative} of a scalar function $f(\mathbf{x})$ of the space vector $\mathbf{x}$ in the direction of the unit vector $\mathbf{u}$ is defined using the gradient as follows. \par
-\[\nabla_{\bold{u}}{f}(\bold{x}) = \nabla f(\bold{x}) \cdot \bold{u}\]
-Using the notation just defined for the derivative of a scalar with respect to a vector we can re-write the directional derivative as
-\[\nabla_\mathbf{u} f = \frac{\partial f}{\partial \mathbf{x}}\mathbf{u}.\]
+\end{equation} \par
+In vector calculus, the derivative of a vector function $\mathbf{y}$ with respect to a vector $\mathbf{x}$ whose components represent a space is known as the \textbf{Jacobian matrix}. \par
 \textbf{Derivatives with Matrices}:
 \begin{equation}
 	\frac{\partial \mathbf{Y}}{\partial x} =
@@ -104,7 +100,12 @@ Using the notation just defined for the derivative of a scalar with respect to a
 		\vdots & \vdots & \ddots & \vdots\\
 		\frac{\partial y}{\partial x_{1q}} & \frac{\partial y}{\partial x_{2q}} & \cdots & \frac{\partial y}{\partial x_{pq}}\\
 	\end{bmatrix};
-\end{equation}
+\end{equation} \par
+The \textbf{directional derivative} of a scalar function $f(\mathbf{x})$ in the direction of the unit vector $\mathbf{u}$ is the slope of the function f in direction $\mathbf{u}$: \par
+	\begin{equation}
+		\nabla_{\bold{u}}{f}(\bold{x}) = [\frac{\partial}{\partial \alpha}f(\bm{x}+\alpha \bm{u})]|_{\alpha=0}
+		=\sum_{i=1}^{n}\frac{\partial f}{\partial x_i}u_i=\frac{\partial f}{\partial \mathbf{x}}\mathbf{u}
+	\end{equation}
 %=======================================
 \section{Chapter 2 Linear Algebra}
 %\addcontentsline{toc}{subsection}{Singular Value Decomposition (\$2.8)}
