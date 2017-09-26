@@ -18,10 +18,9 @@
 \usepackage{bm}
 \usepackage{xcolor}
 \usepackage{overpic}
-\usepackage{natbib}
+\usepackage[round]{natbib}
 \usepackage[utf8]{inputenc}
 \usepackage[american]{babel}
-\usepackage{natbib}
 \usepackage{graphicx}
 \numberwithin{equation}{section}
 \geometry{left=1.5cm,right=1.5cm,top=1.5cm,bottom=1.5cm}
@@ -35,7 +34,7 @@
     linkcolor=blue,  %choose some color if you want links to stand out
 }
 \begin{document}\small
-\title{Deep Learning\cite{Goodfellow-et-al-2016-Book} Notes}
+\title{Deep Learning\citep{Goodfellow-et-al-2016-Book} Notes}
 \author{Yan JIN}
 \pagestyle{fancy}\fancyhf{}
 \lhead{}\rhead{JIN Yan}
@@ -502,7 +501,7 @@ The challenge of inference usually refers to the difficulty of computing $p(\bm{
 \subsection{Learned Approximate Inference} 
 %=======================================
 \section{Chapter 20 Deep Generative Models}
-\subsection{Generative Models and Discriminative Models\cite{ng2002discriminative}}
+\subsection{Generative Models and Discriminative Models\citep{ng2002discriminative}}
 	For input $\bm{x}$ and output $\bm{y}$, \par
 	Generative Models: $p(\bm{x,y})$; \par
 	Discriminative Models: $p(\bm{y|x})$. \par
@@ -989,7 +988,7 @@ A teammate proposes a different, two-step approach:\par
 \end{enumerate}
 %=======================================
 \renewcommand\refname{Reference}
-\bibliographystyle{plain}
+\bibliographystyle{unsrtnat}
 \bibliography{DL}
 \clearpage
 \end{document}

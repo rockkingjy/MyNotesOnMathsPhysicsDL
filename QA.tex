@@ -18,10 +18,9 @@
 \usepackage{bm}
 \usepackage{xcolor}
 \usepackage{overpic}
-\usepackage{natbib}
+\usepackage[round]{natbib}
 \usepackage[utf8]{inputenc}
 \usepackage[american]{babel}
-\usepackage{natbib}
 \usepackage{graphicx}
 \numberwithin{equation}{section}
 \geometry{left=1.5cm,right=1.5cm,top=1.5cm,bottom=1.5cm}
@@ -49,16 +48,20 @@
 
 %=======================================
 \section{Traditional Methods for Question-Answering System}
+	Knowledge base-based question answering\citep{unger2014introduction} is to get the answers from the knowledge bases(KBs). Two mainstream research direction:\par
+	\begin{enumerate}
+	\item Semeantic parsing-based(SP-based)
+	\item Information retrieval-based(IR-based)
+	\end{enumerate}
+%=======================================
+\section{Neural network-based methods for Question-Answering System}
 
 %=======================================
-\section{Deep Learning Methods for Question-Answering System}
-
-%=======================================
-\section{A state-of-the-art Question-Answering System\cite{chen2017reading}}
+\section{A state-of-the-art Question-Answering System\citep{chen2017reading}}
 
 %=======================================
 \renewcommand\refname{Reference}
-\bibliographystyle{plain}
+\bibliographystyle{unsrtnat}
 \bibliography{QA}
 \clearpage
 \end{document}
