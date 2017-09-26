@@ -1,0 +1,64 @@
+%\documentclass[12pt,draft]{article}
+\documentclass[12pt]{article}
+\usepackage{CJK}
+\usepackage{mathrsfs}
+\usepackage{amsmath,amsthm,amsfonts,amssymb}
+\usepackage{geometry}
+\usepackage{fancyhdr}
+\usepackage{indentfirst}
+\usepackage{float}
+\usepackage[dvips]{graphicx}
+\usepackage{subfigure}
+\usepackage[font=small]{caption}
+\usepackage{threeparttable}
+\usepackage{cases}
+\usepackage{multicol}
+\usepackage{url}
+\usepackage{amsmath}
+\usepackage{bm}
+\usepackage{xcolor}
+\usepackage{overpic}
+\usepackage{natbib}
+\usepackage[utf8]{inputenc}
+\usepackage[american]{babel}
+\usepackage{natbib}
+\usepackage{graphicx}
+\numberwithin{equation}{section}
+\geometry{left=1.5cm,right=1.5cm,top=1.5cm,bottom=1.5cm}
+\setlength{\parskip}{0.3\baselineskip}
+\setlength{\headheight}{15pt}
+\usepackage{color}   %May be necessary if you want to color links
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true, %set true if you want colored links
+    linktoc=all,     %set to all if you want both sections and subsections linked
+    linkcolor=blue,  %choose some color if you want links to stand out
+}
+\begin{document}\small
+\title{ING3 Report}
+\author{Yan JIN}
+\pagestyle{fancy}\fancyhf{}
+\lhead{}\rhead{JIN Yan}
+\lfoot{\textit{}}\cfoot{}\rfoot{\thepage}
+\renewcommand{\headrulewidth}{1.pt}
+\renewcommand{\footrulewidth}{1.pt}
+\maketitle
+\tableofcontents
+%=======================================
+\section{Introduction to Question-Answering System}
+
+%=======================================
+\section{Traditional Methods for Question-Answering System}
+
+%=======================================
+\section{Deep Learning Methods for Question-Answering System}
+
+%=======================================
+\section{A state-of-the-art Question-Answering System\cite{chen2017reading}}
+
+%=======================================
+\renewcommand\refname{Reference}
+\bibliographystyle{plain}
+\bibliography{QA}
+\clearpage
+\end{document}
