@@ -184,7 +184,7 @@ Proof (5.54):
 	MSE&=Bias(\hat{\theta}_m)^2+Var(\hat{\theta}_m)
 \end{split}\end{equation}
 %=======================================
-\subsection{Frequentist Statistics and Baysian Statistics($\$5.5 \sim \$5.6$)}
+\subsection{Frequentist Statistics and Baysian Statistics ($\$5.5 \sim \$5.6$)}
 Frequentist: Estimate a single value of $\boldsymbol\theta$, then making all predictions thereafter based on that \textbf{one} estimate; \par
 Baysian: Consider \textbf{all} possible values of $\boldsymbol\theta$ when making a prediction; \par
 Frequentist: The true parameter value $\boldsymbol\theta$ is \textbf{fixed but unknown}, while the point estimate $\hat{\boldsymbol\theta}$ is a random variable and a function of \textbf{the dataset}(which is seen as \textbf{random}); \par
@@ -240,7 +240,44 @@ Training example: $(\mathbf{x}, \mathbf{y})$ \par
 Forward propagation: Algorithm 6.3 \par
 Back-propagation: Algorithm 6.4 \par
 %=======================================
+\section{Chapter 8 Optimization for Training Deep Models}
+\subsection{Batch Normalization (\$8.7.1)}
+	Batch normalization is a method of adaptive reparametrization. \par
+	Following are the pictures for before and after using the batch normalization on the neural network:
+	\begin{figure}[!htb]
+   		\begin{minipage}{0.48\textwidth}
+   		 	\centering
+     			\includegraphics[width=.7\linewidth]{fig_DL/batchnormalization1.png}
+     			\caption{Before using Batch normalization}\label{Fig:batchnormalization1}
+  		 \end{minipage}\hfill
+   		\begin {minipage}{0.48\textwidth}
+     			\centering
+     			\includegraphics[width=.7\linewidth]{fig_DL/batchnormalization2.png}
+     			\caption{After using Batch normalization}\label{Fig:batchnormalization2}
+   		\end{minipage}
+	\end{figure} \par
+	Before adding the batch normalization, the equation for the upper layer is:
+	\begin{equation}
+		\bm{h}=g(\bm{W^Tu+b})
+	\end{equation}
+	where $\bm{W}$ and $\bm{b}$ are parameters and $\bm{u}$ is the output of the lower layer.\par
+	After the batch normalization is added, the equation for the upper layer becomes:
+	\begin{equation}
+		\bm{h}=g(\bm{\bm{\hat{x}}})
+	\end{equation}
+	where, 
+	\begin{equation}
+		\bm{\hat{x}}=\frac{\bm{x}-E[\bm{x}]}{\sqrt{Var[\bm{x}]}}
+	\end{equation}
+	and $\bm{x}=\bm{W^Tu+b}$. \par
+	In the original paper\citep{ioffe2015batch}, they added a scale and shift to the normalized value, to prevent the change of what the layer can represent. 
+	\begin{equation}
+		\bm{y}=\gamma \bm{\hat{x}}+\beta
+	\end{equation} \par
+	For the application of batch normalization on RNN, reference this paper\citep{cooijmans2016recurrent}, the scale parameter should be set to small, like 0.1. \par
+%=======================================
 \section{Chapter 10 Sequence modeling: Recurrent and recursive nets}
+\subsection{Recurrent Neural Networks (\$10.2)}
 For equation (10.18):
 \begin{equation}\begin{split}
 	L^{(t)} =& -\sum_{i}y_{i}^{(t)}log[\hat{y}_{i}^{(t)}] \\
@@ -338,6 +375,12 @@ Scalar L, matrix V, vectors \textbf{o} and \textbf{h} has the realation:
 \end{bmatrix} \\&= 
 \nabla_{\mathbf{o}} L \ \mathbf{V}
 \end{split}\end{equation}
+\subsection{Bidirectional RNNs (\$10.3)}
+	Used for handwriting recognition, speech recognition and bioinformatics.
+\subsection{Encoder-Decoder Sequence-to-Sequence Architectures (\$10.4)}
+	Used for Machine Translation.
+\subsection{Deep Recurrent Networks (\$10.5)}
+\subsection{Recursive Neural Networks (\$10.6)}
 %=======================================
 \section{Chapter 11 Practical Methodology}
 Practical design process:
@@ -379,6 +422,13 @@ Practical design process:
 	If test set performance is still unacceptable:
 	\item Gather data;
 \end{enumerate}
+%=======================================
+\section{Chapter 12 Applications}
+\subsection{Attention Model (\$12.4.5.1)}
+	Attention model was first applied in NLP by Bahdanau et al.\citep{bahdanau2014neural} on \textbf{Neural Machine Translation}.\par
+	And later Rush et al.\citep{rush2015neural} implemented \textbf{sentence-level summarization} task using it. \par
+	Wang et al.\citep{wang2016inner} experimented on \textbf{answer selection} and showed the advantage of inner attention compared with traditional attention methods. \par
+	Yin et al.\citep{yin2016simple} tackled \textbf{simple question answering} by an attentive convolutional neural network. \par
 %=======================================
 \section{Chapter 13 Linear Factor Models}
 First, we sample the hidden variables $\bm{h}$:
@@ -511,8 +561,8 @@ The challenge of inference usually refers to the difficulty of computing $p(\bm{
 		\caption{Generative and Discriminative Models}
 		\label{fig:generative_discriminative_models}
 	\end{figure}
-\subsection{RBM, DBN and DBM(\$20.1 $\sim$ \$20.8)}
-\subsection{Directed Generative Nets(\$20.10)}
+\subsection{RBM, DBN and DBM (\$20.1 $\sim$ \$20.8)}
+\subsection{Directed Generative Nets (\$20.10)}
 	Until roughly 2013, the deep learning community have been overshadowed by undirected models such as RBM.
 \subsubsection{Sigmoid Belief Networks}
 	Sigmoid Belief Networks is a universal approximator of  probability distributions over the visible units.\par
@@ -531,11 +581,11 @@ The challenge of inference usually refers to the difficulty of computing $p(\bm{
 	With the same graphical model as linear auto-regression networks but the different parametrization of the conditional distributions $P(x_i|x_{i-1},...,x_1)$, which now is parametrized by a neural network. \par
 \subsubsection{Neural Auto-Regressive Density Estimator(NADE)}
 	NADE is the same as the original neural auto-regressive networks, but introduces an additional parameter sharing scheme. The parameters of the hidden unites of different groups are shared.\par
-\subsection{Autoencoders(\$20.11 $\sim$ \$20.12)}
-\subsection{Other Generation Schemes(\$20.13)}
+\subsection{Autoencoders (\$20.11 $\sim$ \$20.12)}
+\subsection{Other Generation Schemes (\$20.13)}
 \subsubsection{Diffusion Inversion}
 \subsubsection{Approximate Bayesian Computation(ABC)}
-\subsection{Evaluating Generative Models(\$20.14)}
+\subsection{Evaluating Generative Models (\$20.14)}
 %=======================================
 \section{NLP - Language Model}
 Finite set of all the words W; Ex: W = \{the, a, man, bag, dogs, ...\}. \par

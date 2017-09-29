@@ -45,20 +45,51 @@
 \tableofcontents
 %=======================================
 \section{Introduction to Question-Answering System}
-
+	In 2011, IBM's Watson question-answering system won the TV game show Jeopardy! against all the humans, that surprised all the world. And the famous already in use applications like Siri, Google Search etc. are also the results of the question-answering systems.  \par
+\subsection{Factoid questions}
+	QA is an AI-complete problem, implying that if we solve QA, we will solve all the other problems too. But the systems now mainly focus on \textbf{factoid questions}, which can be answered with simple facts expressed in short text answers. \par
+%--------------------------------------------
+\subsection{Knowledge bases}
+	Lots of recent developments in Question-answering system is based on knowledge bases(KBs)\citep{unger2014introduction}. Knowledge bases typically represent their data as triples like: (president-of, Trump, United States). Freebase and Dbpedia are two large typical knowledge bases.\par
 %=======================================
-\section{Traditional Methods for Question-Answering System}
-	Knowledge base-based question answering\citep{unger2014introduction} is to get the answers from the knowledge bases(KBs). Two mainstream research direction:\par
+\subsection{Areas in  Question-Answering System}
+	There are several areas in Question answering:
 	\begin{enumerate}
-	\item Semeantic parsing-based(SP-based)
-	\item Information retrieval-based(IR-based)
-	\end{enumerate}
+	\item Semantic Parsing\par
+		Semantic Parsing focus on constructing a semantic parser that could convert natural language questions into structured expressions like logical forms. And it can be used to query a knowledge base.\par
+		Context is a Knowledge base, and the answer is a logical form. \par
+	\item Information retrieval \par
+		Information retrieval directly search answers from a corpus of documents based on the information conveyed in questions. \par
+		Context is a corpus of documents, and the answer is a document, a paragraph or a sentence.
+	\item Reading Comprehension\par
+		Context is a specific document, and the answer is based on that specific document given.
+	\item Visual QA \par
+		Context is a one or several images, and the answer is simple facts.
+	\end{enumerate} \par
+	This article focus on the recent neural network approach to some of these areas. \par
 %=======================================
 \section{Neural network-based methods for Question-Answering System}
-
+	The first NN-based methods is introduced by Antoine Bordes in 2014\citep{bordes2014open}, which represent both the questions and answers as semantic vectors, so that no needs for pre-defined grammars or lexicons by hand. This approach is based on learning low-dimensional vector embeddings of words. \par
+	Let K denotes the knowledge bases, and {\it q} denotes a question, {\it a} a candidate answer. The model is to learning a score function, which gives the best answer $\hat{a}$ for the question {\it q}: 
+	\begin{equation}
+		\hat{a} = argmax_{a \in K} S(q, a)
+	\end{equation}
+where the score function is:
+	\begin{equation}
+		S(q,a) = f(q)^T g(a)
+	\end{equation} 
+where $f(\cdot)$ is a function mapping words from question into $\mathbb{R}^k$; $g(\cdot)$ is a function mapping entities and relationships from KB triples into $\mathbb{R}^k$. \par 
+	From his later paper in the same year\citep{bordes2014question}, he made a simple changement and improved this model to achieve a better result than all the other traditional methods. The key idea was with the help of the concept of subgraph embedding, adding more information in the answer end.\par
+	In 2015, the score function is improved into three parts\citep{dong2015question}:
+	\begin{equation}
+		S(q,a) = \underbrace{f_1(q)^T g_1(a)}_{\text{answer path}} + \underbrace{f_2(q)^T g_2(a)}_{\text{answer context}}  + \underbrace{f_3(q)^T g_3(a)}_{\text{answer type}} 
+	\end{equation}
+These three parts are different aspects of the question and the answer. \par
+	Yin et al.\citep{yin2016simple} introduced the attention model into the QA system. \par
+	In 2017, another new improvement of this is given\citep{hao2017end}.
 %=======================================
 \section{A state-of-the-art Question-Answering System\citep{chen2017reading}}
-
+	
 %=======================================
 \renewcommand\refname{Reference}
 \bibliographystyle{unsrtnat}
