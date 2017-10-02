@@ -22,6 +22,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage[american]{babel}
 \usepackage{graphicx}
+\usepackage{algorithm, algorithmicx, algpseudocode}
 \numberwithin{equation}{section}
 \geometry{left=1.5cm,right=1.5cm,top=1.5cm,bottom=1.5cm}
 \setlength{\parskip}{0.3\baselineskip}
@@ -33,6 +34,7 @@
     linktoc=all,     %set to all if you want both sections and subsections linked
     linkcolor=blue,  %choose some color if you want links to stand out
 }
+\setcounter{secnumdepth}{4}
 \begin{document}\small
 \title{Deep Learning\citep{Goodfellow-et-al-2016-Book} Notes}
 \author{Yan JIN}
@@ -569,7 +571,65 @@ The challenge of inference usually refers to the difficulty of computing $p(\bm{
 	Inference over the hidden units given the visible units is intracatable.\par
 \subsubsection{Differentiable Generator Networks}
 \subsubsection{Variational Autoencoders(VAE)}
-\subsubsection{Generative Adversarial Networks(GANs)}
+	A VAE consists of a encoder $q(\bm{z}|\bm{x})$, a decoder $p_{model}(\bm{x}|\bm{z})$ and a loss function $\mathcal{L}(q)$ to minimize: \par
+	\begin{equation}
+		\mathcal{L}(q) = \sum^N_{i=1} l_i=\sum^N_{i=1}-E_{z \sim q(z|x_i)}[log \ p_{model}(x_i|z)] + D_{KL}(q(z|x_i)||p(z))
+	\end{equation}
+where $x_i$ is a single datapoint. \par
+	The first term is the \textbf{reconstruction loss} of the i-th datapoint. The expectation is taken with respect to the \textbf{encoder's distribution over the representations}. This term encourages the decoder to learn to reconstruct the data, if the decoder's output does not reconstruct the data well, it will incur a large cost in this loss function. \par
+	The second term is a regularizer. It's the KL divergence between the encoder's distribution $q(z|x_i)$ and $p(z)$. It is one measure of how close q is to p. In VAE, p is specified as a Gaussian distribution. If the encoder outputs that are different than those from a Gaussian distribution, it will receive a penalty in the loss function. This regularizer term means to "keep the representations z of each datapoint sufficiently diverse". If we didn't include the regularizer, the encoder could learn to cheat and give each datapoint a representation in a different region of Euclidean space. This is bad, because for example in the case of hand writing of number 2 of two different people, could end up with very different representations. We need the representation space of z to be meaningful, so we penalize this behavior. This has the effect of keeping similar numbers' representations close together. \par
+	We train the VAE using gradient descent to minimize the loss with respect to the parameters of the encoder and decoder. \par
+	\paragraph{The probability model perspective} \par
+	A VAE contains a specific probability model of data x and latent variables z. And we have $p(x,z)=p(x|z)p(z)$. The generative process can be written as: \par
+	For each datapoint i:
+	\begin{enumerate}
+		\item Draw latent variables from the prior: $z_i \sim p(z)$
+		\item Draw datapoint from the likelihood: $x_i \sim p(x|z)$
+	\end{enumerate} \par
+	Now, the goal is to infer good values of the latent variables given observed data, or to calculate the posterior $p{z|x}$:
+	\begin{equation}
+		p(z|x)=\frac{p(x|z)p(z)}{p(x)}
+	\end{equation} \par
+	The denominator $p(x)$ is called the evidence, could be calculated by marginalizing out the latent variables:$p(x)=\int p(x|z)p(z)dz$. And it is difficult to calculate, so need to approximate(ref. Chapter 19). \par
+	Variation inference approximates the posterior with distribution $q(z|x)$. Then follow the derivatives in page 624, we get the same loss function. And use EM for learning. \par
+\subsubsection{Generative Adversarial Networks(GANs)\citep{goodfellow2014generative}}
+	A GAN consists of a generator $g(\bm{z;\theta}^{(g)})$, a discriminator $d(\bm{x;\theta}^{(d)})$. \par
+	We first define a prior on input noise variables $p_z(z)$, then generate data $\bm{x}$ using $g(\bm{z;\theta}^{(g)})$, which is a differentiable function represented by a multilayer perceptron with the parameter $\bm{\theta}^{(g)}$. \par
+	Then we use $d(\bm{x;\theta}^{(d)})$ on the generated data $\bm{x}$ to output a single scalar, which represents the probability that $\bm{x}$ came from the data rather than the prior $p_z(z)$. \par
+	We train $d(\bm{x;\theta}^{(d)})$ to maximize the probability of assigning the correct label to both training examples and samples from $g(\bm{z;\theta}^{(g)})$. \par
+	Simultaneously, we train $g(\bm{z;\theta}^{(g)})$ to minimize $log(1-d(g(\bm{z})))$. \par
+	In other words, d and g play the following two-player minimax game with value function v:
+	\begin{equation}
+		\mathop{min}_{g} \mathop{max}_{d} v(\bm{\theta}^{(g)}, \bm{\theta}^{(d)}) 
+		= \mathop{min}_{g} \mathop{max}_{d}
+		\{ \mathbb{E}_{\bm{x} \sim p_{data}} [log \ d(\bm{x})] + 
+		\mathbb{E}_{\bm{z} \sim p_{z}} [log \ (1-d(g(\bm{z})))] \}
+	\end{equation} \par
+	\begin{algorithm}
+	\caption{Minibatch stochastic gradient descent training of generative adversarial nets. The number of steps to apply to the discriminator, k, is a hyperparameter. We used k = 1, the least expensive option, in our experiments.}\label{euclid}
+	\begin{algorithmic}[]	
+	\For{number of training iterations}
+		\For{k steps}
+            		\begin{itemize}
+			\item Sample minibatch of m noise samples ${z^{(1)}, . . . , z^{(m)}}$ from noise prior $p_g(\bm{z})$.
+			\item Sample minibatch of m noise samples ${x^{(1)}, . . . , x^{(m)}}$ from data generating distribution $p_{data}(\bm{x})$.
+			\item Update the discriminator by ascending its stochastic gradient:
+			\begin{align*}
+				\nabla_{\theta_d}\frac{1}{m}\sum_{i=1}^m [log \ d(\bm{x}^{(i)})+ log \ (1-d(g(\bm{z}^{(i)})))]
+			\end{align*}
+			\end{itemize}
+		\EndFor
+		\begin{itemize}
+			\item Sample minibatch of m noise samples ${z^{(1)}, . . . , z^{(m)}}$ from noise prior $p_g(\bm{z})$.
+			\item Update the discriminator by ascending its stochastic gradient:
+			\begin{align*}
+				\nabla_{\theta_g}\frac{1}{m}\sum_{i=1}^m log \ (1-d(g(\bm{z}^{(i)})))
+			\end{align*}
+			\end{itemize}
+        \EndFor \par
+        The gradient-based updates can use any standard gradient-based learning rule. We used momentum in our experiments.
+	\end{algorithmic}
+	\end{algorithm}
 \subsubsection{Generative Moment Matching Networks}
 \subsubsection{Convolution Generative Networks}
 \subsubsection{Auto-Regressive Networks}
