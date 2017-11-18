@@ -378,11 +378,38 @@ Scalar L, matrix V, vectors \textbf{o} and \textbf{h} has the realation:
 \nabla_{\mathbf{o}} L \ \mathbf{V}
 \end{split}\end{equation}
 \subsection{Bidirectional RNNs (\$10.3)}
-	Used for handwriting recognition, speech recognition and bioinformatics.
+	We need the state at time t not only captures only the information from the past, \textbf{but also from the future}. So we use Bidirectional RNNs. \par
+	This model is frequently used for \textbf{handwriting recognition}, \textbf{speech recognition} and \textbf{bioinformatics}.
 \subsection{Encoder-Decoder Sequence-to-Sequence Architectures (\$10.4)}
-	Used for Machine Translation.
+	Previous RNN models can map an input sequence to an output sequence of the same length, but some applications, the input and output are \textbf{not the same length}. So Sequence-to-sequence architecture is introduced. \par
+	Limitation of this model is maybe the output of the encoder is too small to summarize a long sequence. To conquer this, Bahdanau\citep{bahdanau2014neural} introduced \textbf{attention mechanism}. \par
+	This model is frequently used for \textbf{Machine Translation}, \textbf{speech recognition} and \textbf{question answering}.
 \subsection{Deep Recurrent Networks (\$10.5)}
 \subsection{Recursive Neural Networks (\$10.6)}
+	The advantage of recursive neural networks is that it might help deal with \textbf{long-term dependencies}. \par
+	This model is successfully applied to \textbf{processing data structures} as input to neural nets, in \textbf{NLP} and \textbf{computer vision}.
+\subsection{The Challenge of Long-Term Dependencies(\$10.7) and the proposed solutions(\$10.8 $\sim$ \$10.12)}
+	The challenge of long-term dependencies refers to that gradients propagated over many stages tend to either vanish or explode. \par
+	\subsubsection{Echo State Networks(ESN(\$10.8)}
+	ESN is to fix the input to hidden connections and the hidden to hidden connections at random values and only learn the hidden to output connections.
+	\subsubsection{Leaky Units and Other Strategies for Multiple Time Scales(\$10.9)}
+	\begin{itemize}
+		\item Skip Connections
+		\item Leak Units
+		\item Removing Connections
+	\end{itemize}
+	\subsubsection{LSTM and Other GRUs(\$10.10)}
+	A good site to understand LSTM is: \url{http://colah.github.io/posts/2015-08-Understanding-LSTMs/}. \par
+	\subsubsection{Optimization for Long-Term Dependencies(\$10.11)}
+	\begin{itemize}
+		\item Clipping Gradients \par
+			Help with exploding gradients.
+		\item Regularizing to Encourage Information Flow \par
+			Add a regularizer for maintaining the magnitude of gradient vector $\nabla_{\bm{h}^(t)}L$ as being back-propagated, so as to encourage "information flow".
+	\end{itemize}	
+	\subsubsection{Explicit Memory(\$10.12)}
+	Implicit knowledge and explicit knowledge. \par
+	Neural networks good at storing implicit knowledge, but they struggle to memorize facts. \par
 %=======================================
 \section{Chapter 11 Practical Methodology}
 Practical design process:
@@ -426,8 +453,8 @@ Practical design process:
 \end{enumerate}
 %=======================================
 \section{Chapter 12 Applications}
-\subsection{Attention Model (\$12.4.5.1)}
-	Attention model was first applied in NLP by Bahdanau et al.\citep{bahdanau2014neural} on \textbf{Neural Machine Translation}.\par
+\subsection{Attention Mechanism (\$12.4.5.1)}
+	Attention mechanism was first applied in NLP by Bahdanau et al.\citep{bahdanau2014neural} on \textbf{Neural Machine Translation}.\par
 	And later Rush et al.\citep{rush2015neural} implemented \textbf{sentence-level summarization} task using it. \par
 	Wang et al.\citep{wang2016inner} experimented on \textbf{answer selection} and showed the advantage of inner attention compared with traditional attention methods. \par
 	Yin et al.\citep{yin2016simple} tackled \textbf{simple question answering} by an attentive convolutional neural network. \par
@@ -570,7 +597,7 @@ The challenge of inference usually refers to the difficulty of computing $p(\bm{
 	Sigmoid Belief Networks is a universal approximator of  probability distributions over the visible units.\par
 	Inference over the hidden units given the visible units is intracatable.\par
 \subsubsection{Differentiable Generator Networks}
-\subsubsection{Variational Autoencoders(VAE)}
+\subsubsection{Variational Autoencoders(VAEs)}
 	A VAE consists of a encoder $q(\bm{z}|\bm{x})$, a decoder $p_{model}(\bm{x}|\bm{z})$ and a loss function $\mathcal{L}(q)$ to minimize: \par
 	\begin{equation}
 		\mathcal{L}(q) = \sum^N_{i=1} l_i=\sum^N_{i=1}-E_{z \sim q(z|x_i)}[log \ p_{model}(x_i|z)] + D_{KL}(q(z|x_i)||p(z))
