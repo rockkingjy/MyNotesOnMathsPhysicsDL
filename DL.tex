@@ -278,6 +278,37 @@ Back-propagation: Algorithm 6.4 \par
 	\end{equation} \par
 	For the application of batch normalization on RNN, reference this paper\citep{cooijmans2016recurrent}, the scale parameter should be set to small, like 0.1. \par
 %=======================================
+\section{Chapter 09 Convolutional Networks}
+\subsection{Calculation the number of parameters of CNN} 
+Input channels: M; \par
+Kernel size: k1, k2; \par
+Output channel: N; \par
+Equation for Convolution:
+\begin{equation}
+	Output(c_{out}, i, j) = \sum_{c_{in}=1}^{N}\sum_{p=1}^{k2} \sum_{l=1}^{k1}{Input(c_{in}, i+l, j+p) Kernel(c_{in}, l, p)} + bias(c_{out})
+\end{equation}
+where $c_{out} \in [1, N]$. \par
+So the number of parameters is: $ M \times k1 \times k2 \times N + N$
+
+\subsection{Fully Connected Layer}
+The term ``Fully Connected'' implies that every neuron in the previous layer is connected to every neuron on the next layer.
+
+\subsection{Motivation(\$9.2)}
+\begin{enumerate}
+	\item Sparse interactions \\
+	Traditional way: \textbf{Matrix multiplication}, parameters needed: m x n (m inputs, n outputs). \\
+	New way: \textbf{Kernel} smaller than the input, parameters needed: k x n (k width of kernels, n outputs).  \\
+	Keep $k \ll m$ reduces the memory of model and improves its statistical efficiency. 
+	\item Parameter sharing \\
+	Traditional way: learn a separate set of parameters for every location. \\
+	New way: learn only on set of parameters. 
+	\item Equivariant representations \\
+	Equivariant: if the input changes, the output changes in the same way. \\
+	Convolution is equivariance to translation, \textbf{but not} to scaling and rotation. \\
+	Useful for when some function of a small number of neighboring pixels is useful when applied to multiple input locations.
+	\item Process inputs with varying spatial extents (\$9.7) 
+\end{enumerate}
+%=======================================
 \section{Chapter 10 Sequence modeling: Recurrent and recursive nets}
 \subsection{Recurrent Neural Networks (\$10.2)}
 For equation (10.18):
