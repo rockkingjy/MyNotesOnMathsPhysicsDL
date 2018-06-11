@@ -34,7 +34,7 @@
     linktoc=all,     %set to all if you want both sections and subsections linked
     linkcolor=blue,  %choose some color if you want links to stand out
 }
-\setcounter{secnumdepth}{4}
+%\setcounter{secnumdepth}{4}
 \begin{document}\small
 \title{Deep Learning\citep{Goodfellow-et-al-2016-Book} Notes}
 \author{Yan JIN}
@@ -279,6 +279,21 @@ Back-propagation: Algorithm 6.4 \par
 	For the application of batch normalization on RNN, reference this paper\citep{cooijmans2016recurrent}, the scale parameter should be set to small, like 0.1. \par
 %=======================================
 \section{Chapter 09 Convolutional Networks}
+\subsection{Motivation (\$9.2)}
+\begin{enumerate}
+	\item Sparse interactions \\
+	Traditional way: \textbf{Matrix multiplication}, parameters needed: m x n (m inputs, n outputs). \\
+	New way: \textbf{Kernel} smaller than the input, parameters needed: k x n (k width of kernels, n outputs).  \\
+	Keep $k \ll m$ reduces the memory of model and improves its statistical efficiency. 
+	\item Parameter sharing \\
+	Traditional way: learn a separate set of parameters for every location. \\
+	New way: learn only on set of parameters. 
+	\item Equivariant representations \\
+	Equivariant: if the input changes, the output changes in the same way. \\
+	Convolution is equivariance to translation, \textbf{but not} to scaling and rotation. \\
+	Useful for when some function of a small number of neighboring pixels is useful when applied to multiple input locations.
+	\item Process inputs with varying spatial extents (\$9.7) 
+\end{enumerate}
 \subsection{Calculation the number of parameters of CNN} 
 Input channels: M; \par
 Kernel size: k1, k2; \par
@@ -293,20 +308,37 @@ So the number of parameters is: $ M \times k1 \times k2 \times N + N$
 \subsection{Fully Connected Layer}
 The term ``Fully Connected'' implies that every neuron in the previous layer is connected to every neuron on the next layer.
 
-\subsection{Motivation(\$9.2)}
+\subsection{Pooling (\$9.3)}
+Pooling replaces the output of the net at a certain location with a summary statistic of the nearby outputs. \par
+Pooling add an prior: the function the layer learns must be \textbf{invariant} to small translations.
+
+\subsection{Convolution and Pooling as an Infinitely Strong Prior}
+Convolution as Prior: the function the layer should learn contains only local interactions, and equivariant to translation. \par
+Pooling as Prior: each unit should be invariant to small translations. \par
+
+\subsection{Important Models}
+\subsubsection{AlexNet}
 \begin{enumerate}
-	\item Sparse interactions \\
-	Traditional way: \textbf{Matrix multiplication}, parameters needed: m x n (m inputs, n outputs). \\
-	New way: \textbf{Kernel} smaller than the input, parameters needed: k x n (k width of kernels, n outputs).  \\
-	Keep $k \ll m$ reduces the memory of model and improves its statistical efficiency. 
-	\item Parameter sharing \\
-	Traditional way: learn a separate set of parameters for every location. \\
-	New way: learn only on set of parameters. 
-	\item Equivariant representations \\
-	Equivariant: if the input changes, the output changes in the same way. \\
-	Convolution is equivariance to translation, \textbf{but not} to scaling and rotation. \\
-	Useful for when some function of a small number of neighboring pixels is useful when applied to multiple input locations.
-	\item Process inputs with varying spatial extents (\$9.7) 
+	\item Use ReLU instead of Sigmoid, let the net becomes more efficient, because derivative of Sigmoid becomes quite small when it saturate (vanishing gradient problem).
+	\item Use Dropout.
+	\item Use Data Augmentation.
+\end{enumerate}
+\subsubsection{VGG}
+\begin{enumerate}
+	\item Use smaller kernel size (3*3) and deeper layer.
+	\item Use better Initialization.
+	\item Use Batch normalization.
+\end{enumerate}
+\subsubsection{GoogLeNet}
+\begin{enumerate}
+	\item Use Inception module to approximate a sparse CNN.
+	\item Use 1*1 kernel to reduce the cost of computing.
+	\item Use Global average pooling instead of full-connected layer to reduce the amount of parameters (In AlexNet, FC layer contains 90 percent of the parameters).
+\end{enumerate}
+\subsubsection{ResNet}
+Vanish gradient problem becomes serious when net becoming deeper.
+\begin{enumerate}
+	\item Use shortcuts.
 \end{enumerate}
 %=======================================
 \section{Chapter 10 Sequence modeling: Recurrent and recursive nets}
@@ -1154,6 +1186,30 @@ A teammate proposes a different, two-step approach:\par
 	\end{enumerate}
 	Answer: 1. Yes. In many fields, it has been observed that end-to-end learning works better in practice, but requires a large amount of data.
 \end{enumerate}
+%======================================
+\clearpage
+\normalsize
+simple theorem is vital. This Invariance Theorem is given by  Solomonoff, Kolmogorov and Chaitin. \par
+\textbf{Theorem 1.} There exists a universal Turing machine U, such that, for any other Turing machine T, there is a constant $c_T$ such that for all strings x, y, 
+\begin{equation*}
+	C_U(x|y) \le C_T(x|y) + c_T
+\end{equation*} 
+\begin{proof}
+Fix some standard enumeration of Turing machines $T_1, T_2, \cdot \cdot \cdot$. Let U be the Universal Turing machine such that when starting on input $0^n 1 p, p \in \{0,1\}^*$, U simulates the nth Turing machine $T_n$ on input p. For convenience in the proof, we choose U such that if $T_n$ halts, then U first erases everything apart from the halting contents of $T_n$'s tape, and also halts. By construction, for each $p \in \{0,1\}^*$, $T_n$ started on p eventually halts iff U started on $0^n 1 p$ eventually halts. Choosing $c_T=n+1$ for $T_n$ finishes the proof.
+\end{proof} \par
+Clearly, the Universal Turing machine U that satisfies the Invariance Theorem is \textit{optimal} in the sense that $C_U$ minorizes each $C_T$ up to a fixed additive constant (depending on U and T). Moreover, for each pair of Universal Turing machines U and U', satisfying the Invariance Theorem, the complexities coincide up to an additive constant (depending only on U and U'), for all strings x, y: 
+\begin{equation*}
+	|C_U(x|y) - C_{U'}(x|y)| \le c_{U, U'}.
+\end{equation*}
+    Therefore, we set the canonical \textit{conditional Kolmogorov} complexity $C(x|y)$ of x under condition of y equal to $C_U(x|y)$, for some fixed optimal U. We call U the \textit{reference} Turing machine. Hence the Kolmogorov complexity of a string does not depend on the choice of encoding method and is well-defined. Define the \textit{unconditional Kolmogorov} complexity of x as $C(x)=C(x|\epsilon)$, where $\epsilon$ denotes the empty string ($l(\epsilon)=0$). \par
+\textbf{Definition 2.} In the sequel we need to use the \textit{prefix} complexity variant, or self-delimiting complexity, rather than C(x) from Definition 1. A \textit{prefix machine} is a Turing machine with three tapes: a one-way input tape, a one-way output tape, and a two-way work tape. Initially, the input tape contains an indefinitely long sequence of bits. If the machine halts, then the initial segment on the input tape it has read up till that time is considered the \textit{input} or \textit{program}, and the contents of the output tape is the \textit{output}. Clearly, the set of programs of each such machine is a \textit{prefix-code}. (Recall that if p and q are two code words of a \textit{prefix-code}, then p is not a proper prefix of q.) We can give an effective enumeration of all prefix machines in the standard way. Then the \textit{prefix} descriptional complexity of $x \in \{0, 1\}^*$, with respect to prefix machine T, and binary string y, is defined as 
+\begin{equation*}
+	K_T(x|y)=min\{l(p):p \in \{0, 1\}^*, T(p,y)=x\}.
+\end{equation*}
+or $\infty$ if such p do not exist. One can prove an Invariance Theorem for prefix complexity, and define the conditional and unconditional \textit{prefix Kolmogorov complexity},
+    
+\normalsize
+\clearpage
 %=======================================
 \renewcommand\refname{Reference}
 \bibliographystyle{unsrtnat}

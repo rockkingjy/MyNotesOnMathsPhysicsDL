@@ -1,0 +1,212 @@
+%\documentclass[12pt,draft]{article}
+\documentclass[12pt]{article}
+\usepackage{CJK}
+\AtBeginDvi{\input{zhwinfonts}}
+\usepackage{mathrsfs}
+\usepackage{amsmath,amsthm,amsfonts,amssymb}
+\usepackage{geometry}
+\usepackage{fancyhdr}
+\usepackage{indentfirst}
+\usepackage{float}
+\usepackage[dvips]{graphicx}
+\usepackage{subfigure}
+\usepackage[font=small]{caption}
+\usepackage{threeparttable}
+\usepackage{cases}
+\usepackage{multicol}
+\usepackage{url}
+\usepackage{amsmath}
+\usepackage{commath}
+\usepackage{bm}
+\usepackage{xcolor}
+\usepackage{overpic}
+\usepackage[utf8]{inputenc}
+\usepackage[american]{babel}
+\usepackage[round]{natbib}
+\usepackage{graphicx}
+\numberwithin{equation}{section}
+\geometry{left=1.5cm,right=1.5cm,top=1.5cm,bottom=1.5cm}
+\setlength{\parskip}{0.3\baselineskip}
+\setlength{\headheight}{15pt}
+\usepackage{color}   %May be necessary if you want to color links
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true, %set true if you want colored links
+    linktoc=all,     %set to all if you want both sections and subsections linked
+    linkcolor=blue,  %choose some color if you want links to stand out
+}
+\setlength{\parindent}{4ex}
+\begin{document}\small
+\title{Visual Tracking Notes}
+\author{Yan JIN}
+\pagestyle{fancy}\fancyhf{}
+\lhead{}\rhead{JIN Yan}
+\lfoot{\textit{}}\cfoot{}\rfoot{\thepage}
+\renewcommand{\headrulewidth}{1.pt}
+\renewcommand{\footrulewidth}{1.pt}
+\maketitle
+\tableofcontents
+%=======================================
+\section{HOG feature \citep{dalal2005histograms} \citep{felzenszwalb2010object}} 
+\subsection{Original HOG feature  \citep{dalal2005histograms} } 
+Basic idea: local object appearance and shape can often be characterized rather well
+by the distribution of local intensity gradient or edge directions, even without precise knowledge
+of the corresponding gradient or edge position. \par
+Input - detection window with size: $64 \times 128$. 
+\begin{enumerate}
+	\item Divide the detection window into $16 \times 16$ blocks of $50\%$ overlap.
+		\begin{itemize}
+			\item $7 \times 15 = 105$ blocks in total ($(64 \div (16 \div 2) - 1) \times 
+				(128 \div (16 \div 2) - 1)$. 
+		\end{itemize}
+	\item Each block consists of $2 \times 2$ cells with size 8 pixels $ \times $ 8 pixels.
+	\item Compute gradients for each pixel.
+		\begin{itemize}
+			\item Using $[-1, 0, 1]$ gradient filter.
+		\end{itemize}
+	\item Quantize the gradient orientation into 9 orientations bins in $0^\circ-180^\circ$
+	(with $20^\circ$ interval).
+		\begin{itemize}
+			\item The vote is the gradient magnitude. \\
+			For color images, calculate separate gradients for each color channel, and take the one with 
+			the largest norm at the pixel's gradient vector.
+			\item Interpolate votes bi-linearly between neighboring bin center. \\
+			 For example, suppose a pixel have orientation $80^\circ$, next to it has $70^\circ$ and 
+			 $90^\circ$ bins, then: $85-70=15$, $90-85=5$, so, for bin $70^\circ$ it contributes:
+			  $15/(15+5)=3/4 \times$ gradient magnitude, and for bin $90^\circ$: $5/(15+5)=1/4 \times$
+			  gradient magnitude.
+			\item The vote can also be weighted by Gaussian to down-weight near the edge.
+		\end{itemize}
+	\item For each cell accumulating the 1-D histogram of gradient directions or edge orientations over
+	the pixels of the cell.
+	\item Normalization for blocks, for better invariance to illumination, shadowing etc..
+		\begin{itemize}
+			\item L2-Hys (Lowe-style clipped L2 norm) block normalization. That is, L2-norm followed by 
+			clipping (limiting the maximum values of v to 0.2) and renormalizing.
+		\end{itemize}		
+	\item Concatenate histograms.
+		\begin{itemize}
+			\item Feature dimension: $36(=4 \times 9)$ for each block (in this example, 105 blocks in total,
+			so $36 \times 105$ features in total for this input detection window).
+		\end{itemize}	
+\end{enumerate}
+%--------------------------------
+\subsection{Improved HOG feature \citep{felzenszwalb2010object}}
+Basic idea: using 13-dimensional feature instead of previous 36-dimensional with no significant effect, and
+add  contrast sensitive and contrast insensitive features to a 31-dimensional feature vector to improve the 
+performance. \par
+Input - image size: $w \times h$.
+\begin{enumerate}
+	\item Pixel-Level Feature Maps. 
+		\begin{itemize}
+			\item For each pixel (x, y), let $\theta(x,y)$ be the orientation and $r(x,y)$ be the magnitude of 
+			the intensity gradient using $[-1, 0, 1]$ as gradient filter.
+			\item The gradient calculated at the pixel is discretized into one of p values by contrast sensitive
+			($B_1$) or contrast insensitive ($B_2$):
+				\begin{equation}
+					B_1(x,y) = round(\frac{p \theta(x,y)}{2 \pi})\mod p 
+				\end{equation}
+				\begin{equation}
+					B_2(x,y) = round(\frac{p \theta(x,y)}{\pi})\mod p
+				\end{equation}
+			\item The feature vector $F(x, y)_b$ at pixel (x, y) is: 
+				\begin{equation}
+					F(x,y)_b=
+					\begin{cases}
+						r(x,y) & \text{if } b = B(x,y) \\
+						0 & \text{otherwise}
+    					\end{cases}
+				\end{equation}
+			where $b \in \{0, \cdots , p-1 \}$.
+			\item Now we have a pixel-level feature map for the image.
+		\end{itemize}
+	\item Spatial Aggregation.
+		\begin{itemize}
+			\item Let $k > 0$ be the cell size.
+			\item Aggregate pixel-level feature vectors to obtain a cell-based feature map C(i,j).
+			\item In C(i,j), where $0 \le i \le \lfloor{(w-1)/k}\rfloor$, $0 \le j \le \lfloor{(h-1)/k}\rfloor$.
+			\item Pixel (x, y) maps to $(\lfloor{x/k}\rfloor, \lfloor{y/k}\rfloor)$.
+			\item The feature vector at a cell is the sum (or average) of the pixel-level features in that cell.
+			\item Each pixel contributes to the feature vectors in the four cells around it using 
+			bilinear interpolation.
+			\item This aggregation provides some invariance to small deformations and reduces the size
+			of a feature map.
+		\end{itemize}
+	\item Normalization and Truncation.
+		\begin{itemize}
+			\item Normalization provides the invariance to gain, while gradients provides invariant to bias.
+			\item Let $T_{\alpha}(v)$ denote the truncation of a vector  v by $\alpha$.
+			\item The feature map is obtained by concatenating the result of normalizing the map C with respect
+			 to each normalization factor followed by truncation:
+			 	\begin{equation}
+					H(i,j)=
+					\begin{bmatrix}
+						T_{\alpha}(C(i,j)/N_{-1, -1}(i,j)) \\
+						T_{\alpha}(C(i,j)/N_{+1, -1}(i,j)) \\
+						T_{\alpha}(C(i,j)/N_{+1, +1}(i,j)) \\
+						T_{\alpha}(C(i,j)/N_{-1, +1}(i,j)) \\
+					\end{bmatrix}
+				\end{equation}
+			\item We use four normalization factors for C(i,j): $N_{\delta, \gamma}(i,j)$ with 
+			$\delta, \gamma \in \{-1, 1\}$,
+				\begin{equation}
+					N_{\delta, \gamma}(i,j)=(\norm{C(i,j)}^2+\norm{C(i+\delta,j)}^2+
+									\norm{C(i,j+\gamma)}^2+\norm{C(i+\delta,j+\gamma)}^2)^{1/2}
+				\end{equation}
+			Each factor measures the "gradient energy" in a square block of four cells containing (i,j).
+			\item Commonly, HOG features using $p=9$, discretized with $B_2$, cell size $k=8$ and truncation 
+			$\alpha = 0.2$, so we have 36-dimensional feature vector (9 orientations $ \times 4$ 
+			normalizaions).
+		\end{itemize}		
+	\item PCA and Analytic Dimensionality Reduction.
+		\begin{itemize}
+			\item 9 contrast insensitive orientations, 18 contrast sensitive orientations, 4 normalization factors, 
+			so we have $4 \times (9+18)=108$ dimensional feature vectors. 
+			\item Use an analytic projection of 108 dimensional features to:
+				\begin{enumerate}
+			 		\item 27 (=9+18) sums over 4 different normalizations.
+					\item 4 dimensional features sums over 9 contrast insensitive orientations. 
+				\end{enumerate}
+			\item In total, the final feature map has 31-dimensional vectors (27+9).
+		\end{itemize}	
+\end{enumerate}
+%=======================================
+\section{CN feature \citep{van2007learning}}
+%=======================================
+\section{C-COT \citep{DanelljanECCV2016}}
+
+\begin{equation}
+	A_j = 
+	\begin{bmatrix}
+		A_j^1 & \cdots & A_j^D
+	\end{bmatrix}
+\end{equation}
+
+\begin{equation}
+A = 
+\begin{bmatrix}
+	A_1^T \\ A_2^T \\ \vdots \\ A_m^T
+\end{bmatrix}
+\hat{\bm{y}}= 
+\begin{bmatrix}
+	\hat{\bm{y}}_1^T \\ \hat{\bm{y}}_2^T \\ \vdots \\ \hat{\bm{y}}_m^T
+\end{bmatrix}
+\hat{\bm{f}}= 
+\begin{bmatrix}
+	(\hat{\bm{f}}^1)^T \\ (\hat{\bm{f}}^2)^T \\ \vdots \\ (\hat{\bm{f}}^D)^T
+\end{bmatrix}
+\end{equation}
+
+\begin{equation}
+	(A^H \Gamma A + W^H W) \hat{\bm{f}} = A^H \Gamma \hat{\bm{y}}
+\end{equation}
+%=======================================
+\section{ECO \citep{DanelljanCVPR2017}} 
+%=======================================
+
+%=======================================
+\renewcommand\refname{Reference}
+\bibliographystyle{unsrtnat}
+\bibliography{VisualTracking} 
+\clearpage
+\end{document}
