@@ -8,6 +8,7 @@
 \usepackage{fancyhdr}
 \usepackage{indentfirst}
 \usepackage{float}
+\usepackage{listings}
 \usepackage[dvips]{graphicx}
 \usepackage{subfigure}
 \usepackage[font=small]{caption}
@@ -203,7 +204,138 @@ A =
 %=======================================
 \section{ECO \citep{DanelljanCVPR2017}} 
 %=======================================
+\section{Some tips of transfer from matlab to c++}
+\begin{itemize}
+	\item Debug tricks, to show the line number, file number and functions:
+		\begin{lstlisting}[language=C++]
+#define debug(a, args...) printf("%s(%s:%d) " a "\n", 
+	__func__, __FILE__, __LINE__, ##args)
+#define ddebug(a, args...) printf("%s(%s:%d) " a "\n", 
+	__func__, __FILE__, __LINE__, ##args)
+		\end{lstlisting}
+	\item Debug tricks, to show the property of cv::mat:
+		\begin{lstlisting}[language=C++]
+void imgInfo(cv::Mat mat)
+{
+	int type = mat.type();
+	string r;
 
+	uchar depth = type & CV_MAT_DEPTH_MASK;
+	uchar chans = 1 + (type >> CV_CN_SHIFT);
+
+	switch (depth)
+	{
+	case CV_8U:
+		r = "8U";
+		break;
+	case CV_8S:
+		r = "8S";
+		break;
+	case CV_16U:
+		r = "16U";
+		break;
+	case CV_16S:
+		r = "16S";
+		break;
+	case CV_32S:
+		r = "32S";
+		break;
+	case CV_32F:
+		r = "32F";
+		break;
+	case CV_64F:
+		r = "64F";
+		break;
+	default:
+		r = "User";
+		break;
+	}
+
+	r += "C";
+	r += (chans + '0');
+
+	debug("%s %d x %d", r.c_str(), mat.rows, mat.cols);
+	//return r;
+}
+		\end{lstlisting}		
+	\item Std functions better to name out to prevent default link to other functions. 
+	For example: 
+		\begin{lstlisting}[language=C++]
+void absTest()
+{
+	std::vector<float> v{0.1, 0.2};
+	float abs = abs(1.23f);
+	debug("False result:%f", abs);
+
+	abs = std::abs(1.23f);
+	debug("True result:%f", abs);
+}
+		\end{lstlisting}
+	For the False result, it sometimes link to other library and give answer 1.
+	\item Take care of the parameter types, better to write it out clearly.
+		\begin{lstlisting}[language=C++]
+void accumulateTest()
+{
+	std::vector<float> v{0.1, 0.2};
+	float sum = std::accumulate(v.begin(), v.end(), 0);
+	debug("False result:%f", sum);
+
+	sum = std::accumulate(v.begin(), v.end(), 0.0f);
+	debug("True result:%f", sum);
+}
+		\end{lstlisting}
+	For the False result, it gave answer 0, while the True result is 0.3.
+	\item In opencv, color order: BGR, in matlab: RGB.
+	\item In opencv mat, the data store in this order: $channel -> x -> y$. Test example:
+		\begin{lstlisting}[language=C++]
+void opencvTest()
+{
+	float *newdata = (float *)malloc(sizeof(float) * (2 * 3 * 4));
+	for (int i = 0; i < 2 * 3 * 4; i++)
+	{
+		newdata[i] = i;
+	}
+
+	cv::Mat mat = cv::Mat(cv::Size(3, 4), CV_32FC(2), newdata);
+
+	printf("\nInfo of original mat:");
+	imgInfo(mat);
+	for (int i = 0; i < 2 * 3 * 4; i++)
+	{
+		printf("%f ", mat.at<float>(0, i));
+	}
+	printf("\n");
+
+	std::vector<cv::Mat> splitmat;
+	cv::split(mat, splitmat);
+
+	printf("\nInfo of splited mat:");
+	imgInfo(splitmat[0]);
+
+	printf("channel 0:\n");
+	for (int j = 0; j < mat.rows; j++)
+	{
+		for (int i = 0; i < mat.cols; i++)
+		{
+			printf("%f ", splitmat[0].at<float>(j, i));
+		}
+		printf("\n");
+	}
+	printf("\n");
+	printf("channel 1:\n");
+	for (int j = 0; j < mat.rows; j++)
+	{
+		for (int i = 0; i < mat.cols; i++)
+		{
+			printf("%f ", splitmat[1].at<float>(j, i));
+		}
+		printf("\n");
+	}
+}
+		\end{lstlisting}
+	\item When using libcaffe.so, using the BLVC caffe version. I used the Nvidia version and GPU 
+	not working, wasted my days.
+\end{itemize}
 %=======================================
 \renewcommand\refname{Reference}
 \bibliographystyle{unsrtnat}
