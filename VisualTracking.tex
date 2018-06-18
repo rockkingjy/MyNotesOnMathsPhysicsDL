@@ -1,6 +1,5 @@
 %\documentclass[12pt,draft]{article}
 \documentclass[12pt]{article}
-\usepackage{CJK}
 \AtBeginDvi{\input{zhwinfonts}}
 \usepackage{mathrsfs}
 \usepackage{amsmath,amsthm,amsfonts,amssymb}
@@ -49,7 +48,7 @@
 \tableofcontents
 %=======================================
 \section{HOG feature \citep{dalal2005histograms} \citep{felzenszwalb2010object}} 
-\subsection{Original HOG feature  \citep{dalal2005histograms} } 
+\subsection{Original HOG feature  \citep{dalal2005histograms} } \label{chap:hog}
 Basic idea: local object appearance and shape can often be characterized rather well
 by the distribution of local intensity gradient or edge directions, even without precise knowledge
 of the corresponding gradient or edge position. \par
@@ -168,43 +167,387 @@ Input - image size: $w \times h$.
 			 		\item 27 (=9+18) sums over 4 different normalizations.
 					\item 4 dimensional features sums over 9 contrast insensitive orientations. 
 				\end{enumerate}
-			\item In total, the final feature map has 31-dimensional vectors (27+9).
+			\item In total, the final feature map has 31-dimensional vectors (27+4).
 		\end{itemize}	
 \end{enumerate}
 %=======================================
 \section{CN feature \citep{van2007learning}}
 %=======================================
-\section{C-COT \citep{DanelljanECCV2016}}
-
+\section{Deep feature \citep{chatfield2014return}}
+	\begin{table}[h!]
+  		\centering
+  		\begin{tabular}{c|c|c|c|c|c|c|c}
+   			Layer & Name & size & stride&rFieldStride& pad        & input         & output\\
+   			\hline
+			0        & Input   &[224,224,3,10]&           &1&              & 224 x 224 & 224 x 224\\ 
+			1        & conv1 & [7,7,3,96]       &[2, 2]   &1& [0,0,0,0] & 224 x 224 & 109 x 109\\ 
+			2        & relu1   &                       &            &2&               & 109 x 109 & 109 x 109\\ 
+	     \textbf{3}  & \textbf{norm1} &                       &           &2&                & 109 x 109 & 109 x 109\\ 
+			4        & pool1  & [3, 3]              & [2, 2]   &2& [0,1,0,1]  & 109 x 109  & 54 x 54\\ 
+			5        & conv2 & [5,5,96,256]   & [2, 2]   &4&[1,1,1,1]   &  54 x 54    & 26 x 26 \\ 
+			6        & relu2   &                       &            &8&                &  26 x 26 &  26 x 26\\ 
+			7        & norm2 &                       &            &8&                &  26 x 26 &  26 x 26\\ 
+			8        & pool2  & [3, 3]              & [2, 2]   &8& [0,1,0,1]  &  26 x 26 & 13 x 13\\ 
+			9        & conv3 & [3,3,256,512] & [1, 1]   &16&[1,1,1,1]   & 13 x 13 & 13 x 13\\ 
+			10      & relu3   &                       &            &16&                & 13 x 13 & 13 x 13\\
+			11      & conv4 & [3,3,512,512]  & [1, 1]  &16&[1,1,1,1]   & 13 x 13 & 13 x 13\\ 
+			12      & relu4   &             		&          &16&                 & 13 x 13 & 13 x 13\\ 
+			13      & conv5 & [3,3,512,512]  & [1, 1] &16&[1,1,1,1]    & 13 x 13 & 13 x 13\\ 
+	     \textbf{14} & \textbf{relu5}   &                        &          &16&                 & 13 x 13 & 13 x 13\\  
+  		\end{tabular}
+	\end{table} \par
+Equation to calculate output size from input for convolution layer:
 \begin{equation}
+	\abs{Ouput} = \lfloor{\frac{\abs{Input} - size + pad1 + pad2}{stride}}\rfloor + 1
+\end{equation}	
+%=======================================
+\section{C-COT \citep{DanelljanECCV2016}}
+\subsection{Basic Notations}
+Complex-value functions $g, h: \mathbb{R} \rightarrow \mathbb{C}$ are periodic with period $T > 0$. \par
+Space $L^2(T)$ : Hilbert space equipped with an inner product $\langle \cdot , \cdot \rangle$ of periodic functions with period $T>0$. \par
+For $g, h \in L^2(T)$, 
+\begin{equation}\label{eq:conj}
+	\langle g,h \rangle = \frac{1}{T} \int^{T}_{0} g(t) \overline{h(t)} dt
+\end{equation}
+where bar means complex conjugation. \par
+Complex exponential functions: 
+\begin{equation}
+	e_k(t) = e^{i 2\pi kt/T}
+\end{equation} \par
+$\{e_k(t)\}^{\infty}_{-\infty}$ forms an orthonormal basis for $L^2(T)$. \par
+
+%--------------------------------------------------
+\subsection{Fourier transformation}
+Fourier transformation:
+\begin{equation}\label{eq:fourierTrans}
+	\hat{f}(\xi) = \int_{-\infty}^{\infty} f(x)\ e^{-2\pi i x \xi}\,dx
+\end{equation} \par
+Inverse Fourier transformation: 
+\begin{equation}
+	f(x) = \int_{-\infty}^{\infty} \hat f(\xi)\ e^{2 \pi i x \xi}\,d\xi
+\end{equation} \par
+
+For discrete points: $\left \{ \mathbf{ x_n } \right \} := x_0, x_1, \ldots, x_{N-1}$ and 
+$\left \{ \mathbf{X_k} \right \} := X_0, X_1, \ldots, X_{N-1}$, we have: \par
+Discrete Fourier transformation: 
+\begin{equation}\label{eq:fourierdisc}
+	X_k = \sum_{n=0}^{N-1} x_n \cdot e^{-i2\pi kn/N}
+\end{equation} \par
+Inverse discrete Fourier transformation
+\begin{equation}
+x_n = \frac{1}{N}\sum_{k=0}^{N-1}X_k \cdot e^{i 2 \pi kn/N} 
+\end{equation} \par 
+
+Fourier transformation of $g \in L^2(T)$: 
+\begin{equation}\label{eq:fourierL2T}
+	\hat{g}[k] = \langle g , e_k \rangle = \frac{1}{T} \int^{T}_{0} g(t)e^{-i 2\pi kt/T} dt
+\end{equation} \par
+
+Any $g \in L^2(T)$ can be expressed as: $g=\sum^{\infty}_{-\infty}\hat{g}[k] e_k$. \par
+Shift property: For any real number $L$, if $h(t)=g(t-L)$, then
+\begin{equation} \label{eq:fouriershift}
+	\hat{h}[k]=e^{-2\pi i L k} \hat{g}[k]
+\end{equation}
+
+Parseval's formula: 
+\begin{equation} \label{eq:parseval}
+	\norm{g}^2=\norm{\hat{g}}^2_{l^2}
+\end{equation}
+where $\norm{g}^2= \langle g , g \rangle$ and $\norm{\hat{g}}^2_{l^2}=\sum^{\infty}_{-\infty}\abs{\hat{g}[k]}^2$. \par
+
+%--------------------------------------------------
+\subsection{Convolution}
+Convolution:
+\begin{align} \label{eq:conv}
+	(f * g )(t) &\stackrel{\mathrm{def}}{=}\ \int_{-\infty}^\infty f(\tau) g(t - \tau) \, d\tau \\
+	&= \int_{-\infty}^\infty f(t-\tau) g(\tau)\, d\tau
+\end{align} \par
+
+Discrete convolution: 
+\begin{align}
+	(f * g)[k] &= \sum_{l=-\infty}^\infty f[l] g[k - l] \\
+			&= \sum_{l=-\infty}^\infty f[k-l] g[l]
+\end{align} \par
+
+Circular convolution operation(with normalization) $*:L^2(T) \times L^2(T) \rightarrow L^2(T)$ here is defined by:
+\begin{equation} \label{eq:circonv}
+	 (g * h)(t) = \frac{1}{T} \int^{T}_{0} g(t-s) h(s) ds
+\end{equation} \par
+Convolution properties: 
+\begin{equation}\label{eq:convprop}
+	 \widehat{g*h}=\hat{g}\hat{h},\ \ \ \ \  \widehat{gh}=\hat{g}*\hat{h}
+\end{equation} \par
+To calculate discrete convolution, one of the inputs is converted into a Toeplitz matrix:
+\begin{equation} \label{eq:convToep}
+ y = h \ast x =
+            \begin{bmatrix}
+                h_1 & 0 & \ldots & 0 & 0 \\
+                h_2 & h_1 & \ldots & \vdots & \vdots \\
+                h_3 & h_2 & \ldots & 0 & 0 \\
+                \vdots & h_3 & \ldots & h_1 & 0 \\
+                h_{m-1} & \vdots & \ldots & h_2 & h_1 \\
+                h_m & h_{m-1} & \vdots & \vdots & h_2 \\
+                0 & h_m & \ldots & h_{m-2} & \vdots \\
+                0 & 0 & \ldots & h_{m-1} & h_{m-2} \\
+                \vdots & \vdots & \vdots & h_m & h_{m-1} \\
+                0 & 0 & 0 & \ldots & h_m
+            \end{bmatrix}_{(m+n-1) \times n}
+            \begin{bmatrix}
+                x_1 \\
+                x_2 \\
+                x_3 \\
+                \vdots \\
+                x_n
+            \end{bmatrix}
+\end{equation}
+or 
+\begin{equation}
+            \begin{bmatrix}
+                h_1 & h_2 & h_3 & \ldots & h_{m-1} & h_m
+            \end{bmatrix}
+            \begin{bmatrix}
+                x_1 & x_2 & x_3 & \ldots & x_n & 0 & 0 & 0& \ldots & 0 \\
+                0 & x_1 & x_2 & x_3 & \ldots & x_n & 0 & 0 & \ldots & 0 \\
+                0 & 0 & x_1 & x_2 & x_3 & \ldots & x_n & 0  & \ldots & 0 \\
+                \vdots & \vdots & \vdots & \vdots & \vdots & \ldots & \vdots & \vdots  & \ldots & 0 \\
+                0 & \ldots & 0 & 0 & x_1 & \ldots & x_{n-2} & x_{n-1} & x_n & \vdots \\
+                0 & \ldots & 0 & 0 & 0 & x_1 & \ldots & x_{n-2} & x_{n-1} & x_n
+            \end{bmatrix}_{m \times (m+n-1)}
+\end{equation}
+%--------------------------------------------------
+\subsection{Continuous Learning Formulation}
+$x_j$: Training Samples. \par
+$d \in \{1, \cdots , D\}$: Feature channel of training samples (ex. if choose deep layer 1, 5 as features, then $D = 2$). \par
+$N_d$: Number of spatial sample points in feature channel d (ex. for HOG feature $N_{HOG}=31 \times 105$ \autoref{chap:hog}). \par
+$\chi=\mathbb{R}^{N_1} \times \cdots \times \mathbb{R}^{N_D}$. \par
+$\{x^d_j[n]\}, n \in \{0, \cdots, N_d -1\}$: Feature points in channel d of training sample $x_j$.\par
+$[0, T) \subset \mathbb{R} $: Spatial support of the feature map, where $T$ is the size of the support region.\par
+$J_d$: Interpolation operator of training sample x in feature channel d, defined as: 
+\begin{equation}
+	J_d\{x^d\}(t)=\sum^{N_d-1}_{n=0} x^d[n] b_d(t-\frac{T}{N_d} n)
+\end{equation} \par
+$f^d \in L^2(T)$ is the continuous filter for feature channel d. \par
+$S_f: \chi \rightarrow L^2(T)$: maps a sample $x \in \chi$ to a confidence score function defined on the interval $[0, T)$, defined as: 
+\begin{equation} \label{eq:score}
+	S_f\{x\}=\sum^D_{d=1} f^d * J_d\{x^d\}, \  x \in \chi.
+\end{equation} 
+the convolution here is the circular convolution in continuous domain as defined in (\ref{eq:conv}). \par
+The target is localized by maximizing the confidence score in an image region. \par
+
+The filter $f$ is trained by minimizing the functional: 
+\begin{equation} \label{eq:target}
+	E(f)=\sum^{m}_{j=1} \alpha_j \norm{S_f\{x_j\}-y_j}^2 + \sum^D_{d=1} \norm{w f^d}^2
+\end{equation}
+
+%--------------------------------------------------
+\subsection{Training the filter $f$ in Fourier domain}
+To train the filter f, we minimize the function (\ref{eq:target}) in the Fourier domain. \par
+By (\ref{eq:fouriershift}) and (\ref{eq:fourierdisc}), we have:
+\begin{equation}
+	\widehat{J_d\{x^d\}}[k]=\sum^{N_d-1}_{n=0} x^d[n] e^{-i\frac{2\pi}{N_d}kn} \hat{b}_d[k]=X^d[k] \hat{b}_d[k] 
+\end{equation} \par
+With the property of (\ref{eq:convprop}), we have:
+\begin{equation} \label{eq:scoreFourier}
+	\widehat{S_f\{x\}}[k]= \sum^D_{d=1} \hat{f}^d[k] X^d[k] \hat{b}_d[k] 
+\end{equation} \par
+By using Parseval's formula (\ref{eq:parseval}):
+\begin{equation} \label{eq:targetFourier}
+	E(f)=\sum^{m}_{j=1} \alpha_j \norm{\sum^D_{d=1}\hat{f}^dX^b_j\hat{b}_d-\hat{y}_j}^2_{l^2}
+		 + \sum^D_{d=1} \norm{\hat{w} * \hat{f}^d}^2_{l^2}
+\end{equation}
+The functional $E(f)$ can be minimized with respect of $\hat{f}^d[k]$. \par 
+
+%--------------------------------------------------
+\subsection{Training the filter $f$ as finite matrix}
+In practice the filter $f$ needs to be represented by a \textbf{finite} set. So we obtain a \textbf{finite} representation by minimizing (\ref{eq:targetFourier}) over the finite-dimensional subspace $V = span\{e_k\}^{K_1}_{-K_1} \times \cdots \times span\{e_k\}^{K_D}_{-K_D} \subset L^2(T)^D$, by assuming $\hat{f}^d[k] = 0$ for $\abs{k} > K_d$. Here we set $K_d = \lfloor \frac{N_d}{2} \rfloor$. \par
+Define: 
+\begin{equation}
+	\hat{\bm{f}}^d= 
+	\begin{bmatrix}
+		\hat{f}^d[-K_d] \\  \vdots \\ \hat{f}^d[K_d] 
+	\end{bmatrix}_{(2K_d+1) \times 1}
+	 \in \mathbb{C}^{2K_d+1} \text{,   }
+	\hat{\bm{f}}= 
+	\begin{bmatrix}
+		\hat{\bm{f}}^1 \\ \hat{\bm{f}}^2 \\ \vdots \\ \hat{\bm{f}}^D
+	\end{bmatrix}_{\sum^{D}_{d=1}(2K_d+1) \times 1}
+	 \text{,   }
+	 \hat{\bm{y}}_j= 
+	\begin{bmatrix}
+		\hat{y}_j[-K] \\  \vdots \\ \hat{y}_j[K] 
+	\end{bmatrix}_{(2K+1) \times 1}
+\end{equation}
+where $K:=\max_dK_d$.  \par
+And define: 
+\begin{equation}
+	A^d_j = 
+	\begin{bmatrix}
+		X^d_j[-K_d]\hat{b}_d[-K_d] & \cdots & 0 \\
+		\vdots & \ddots & \vdots \\
+		0 & \cdots & X^d_j[K_d]\hat{b}_d[K_d] \\
+		\vdots & \cdots & \vdots \\
+		0 & \cdots & 0
+	\end{bmatrix}_{(2K+1)\times(2K_d+1)}
+	 \text{,   }
 	A_j = 
 	\begin{bmatrix}
 		A_j^1 & \cdots & A_j^D
+	\end{bmatrix}_{(2K+1)\times \sum^{D}_{d=1}(2K_d+1)}
+\end{equation} \par
+Let $L$ be the number of non-zero coefficients $\hat{w}[k]$, such that  $\hat{w}[k]=0$ for all $\abs{k}>L$. \par
+Define $W_d$ to be the $(2K_d+2L+1) \times (2K_d+1)$ Toeplitz matrix corresponding to 
+the convolution operator $W_d\hat{\bm{f}}^d=vec \ \hat{w}*\hat{f}^d$ (\ref{eq:convToep}):
+\begin{equation} 
+	W_d\hat{\bm{f}}^d =
+	\begin{bmatrix}
+                \hat{w}[-K_d]     & 0 				& \ldots & 0 			& 0 \\
+                \hat{w}[-K_d+1] & \hat{w}[-K_d] 		& \ldots & \vdots 		& \vdots \\
+                \hat{w}[-K_d+2] & \hat{w}[-K_d+1] 	& \ldots & 0 			& 0 \\
+                \vdots 		&  \hat{w}[-K_d+2] 	& \ldots &  \hat{w}[-K_d] 	& 0 \\
+                 \hat{w}[K_d-1]  & \vdots 			& \ldots &  \hat{w}[-K_d+1] &  \hat{w}[-K_d] \\
+                 \hat{w}[K_d] 	&  \hat{w}[K_d-1] 	& \vdots & \vdots 		&  \hat{w}[-K_d+1] \\
+                0 			&  \hat{w}[K_d]		& \ldots &  \hat{w}[K_d-2] 	& \vdots \\
+                0 			& 0 				& \ldots &  \hat{w}[K_d-1]	&  \hat{w}[K_d-2] \\
+                \vdots 		& \vdots 			& \vdots &  \hat{w}[K_d] 	&  \hat{w}[K_d-1]\\
+                0 			& 0 				& 0 	     & \ldots 		& \hat{w}[K_d]
+	\end{bmatrix}_{(2K_d+2L+1) \times (2K_d+1)}
+	\begin{bmatrix}
+		\hat{f}^d[-K_d] \\  \vdots \\ \hat{f}^d[K_d] 
+	\end{bmatrix}_{(2K_d+1) \times 1}
+\end{equation} \par
+Define $W=W_1 \oplus \cdots \oplus W_D$. \par
+
+Then the matrix version of (\ref{eq:targetFourier}) becomes:
+\begin{equation} \label{eq:targetMatrix}
+	E_V(f)=\sum^{m}_{j=1} \alpha_j \norm{A_j \hat{\mathbf{f}}-\hat{\mathbf{y}}_j}^2_{2}
+		 + \norm{W  \hat{\mathbf{f}}}^2_{2}
+\end{equation} \par
+
+%--------------------------------------------------
+\subsection{The normal equations of $\hat{\bm{f}}$}
+Define: 
+\begin{equation}
+	A = 
+	\begin{bmatrix}
+		A_1 \\ A_2 \\ \vdots \\ A_m
 	\end{bmatrix}
+	 \text{,   }
+	\hat{\bm{y}}= 
+	\begin{bmatrix}
+		\hat{\bm{y}}_1 \\ \hat{\bm{y}}_2 \\ \vdots \\ \hat{\bm{y}}_m
+	\end{bmatrix}
+	 \text{,   }
+	 \Gamma=\alpha_1 I  \oplus \cdots \oplus \alpha_m I
 \end{equation}
 
-\begin{equation}
-A = 
-\begin{bmatrix}
-	A_1^T \\ A_2^T \\ \vdots \\ A_m^T
-\end{bmatrix}
-\hat{\bm{y}}= 
-\begin{bmatrix}
-	\hat{\bm{y}}_1^T \\ \hat{\bm{y}}_2^T \\ \vdots \\ \hat{\bm{y}}_m^T
-\end{bmatrix}
-\hat{\bm{f}}= 
-\begin{bmatrix}
-	(\hat{\bm{f}}^1)^T \\ (\hat{\bm{f}}^2)^T \\ \vdots \\ (\hat{\bm{f}}^D)^T
-\end{bmatrix}
-\end{equation}
-
-\begin{equation}
+The minimizer of (\ref{eq:targetMatrix}) is found by solving the equations:
+\begin{equation} \label{eq:normal}
 	(A^H \Gamma A + W^H W) \hat{\bm{f}} = A^H \Gamma \hat{\bm{y}}
 \end{equation}
+%--------------------------------------------------
+\subsection{The desired output $y_j$}
+Poisson summation formula:
+\begin{equation}
+	\sum_{n=-\infty}^\infty f(n)=\sum_{k=-\infty}^\infty \hat f\left(k\right)
+\end{equation} \par
+\begin{equation} \label{eq:poisson}
+	\sum_{n=-\infty}^{\infty} s(t + nT)=\sum_{k=-\infty}^{\infty} \frac{1}{T}\cdot \hat s\left(\frac{k}{T}\right)e^{i 2\pi \frac{k}{T} t }
+\end{equation} \par
+$g_T(t)$: T-periodic repetition of function g, defined as:
+\begin{equation} \label{eq:periodic}
+	g_T(t) = \sum^{\infty}_{n=-\infty} g(t-nT)
+\end{equation} \par
+$\hat{g}_T[k]$: Fourier transformation of $g_T$, defined as:
+\begin{align}\begin{split}\label{eq:fouriergT}
+	\hat{g}_T[k] 
+	&\stackrel{(\ref{eq:fourierL2T})}{=}  \langle g_T , e_k \rangle \\
+	&\stackrel{(\ref{eq:conj})}{=} \frac{1}{T} \int^{T}_{0} g_T(t) e^{-i 2 \pi k t / T} dt \\ 
+	&\stackrel{(\ref{eq:periodic})}{=} \frac{1}{T} \int^{T}_{0} \sum^{\infty}_{n=-\infty} g(t-nT) e^{-i 2 \pi k t / T} dt \\
+	&\stackrel{(\ref{eq:poisson})}{=} \frac{1}{T} \int^{T}_{0} \frac{1}{T} \sum^{\infty}_{k'=-\infty} \hat{g}(\frac{k'}{T}) e^{i 2 \pi k' t / T}  e^{-i 2 \pi k t / T} dt \\
+	&\stackrel{}{=} \frac{1}{T}  \int^{T}_{0} \sum_{k' \neq k} \hat{g}(\frac{k'}{T}) e^{i 2 \pi (k'-k) t / T} d(\frac{t}{T}) +  \frac{1}{T} \hat{g}(\frac{k}{T})\\
+	&= Const \times e^{i 2 \pi (k'-k) t / T} |^T_0+  \frac{1}{T} \hat{g}(\frac{k}{T})\\
+	&= \frac{1}{T} \hat{g}(\frac{k}{T})
+\end{split}\end{align} \par
+$y_j(t)=\sum^{\infty}_{n=-\infty}z_j(t-nT)$ is the periodic repetition of the Gaussian function $z_j(t)=e^{-\frac{1}{2\sigma^2}(t-u_j)^2}$, here $u_j \in [0, T)$ is the estimated location of the target in the corresponding sample $x_j$. \par
+The Fourier transformation of $z_j(t)$ is: 
+\begin{align}\begin{split}\label{eq:fourierz}
+	\hat{z}_j[k]
+	&\stackrel{(\ref{eq:fourierTrans})}{=} \int^{\infty}_{-\infty} z_j(t) e^{-i 2 \pi k t} dt \\ 
+	&\stackrel{}{=} \int^{\infty}_{-\infty} e^{-\frac{1}{2\sigma^2}(t-u_j)^2} e^{-i 2 \pi k t} dt \\ 
+	&\stackrel{}{=} \int^{\infty}_{-\infty} e^{-\frac{1}{2\sigma^2}\tau^2} e^{-i 2 \pi k (\tau+u_j)} d\tau \\ 
+	&\stackrel{}{=} e^{-i 2 \pi k u_j} \int^{\infty}_{-\infty} e^{-\frac{1}{2\sigma^2}\tau^2} e^{-i 2 \pi k \tau} d\tau \\ 
+	&\stackrel{}{=} e^{-i 2 \pi k u_j} e^{-2(\sigma \pi k)^2} \int^{\infty}_{-\infty} e^{-\frac{1}{2\sigma^2}(\tau+ i 2 \pi \sigma^2 k)^2} d\tau \\ 
+	&\stackrel{}{=} \sqrt{2\pi\sigma^2}e^{-i 2 \pi k u_j} e^{-2(\sigma \pi k)^2} 
+\end{split}\end{align} \par
+So the Fourier transformation of $y_j(t)$ is:
+\begin{align}\begin{split}
+	\hat{y}_j[k]
+	&\stackrel{(\ref{eq:fouriergT})}{=} \frac{1}{T} \hat{z}_j(\frac{k}{T}) \\
+	&\stackrel{(\ref{eq:fourierz})}{=} \frac{\sqrt{2\pi\sigma^2}}{T}e^{-i 2 \pi \frac{k}{T} u_j-2(\sigma \pi \frac{k}{T})^2} 
+\end{split}\end{align} \par
+%--------------------------------------------------
+\subsection{Interpolation function $b_d$}
+Standard cubic spline kernel: 
+\begin{equation}
+	b(t)=
+	\begin{cases}
+		(a+2)\abs{t}^3-(a+3)t^2+1 & \abs{t} \leq 1 \\
+		a\abs{t}^3-5at^2+8a\abs{t}-4a & 1 < \abs{t} \leq 2\\
+		0	& \abs{t} > 2
+    	\end{cases}
+\end{equation} \par
+First rescaling b to the sample interval $T/N_d$, then shifted half an interval $T/(2N_d)$ to align the origin of the continuous coordinate system with the sampling intervals of the feature map: 
+\begin{equation}
+	c_d(t)=b(\frac{N_d}{T}(t-\frac{T}{2N_d}))
+\end{equation} \par
+The Fourier transformation of it is:
+\begin{align}\begin{split}\label{eq:fouriercd}
+	\hat{c}_d(k) &= \int^{\infty}_{-\infty} c_d(t) e^{-i 2 \pi k t}dt \\
+			&= \int^{\infty}_{-\infty} b(\frac{N_d}{T}(t-\frac{T}{2N_d})) e^{-i 2 \pi k t}dt \\
+			&= \int^{\infty}_{-\infty} b(\frac{N_d}{T}\tau) e^{-i 2 \pi k (\tau + \frac{T}{2N_d} )} d\tau \\
+			&= e^{-i\pi \frac{T}{N_d} k} \frac{T}{N_d} \int^{\infty}_{-\infty} b(\tau')e^{-i2\pi k \frac{T}{N_d} \tau' } d\tau' \\
+			&= \frac{T}{N_d} e^{-i\pi \frac{T}{N_d} k} \hat{b}(\frac{T}{N_d}k) 
+\end{split}\end{align} \par
+$b_d(t)=\sum^{\infty}_{n=-\infty}c_d(t-nT)$  is the periodic repetition of $c_d(t)$, it's Fourier transformation is:
+\begin{align}\begin{split}
+	\hat{b}_d[k] 
+	&\stackrel{(\ref{eq:fouriergT})}{=} \frac{1}{T} \hat{c}_d(\frac{k}{T}) \\
+	&\stackrel{(\ref{eq:fouriercd})}{=}\frac{1}{N_d}e^{-i\frac{\pi}{N_d}k} \hat{b}(\frac{k}{N_d})
+\end{split}\end{align} \par
+where the Fourier transformation of $b(t)$ is:
+\begin{equation}
+	\hat{b}[k] = \frac{6(1-cos2\pi k)+3a(1-cos4\pi k) - (6+8a) \pi k \sin 2 \pi k - 2a \pi k \sin 4\pi k}{4k^4\pi^4}
+\end{equation}
+%-----------------------------------------------
+\subsection{Tracking Frameworks}
+\subsubsection{Localization}
+\begin{enumerate}
+	\item Extract the feature maps $\{x^d_j[n]\}: n \in \{0, \cdots, N_d -1\}, d \in \{1, \cdots, D\}$ from the region of interest in an image.
+	\item Calculate confidence score $s=S_f\{x\}$ using (\ref{eq:scoreFourier}) and inverse DFT. 
+	\item To maximizing the score $s(t): t\in [0,T)$,
+		\begin{enumerate}
+			\item Using grid search on $s(T\frac{n}{2K+1})$ for $n=0, \cdots, 2K$ to find a rough
+			 initial estimate $s(t)$.
+			\item Do Fourier series expansion $s(t)=\sum^K_{-K}\hat{s}[k]e_k(t)$, and use the result above
+			as the initial state, using Newtons method to do iterative optimization of it.
+		\end{enumerate}
+\end{enumerate}
+\subsubsection{Training}
+Using Conjugate Gradient to iteratively solving the equation (\ref{eq:normal}).
+\subsubsection{Parameters}
+Check file params.h in the code \url{https://github.com/rockkingjy/OpenTrackers}. 
 %=======================================
 \section{ECO \citep{DanelljanCVPR2017}} 
+\subsection{Factorized Convolution Operator}
+
+%-----------------------------------------------
+\subsection{Generative Sample Space Model}
+
+%-----------------------------------------------
+\subsection{Update strategy}
+Update the filter by starting the optimization process in every $N_s$th frame instead of every time.
 %=======================================
-\section{Some tips of transfer from matlab to c++}
+\section{Some tips of transfer from matlab to $c++$}
 \begin{itemize}
 	\item Debug tricks, to show the line number, file number and functions:
 		\begin{lstlisting}[language=C++]
