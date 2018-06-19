@@ -37,7 +37,7 @@
 }
 \setlength{\parindent}{4ex}
 \begin{document}\small
-\title{Visual Tracking Notes}
+\title{Recent Visual Tracking Methods}
 \author{Yan JIN}
 \pagestyle{fancy}\fancyhf{}
 \lhead{}\rhead{JIN Yan}
@@ -202,7 +202,8 @@ Equation to calculate output size from input for convolution layer:
 \end{equation}	
 %=======================================
 \section{C-COT \citep{DanelljanECCV2016}}
-\subsection{Basic Notations}
+\subsection{Preliminaries}
+\subsubsection{Basic Notations}
 Complex-value functions $g, h: \mathbb{R} \rightarrow \mathbb{C}$ are periodic with period $T > 0$. \par
 Space $L^2(T)$ : Hilbert space equipped with an inner product $\langle \cdot , \cdot \rangle$ of periodic functions with period $T>0$. \par
 For $g, h \in L^2(T)$, 
@@ -217,7 +218,29 @@ Complex exponential functions:
 $\{e_k(t)\}^{\infty}_{-\infty}$ forms an orthonormal basis for $L^2(T)$. \par
 
 %--------------------------------------------------
-\subsection{Fourier transformation}
+\subsubsection{Matrix Derivatives \citep{nasrabadi2007pattern}}
+\begin{equation} \label{eq:matrixderivativ1}
+	\frac{\partial}{\partial \bm{x}}(\bm{x^Ta}) = 
+	\frac{\partial}{\partial \bm{x}}(\bm{a^Tx})= \bm{a}
+\end{equation}
+
+\begin{equation} \label{eq:matrixderivativ2}
+	\frac{\partial}{\partial \bm{x}}(\bm{AB}) = 
+	\frac{\partial \bm{A}}{\partial \bm{x}} \bm{B} + \bm{A} \frac{\partial \bm{B}}{\partial \bm{x}} 
+\end{equation}
+
+\begin{equation}\label{eq:matrixderivativ3}
+	\frac{\partial}{\partial \bm{x}}(\bm{A^{-1}}) = 
+	\bm{A}^{-1} \frac{\partial \bm{A}}{\partial \bm{x}} \bm{A}^{-1}
+\end{equation}
+
+\begin{equation}\label{eq:matrixderivativ4}
+	\frac{\partial}{\partial \bm{x}}(\norm{\bm{Ax}}^2) 
+	= \frac{\partial}{\partial \bm{x}} (\bm{x^HA^HAx} )
+	= \bm{A^HAx + A^HAx} = 2\bm{A^HAx}
+\end{equation}
+%--------------------------------------------------
+\subsubsection{Fourier transformation}
 Fourier transformation:
 \begin{equation}\label{eq:fourierTrans}
 	\hat{f}(\xi) = \int_{-\infty}^{\infty} f(x)\ e^{-2\pi i x \xi}\,dx
@@ -256,7 +279,7 @@ Parseval's formula:
 where $\norm{g}^2= \langle g , g \rangle$ and $\norm{\hat{g}}^2_{l^2}=\sum^{\infty}_{-\infty}\abs{\hat{g}[k]}^2$. \par
 
 %--------------------------------------------------
-\subsection{Convolution}
+\subsubsection{Convolution}
 Convolution:
 \begin{align} \label{eq:conv}
 	(f * g )(t) &\stackrel{\mathrm{def}}{=}\ \int_{-\infty}^\infty f(\tau) g(t - \tau) \, d\tau \\
@@ -277,7 +300,7 @@ Convolution properties:
 \begin{equation}\label{eq:convprop}
 	 \widehat{g*h}=\hat{g}\hat{h},\ \ \ \ \  \widehat{gh}=\hat{g}*\hat{h}
 \end{equation} \par
-To calculate discrete convolution, one of the inputs is converted into a Toeplitz matrix:
+To calculate discrete convolution, one of the inputs is converted into a \textbf{Toeplitz matrix}:
 \begin{equation} \label{eq:convToep}
  y = h \ast x =
             \begin{bmatrix}
@@ -314,6 +337,21 @@ or
                 0 & \ldots & 0 & 0 & 0 & x_1 & \ldots & x_{n-2} & x_{n-1} & x_n
             \end{bmatrix}_{m \times (m+n-1)}
 \end{equation}
+
+%--------------------------------------------------
+\subsubsection{Poisson summation formula}
+\begin{equation}
+	\sum_{n=-\infty}^\infty f(n)=\sum_{k=-\infty}^\infty \hat f\left(k\right)
+\end{equation} \par
+\begin{equation} \label{eq:poisson}
+	\sum_{n=-\infty}^{\infty} s(t + nT)=\sum_{k=-\infty}^{\infty} \frac{1}{T}\cdot \hat s\left(\frac{k}{T}\right)e^{i 2\pi \frac{k}{T} t }
+\end{equation} \par
+%--------------------------------------------------
+\subsubsection{Newton method} \label{ch:newtonmethod}
+
+%--------------------------------------------------
+\subsubsection{Conjugate Gradient \citep{shewchuk1994introduction}} \label{ch:conjugategradient}
+
 %--------------------------------------------------
 \subsection{Continuous Learning Formulation}
 $x_j$: Training Samples. \par
@@ -358,7 +396,7 @@ By using Parseval's formula (\ref{eq:parseval}):
 The functional $E(f)$ can be minimized with respect of $\hat{f}^d[k]$. \par 
 
 %--------------------------------------------------
-\subsection{Training the filter $f$ as finite matrix}
+\subsection{Training the filter $\hat{\bm{f}}$ as finite matrix}
 In practice the filter $f$ needs to be represented by a \textbf{finite} set. So we obtain a \textbf{finite} representation by minimizing (\ref{eq:targetFourier}) over the finite-dimensional subspace $V = span\{e_k\}^{K_1}_{-K_1} \times \cdots \times span\{e_k\}^{K_D}_{-K_D} \subset L^2(T)^D$, by assuming $\hat{f}^d[k] = 0$ for $\abs{k} > K_d$. Here we set $K_d = \lfloor \frac{N_d}{2} \rfloor$. \par
 Define: 
 \begin{equation}
@@ -438,21 +476,33 @@ Define:
 	\end{bmatrix}
 	 \text{,   }
 	 \Gamma=\alpha_1 I  \oplus \cdots \oplus \alpha_m I
-\end{equation}
+\end{equation} \par
 
-The minimizer of (\ref{eq:targetMatrix}) is found by solving the equations:
+
+The equation (\ref{eq:targetMatrix}) becomes:
+\begin{align} \begin{split} \label{eq:targetDerivative}
+	E_V(f)&=
+		(A \hat{\mathbf{f}}-\hat{\mathbf{y}})^H \Gamma (A \hat{\mathbf{f}}-\hat{\mathbf{y}})
+		 + \hat{f}^H W^HW \hat{f} \\
+		 &= (\hat{\mathbf{f}}^H A^H - \hat{\mathbf{y}}^H)\Gamma (A \hat{\mathbf{f}}-\hat{\mathbf{y}})
+		 + \hat{f}^H W^HW \hat{f} \\
+		 &= \hat{\mathbf{f}}^H A^H \Gamma A \hat{\mathbf{f}} - \hat{\mathbf{f}}^H A^H \Gamma \hat{\mathbf{y}}
+		 - \hat{\mathbf{y}}^H \Gamma A \hat{\mathbf{f}} + \hat{\mathbf{y}}^H \Gamma \hat{\mathbf{y}}
+		 + \hat{f}^H W^HW \hat{f} 
+\end{split}\end{align} \par
+
+Do the derivative to $\hat{\bm {f}}$ for the equation(\ref{eq:targetDerivative}) by using the properties (\ref{eq:matrixderivativ1}) and (\ref{eq:matrixderivativ4}):
+\begin{align}
+	A^H \Gamma (A \hat{\bm{f}} - \hat{\bm{y}})  
+	+ W^HW\hat{\bm{f}} = 0
+\end{align}
+
+So the minimizer of (\ref{eq:targetMatrix}) is found by solving the equations:
 \begin{equation} \label{eq:normal}
 	(A^H \Gamma A + W^H W) \hat{\bm{f}} = A^H \Gamma \hat{\bm{y}}
 \end{equation}
 %--------------------------------------------------
 \subsection{The desired output $y_j$}
-Poisson summation formula:
-\begin{equation}
-	\sum_{n=-\infty}^\infty f(n)=\sum_{k=-\infty}^\infty \hat f\left(k\right)
-\end{equation} \par
-\begin{equation} \label{eq:poisson}
-	\sum_{n=-\infty}^{\infty} s(t + nT)=\sum_{k=-\infty}^{\infty} \frac{1}{T}\cdot \hat s\left(\frac{k}{T}\right)e^{i 2\pi \frac{k}{T} t }
-\end{equation} \par
 $g_T(t)$: T-periodic repetition of function g, defined as:
 \begin{equation} \label{eq:periodic}
 	g_T(t) = \sum^{\infty}_{n=-\infty} g(t-nT)
@@ -518,6 +568,14 @@ where the Fourier transformation of $b(t)$ is:
 \begin{equation}
 	\hat{b}[k] = \frac{6(1-cos2\pi k)+3a(1-cos4\pi k) - (6+8a) \pi k \sin 2 \pi k - 2a \pi k \sin 4\pi k}{4k^4\pi^4}
 \end{equation}
+
+%-----------------------------------------------
+\subsection{Spatially Regularization $W$ \citep{danelljan2015learning}}
+To resolve the problem of unwanted boundary effects of discriminatively learned correlation filters, a spatially regularization is introduced:
+\begin{equation}
+	w(m, n) = \mu + \eta(m/P)^2 + \eta(n/Q)^2
+\end{equation}
+where $P \times Q$ denotes the target size. \par
 %-----------------------------------------------
 \subsection{Tracking Frameworks}
 \subsubsection{Localization}
@@ -529,20 +587,70 @@ where the Fourier transformation of $b(t)$ is:
 			\item Using grid search on $s(T\frac{n}{2K+1})$ for $n=0, \cdots, 2K$ to find a rough
 			 initial estimate $s(t)$.
 			\item Do Fourier series expansion $s(t)=\sum^K_{-K}\hat{s}[k]e_k(t)$, and use the result above
-			as the initial state, using Newtons method to do iterative optimization of it.
+			as the initial state, using Newtons method (\ref{ch:newtonmethod}) to do iterative optimization of it.
 		\end{enumerate}
 \end{enumerate}
 \subsubsection{Training}
-Using Conjugate Gradient to iteratively solving the equation (\ref{eq:normal}).
+Using Conjugate Gradient (\ref{ch:conjugategradient}) to iteratively solving the equation (\ref{eq:normal}).
 \subsubsection{Parameters}
 Check file params.h in the code \url{https://github.com/rockkingjy/OpenTrackers}. 
 %=======================================
 \section{ECO \citep{DanelljanCVPR2017}} 
+\subsection{Preliminaries}
+\subsubsection{Kronecker product}
+If \textbf{A} is an $m \times n$ matrix and \textbf{B} is a $p \times q$ matrix, then the Kronecker product $A \otimes B$ is the $mp  \times nq$ block matrix:
+\begin{equation}
+	\mathbf{A}\otimes\mathbf{B} = 
+	\begin{bmatrix} 
+		a_{11} \mathbf{B} & \cdots & a_{1n}\mathbf{B} \\ 
+		\vdots & \ddots & \vdots 
+		\\ a_{m1} \mathbf{B} & \cdots & a_{mn} \mathbf{B} 
+	\end{bmatrix}
+\end{equation} \par
+%-----------------------------------------------
 \subsection{Factorized Convolution Operator}
+Instead of learning one separate filter of each feature channel $d$, we use a smaller set of basis filters 
+$f^1, \cdots, f^C$, where $C < D$. Then the filter for feature layer $d$ could be constructed as: 
+$f^d = \sum^C_{c=1} p_{d,c}f^c$. \par
+Define: $P=(p_{d,c})_{D \times C}$, then the filter could be written as: $(Pf)_{D \times 1}$, so we have 
+the factorized convolution operator from (\ref{eq:score}), \par
+\begin{equation}
+	S_{Pf}\{x\}= Pf*J\{x\}=\sum_{c,d} p_{d,c} f^c * J_d\{x^d\} = f*P^TJ\{x\}
+\end{equation} \par
 
+\begin{equation} \label{eq:targetFactorized}
+	E(f, P)=\norm{\hat{z}^TP\hat{f}-\hat{y}_j}^2_{l^2}
+		 + \sum^C_{c=1} \norm{\hat{w} * \hat{f}^c}^2_{l^2}
+		 + \lambda \norm{P}^2_F
+\end{equation} \par
+
+\begin{align} \begin{split} \label{eq:approTayor}
+	\hat{z}^T(P_i+\Delta P)(\hat{f}_i+\Delta\hat{f}) 
+	&\approx \hat{z}^T P_i \hat{f}_{i, \Delta} +  \hat{z}^T \Delta P \hat{f}_{i} \\
+	&= \hat{z}^T P_i \hat{f}_{i, \Delta} + (\hat{f}_i \otimes \hat{z})^T vec(\Delta P)
+\end{split}\end{align} 
+where $\hat{f}_{i, \Delta} = \hat{f}_i + \Delta \hat{f}$. \par
+Substitute (\ref{eq:approTayor}) into (\ref{eq:targetFactorized}):
+\begin{equation}
+	\tilde{E}(\hat{f}_{i, \Delta}, \Delta P)
+		=\norm{\hat{z}^TP_i\hat{f}_{i, \Delta}+ (\hat{f}_i \otimes \hat{z})^T vec(\Delta P)
+ -\hat{y}_j}^2_{l^2}
+		 + \sum^C_{c=1} \norm{\hat{w} * \hat{f}^c}^2_{l^2}
+		 + \mu \norm{P_i + \Delta P}^2_F
+\end{equation} \par
 %-----------------------------------------------
 \subsection{Generative Sample Space Model}
+\begin{equation} 
+	E(f)=\mathbb{E} \{\norm{S_f\{x_j\}-y}^2_{L^2} \}+ \sum^D_{d=1} \norm{w f^d}^2_{L^2} 
+\end{equation}
 
+\begin{equation} 
+	\pi_n = \pi_k + \pi_l , \mu_n = \frac{\pi_k\mu_k+\pi_l\mu_l}{\pi_k+\pi_l}
+\end{equation}
+
+\begin{equation} 
+	E(f)=\sum^L_{l=1} \pi_l \norm{S_f\{\mu_l\}-y_0}^2_{L^2} + \sum^D_{d=1} \norm{w f^d}^2_{L^2} 
+\end{equation}
 %-----------------------------------------------
 \subsection{Update strategy}
 Update the filter by starting the optimization process in every $N_s$th frame instead of every time.
