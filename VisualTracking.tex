@@ -22,7 +22,7 @@
 \usepackage{overpic}
 \usepackage[utf8]{inputenc}
 \usepackage[american]{babel}
-\usepackage[round]{natbib}
+%\usepackage[round]{natbib}
 \usepackage{graphicx}
 \numberwithin{equation}{section}
 \geometry{left=1.5cm,right=1.5cm,top=1.5cm,bottom=1.5cm}
@@ -47,8 +47,8 @@
 \maketitle
 \tableofcontents
 %=======================================
-\section{HOG feature \citep{dalal2005histograms} \citep{felzenszwalb2010object}} 
-\subsection{Original HOG feature  \citep{dalal2005histograms} } \label{chap:hog}
+\section{HOG feature \cite{dalal2005histograms} \cite{felzenszwalb2010object}} 
+\subsection{Original HOG feature  \cite{dalal2005histograms} } \label{ch:hog}
 Basic idea: local object appearance and shape can often be characterized rather well
 by the distribution of local intensity gradient or edge directions, even without precise knowledge
 of the corresponding gradient or edge position. \par
@@ -91,7 +91,7 @@ Input - detection window with size: $64 \times 128$.
 		\end{itemize}	
 \end{enumerate}
 %--------------------------------
-\subsection{Improved HOG feature \citep{felzenszwalb2010object}}
+\subsection{Improved HOG feature \cite{felzenszwalb2010object}}
 Basic idea: using 13-dimensional feature instead of previous 36-dimensional with no significant effect, and
 add  contrast sensitive and contrast insensitive features to a 31-dimensional feature vector to improve the 
 performance. \par
@@ -171,9 +171,12 @@ Input - image size: $w \times h$.
 		\end{itemize}	
 \end{enumerate}
 %=======================================
-\section{CN feature \citep{van2007learning}}
+\section{CN feature \cite{van2007learning}}
+Color names (CN) are linguistic color labels assigned by humans to represent colors in the world. In English, it contains eleven basic color terms: black, blue, brown, green, orange, pink, purple, red, white and yellow. \par
+Color naming is an operation that associates RGB observations with linguistic color labels.  \par
+In \cite{van2007learning}, it provides the mapping automatically learned from images retrieved with Google-image search. It maps the RGB values to a probabilistic 11 dimensional color representation which sums up to 1. \par
 %=======================================
-\section{Deep feature \citep{chatfield2014return}}
+\section{Deep feature \cite{chatfield2014return}}
 	\begin{table}[h!]
   		\centering
   		\begin{tabular}{c|c|c|c|c|c|c|c}
@@ -200,8 +203,17 @@ Equation to calculate output size from input for convolution layer:
 \begin{equation}
 	\abs{Ouput} = \lfloor{\frac{\abs{Input} - size + pad1 + pad2}{stride}}\rfloor + 1
 \end{equation}	
+
 %=======================================
-\section{C-COT \citep{DanelljanECCV2016}}
+\section{MOSSE \cite{bolme2010visual}}
+%=======================================
+\section{CSK \cite{henriques2012exploiting}}
+
+%=======================================
+\section{KCF / DCF \cite{henriques2015high}}
+
+%=======================================
+\section{C-COT \cite{DanelljanECCV2016}}
 \subsection{Preliminaries}
 \subsubsection{Basic Notations}
 Complex-value functions $g, h: \mathbb{R} \rightarrow \mathbb{C}$ are periodic with period $T > 0$. \par
@@ -218,10 +230,10 @@ Complex exponential functions:
 $\{e_k(t)\}^{\infty}_{-\infty}$ forms an orthonormal basis for $L^2(T)$. \par
 
 %--------------------------------------------------
-\subsubsection{Matrix Derivatives \citep{nasrabadi2007pattern}}
+\subsubsection{Matrix Derivatives \cite{nasrabadi2007pattern}}
 \begin{equation} \label{eq:matrixderivativ1}
-	\frac{\partial}{\partial \bm{x}}(\bm{x^Ta}) = 
-	\frac{\partial}{\partial \bm{x}}(\bm{a^Tx})= \bm{a}
+	\frac{\partial}{\partial \bm{x}}(\bm{x^Ha}) = 
+	\frac{\partial}{\partial \bm{x}}(\bm{a^Hx})= \bm{a}
 \end{equation}
 
 \begin{equation} \label{eq:matrixderivativ2}
@@ -266,17 +278,27 @@ Fourier transformation of $g \in L^2(T)$:
 	\hat{g}[k] = \langle g , e_k \rangle = \frac{1}{T} \int^{T}_{0} g(t)e^{-i 2\pi kt/T} dt
 \end{equation} \par
 
-Any $g \in L^2(T)$ can be expressed as: $g=\sum^{\infty}_{-\infty}\hat{g}[k] e_k$. \par
-Shift property: For any real number $L$, if $h(t)=g(t-L)$, then
+Any $g \in L^2(T)$ can be expressed as: $g(t)=\sum^{\infty}_{-\infty}\hat{g}[k] e_k$. \par
+\textbf{Shift property:} For any real number $L$, if $h(t)=g(t-L)$, then
 \begin{equation} \label{eq:fouriershift}
 	\hat{h}[k]=e^{-2\pi i L k} \hat{g}[k]
 \end{equation}
 
-Parseval's formula: 
+\textbf{Parseval's formula:}
 \begin{equation} \label{eq:parseval}
-	\norm{g}^2=\norm{\hat{g}}^2_{l^2}
+	\norm{g}^2_{L^2}=\norm{\hat{g}}^2_{l^2}
 \end{equation}
 where $\norm{g}^2= \langle g , g \rangle$ and $\norm{\hat{g}}^2_{l^2}=\sum^{\infty}_{-\infty}\abs{\hat{g}[k]}^2$. \par
+
+\textbf{Poisson summation formula:}
+\begin{equation}
+	\sum_{n=-\infty}^\infty f(n)=\sum_{k=-\infty}^\infty \hat f\left(k\right)
+\end{equation} \par
+\begin{equation} \label{eq:poisson}
+	\sum_{n=-\infty}^{\infty} s(t + nT)=\sum_{k=-\infty}^{\infty} \frac{1}{T}\cdot \hat s\left(\frac{k}{T}\right)e^{i 2\pi \frac{k}{T} t }
+\end{equation} \par
+%--------------------------------------------------
+\subsubsection{FFT}
 
 %--------------------------------------------------
 \subsubsection{Convolution}
@@ -338,25 +360,18 @@ or
             \end{bmatrix}_{m \times (m+n-1)}
 \end{equation}
 
-%--------------------------------------------------
-\subsubsection{Poisson summation formula}
-\begin{equation}
-	\sum_{n=-\infty}^\infty f(n)=\sum_{k=-\infty}^\infty \hat f\left(k\right)
-\end{equation} \par
-\begin{equation} \label{eq:poisson}
-	\sum_{n=-\infty}^{\infty} s(t + nT)=\sum_{k=-\infty}^{\infty} \frac{1}{T}\cdot \hat s\left(\frac{k}{T}\right)e^{i 2\pi \frac{k}{T} t }
-\end{equation} \par
+
 %--------------------------------------------------
 \subsubsection{Newton method} \label{ch:newtonmethod}
 
 %--------------------------------------------------
-\subsubsection{Conjugate Gradient \citep{shewchuk1994introduction}} \label{ch:conjugategradient}
+\subsubsection{Conjugate Gradient \cite{shewchuk1994introduction}} \label{ch:conjugategradient}
 
 %--------------------------------------------------
 \subsection{Continuous Learning Formulation}
 $x_j$: Training Samples. \par
 $d \in \{1, \cdots , D\}$: Feature channel of training samples (ex. if choose deep layer 1, 5 as features, then $D = 2$). \par
-$N_d$: Number of spatial sample points in feature channel d (ex. for HOG feature $N_{HOG}=31 \times 105$ \autoref{chap:hog}). \par
+$N_d$: Number of spatial sample points in feature channel d (ex. for HOG feature $N_{HOG}=31 \times 105$ \autoref{ch:hog}). \par
 $\chi=\mathbb{R}^{N_1} \times \cdots \times \mathbb{R}^{N_D}$. \par
 $\{x^d_j[n]\}, n \in \{0, \cdots, N_d -1\}$: Feature points in channel d of training sample $x_j$.\par
 $[0, T) \subset \mathbb{R} $: Spatial support of the feature map, where $T$ is the size of the support region.\par
@@ -423,14 +438,15 @@ And define:
 		X^d_j[-K_d]\hat{b}_d[-K_d] & \cdots & 0 \\
 		\vdots & \ddots & \vdots \\
 		0 & \cdots & X^d_j[K_d]\hat{b}_d[K_d] \\
-		\vdots & \cdots & \vdots \\
-		0 & \cdots & 0
-	\end{bmatrix}_{(2K+1)\times(2K_d+1)}
-	 \text{,   }
+	\end{bmatrix}_{(2K_d+1)\times(2K_d+1)}
+\end{equation} \par
+\begin{equation}
 	A_j = 
 	\begin{bmatrix}
-		A_j^1 & \cdots & A_j^D
-	\end{bmatrix}_{(2K+1)\times \sum^{D}_{d=1}(2K_d+1)}
+		0_{(K-K_1)\times(2K_1+1)} & \cdots & 0_{(K-K_D)\times(2K_D+1)}  \\
+		A_j^1 & \cdots & A_j^D \\
+		0_{(K-K_1)\times(2K_1+1)} & \cdots & 0_{(K-K_D)\times(2K_D+1)} 
+	\end{bmatrix}_{(2K+1)\times \sum^D_{d=1}(2K_d+1)}
 \end{equation} \par
 Let $L$ be the number of non-zero coefficients $\hat{w}[k]$, such that  $\hat{w}[k]=0$ for all $\abs{k}>L$. \par
 Define $W_d$ to be the $(2K_d+2L+1) \times (2K_d+1)$ Toeplitz matrix corresponding to 
@@ -490,7 +506,6 @@ The equation (\ref{eq:targetMatrix}) becomes:
 		 - \hat{\mathbf{y}}^H \Gamma A \hat{\mathbf{f}} + \hat{\mathbf{y}}^H \Gamma \hat{\mathbf{y}}
 		 + \hat{f}^H W^HW \hat{f} 
 \end{split}\end{align} \par
-
 Do the derivative to $\hat{\bm {f}}$ for the equation(\ref{eq:targetDerivative}) by using the properties (\ref{eq:matrixderivativ1}) and (\ref{eq:matrixderivativ4}):
 \begin{align}
 	A^H \Gamma (A \hat{\bm{f}} - \hat{\bm{y}})  
@@ -570,7 +585,7 @@ where the Fourier transformation of $b(t)$ is:
 \end{equation}
 
 %-----------------------------------------------
-\subsection{Spatially Regularization $W$ \citep{danelljan2015learning}}
+\subsection{Spatially Regularization $W$ \cite{danelljan2015learning}}
 To resolve the problem of unwanted boundary effects of discriminatively learned correlation filters, a spatially regularization is introduced:
 \begin{equation}
 	w(m, n) = \mu + \eta(m/P)^2 + \eta(n/Q)^2
@@ -595,7 +610,7 @@ Using Conjugate Gradient (\ref{ch:conjugategradient}) to iteratively solving the
 \subsubsection{Parameters}
 Check file params.h in the code \url{https://github.com/rockkingjy/OpenTrackers}. 
 %=======================================
-\section{ECO \citep{DanelljanCVPR2017}} 
+\section{ECO \cite{DanelljanCVPR2017}} 
 \subsection{Preliminaries}
 \subsubsection{Kronecker product}
 If \textbf{A} is an $m \times n$ matrix and \textbf{B} is a $p \times q$ matrix, then the Kronecker product $A \otimes B$ is the $mp  \times nq$ block matrix:
@@ -607,37 +622,176 @@ If \textbf{A} is an $m \times n$ matrix and \textbf{B} is a $p \times q$ matrix,
 		\\ a_{m1} \mathbf{B} & \cdots & a_{mn} \mathbf{B} 
 	\end{bmatrix}
 \end{equation} \par
+\subsubsection{Forbenius norm} \label{ch:forbenius}
+\begin{equation}
+	\|A\|_{\rm F} = \sqrt{\sum_{i=1}^m \sum_{j=1}^n |a_{ij}|^2} = \sqrt{\operatorname{trace}(A^\dagger A)} = \sqrt{\sum_{i=1}^{\min\{m, n\}} \sigma_i^2(A)}
+\end{equation}
+\subsubsection{Gauss-Newton Method} \label{ch:gaussnewton}
 %-----------------------------------------------
 \subsection{Factorized Convolution Operator}
+\subsubsection{Factorized convolution}
+Define: \par
+$\hat{f}_i$ and $P_i$ means the value of $i$th iteration. \par
+$P=(p_{d,c})_{D \times C}$. \par
+$\hat{z}^d[k]=X^d[k]\hat{b}_d[k]$. \par
 Instead of learning one separate filter of each feature channel $d$, we use a smaller set of basis filters 
-$f^1, \cdots, f^C$, where $C < D$. Then the filter for feature layer $d$ could be constructed as: 
+$f^1, \cdots, f^C$, where $C < D$. Then the filter for any feature layer $d$ could be constructed as: 
 $f^d = \sum^C_{c=1} p_{d,c}f^c$. \par
-Define: $P=(p_{d,c})_{D \times C}$, then the filter could be written as: $(Pf)_{D \times 1}$, so we have 
-the factorized convolution operator from (\ref{eq:score}), \par
+Then the filter could be written as: $(Pf)_{D \times 1}$, so we have 
+the factorized convolution operator from (\ref{eq:score}), with the linearity property of convolution, \par
 \begin{equation}
 	S_{Pf}\{x\}= Pf*J\{x\}=\sum_{c,d} p_{d,c} f^c * J_d\{x^d\} = f*P^TJ\{x\}
 \end{equation} \par
-
+Here $P^T$ resembles a linear dimensionality reduction operator. \par
+We now learning the filter $f$ and $P^T$ jointly. \par
+Add a extra regularization using the Forbenius norm (\$ \ref{ch:forbenius}) of P, and now using just a \textbf{single} sample, the loss of (\ref{eq:target}) becomes: 
 \begin{equation} \label{eq:targetFactorized}
-	E(f, P)=\norm{\hat{z}^TP\hat{f}-\hat{y}_j}^2_{l^2}
-		 + \sum^C_{c=1} \norm{\hat{w} * \hat{f}^c}^2_{l^2}
+	E(f, P)=\norm{S_{Pf}\{x\}-\hat{y}}^2_{L^2}
+		 + \sum^C_{c=1} \norm{w f^c}^2_{L^2}
 		 + \lambda \norm{P}^2_F
 \end{equation} \par
-
+By applying the Parseval's formula (\ref{eq:parseval}), 
+\begin{equation} \label{eq:targetFourierFactorized}
+	E(f, P)=\norm{\hat{z}^TP\hat{f}-\hat{y}}^2_{l^2}
+		 + \sum^C_{c=1} \norm{\hat{w} * \hat{f}^c}^2_{l^2}
+		 + \lambda \norm{P}^2_F
+\end{equation}
+where $(\hat{z}^TP\hat{f})[k]=\sum^D_{d=1}\sum^C_{c=1}\hat{z}^d[k]p_{d,c}\hat{f}^c[k]$. \par
+We use Gauss-Newton (\ref{ch:gaussnewton})  and Conjugate Gradient (\ref{ch:conjugategradient}) methods to optimize the quadratic subproblems. The Gauss-Newton method is derived by linearizing the residuals in {\ref{eq:targetFourierFactorized}) using a first order Taylor series expansion, 
 \begin{align} \begin{split} \label{eq:approTayor}
 	\hat{z}^T(P_i+\Delta P)(\hat{f}_i+\Delta\hat{f}) 
 	&\approx \hat{z}^T P_i \hat{f}_{i, \Delta} +  \hat{z}^T \Delta P \hat{f}_{i} \\
 	&= \hat{z}^T P_i \hat{f}_{i, \Delta} + (\hat{f}_i \otimes \hat{z})^T vec(\Delta P)
 \end{split}\end{align} 
-where $\hat{f}_{i, \Delta} = \hat{f}_i + \Delta \hat{f}$. \par
-Substitute (\ref{eq:approTayor}) into (\ref{eq:targetFactorized}):
-\begin{equation}
+where $\hat{f}_{i, \Delta} = \hat{f}_i + \Delta \hat{f}$, and $\otimes$ is Kronecker product. \par
+Substitute (\ref{eq:approTayor}) into (\ref{eq:targetFourierFactorized}):
+\begin{equation} \label{eq:factorizedConvGaussNewton}
 	\tilde{E}(\hat{f}_{i, \Delta}, \Delta P)
 		=\norm{\hat{z}^TP_i\hat{f}_{i, \Delta}+ (\hat{f}_i \otimes \hat{z})^T vec(\Delta P)
  -\hat{y}_j}^2_{l^2}
 		 + \sum^C_{c=1} \norm{\hat{w} * \hat{f}^c}^2_{l^2}
-		 + \mu \norm{P_i + \Delta P}^2_F
+		 + \lambda \norm{P_i + \Delta P}^2_F
+\end{equation} 
+which is a linear least squares problem. \par
+Then use Conjugate Gradient to optimize each Gauss-Newton subproblem to obtain the new filter 
+$\hat{f}^*_{i, \Delta}$ and $\Delta P^*$, and the filter and matrix is updated as: $\hat{f}_{i+1}=\hat{f}^*_{i, \Delta}$
+and $P_{i+1}=P_i+\Delta P^*$. \par
+\subsubsection{Matrix version of Factorized Convolution Operator}
+Define: 
+\begin{equation}
+	\hat{\bm{z}}^d= 
+	\begin{bmatrix}
+		\hat{z}^d[-K_d] \\  \vdots \\ \hat{z}^d[K_d] 
+	\end{bmatrix}_{(2K_d+1) \times 1}
+	\text{,   }
+	\hat{\bm{z}}= 
+	\begin{bmatrix}
+		\hat{\bm{z}}^1 \\ \hat{\bm{z}}^2 \\ \vdots \\ \hat{\bm{z}}^D
+	\end{bmatrix}_{\sum^{D}_{d=1}(2K_d+1) \times 1}
 \end{equation} \par
+\begin{equation}
+	\hat{\bm{f}}_i^c= 
+	\begin{bmatrix}
+		\hat{f}^c_i[-K_c] \\  \vdots \\ \hat{f}^c_i[K_c] 
+	\end{bmatrix}_{(2K_c+1) \times 1}
+	\text{,   }
+	\hat{\bm{f}}_i= 
+	\begin{bmatrix}
+		\hat{\bm{f}}^1_i \\ \hat{\bm{f}}^2_i \\ \vdots \\ \hat{\bm{f}}^C_i
+	\end{bmatrix}_{\sum^{C}_{d=1}(2K_c+1) \times 1}
+\end{equation} \par
+\begin{equation}
+	\hat{\bm{f}}_{i, \Delta}^c= 
+	\begin{bmatrix}
+		\hat{f}^c_{i, \Delta}[-K_c] \\  \vdots \\ \hat{f}^c_{i, \Delta}[K_c] 
+	\end{bmatrix}_{(2K_c+1) \times 1}
+	 \text{,   }
+	\hat{\bm{f}}_{i, \Delta}= 
+	\begin{bmatrix}
+		\hat{\bm{f}}^1_{i, \Delta} \\ \hat{\bm{f}}^2_{i, \Delta} \\ \vdots \\ \hat{\bm{f}}^D_{i, \Delta}
+	\end{bmatrix}_{\sum^{C}_{c=1}(2K_c+1) \times 1}	
+	 \text{,   }
+	 \hat{\bm{y}}_j= 
+	\begin{bmatrix}
+		\hat{y}_j[-K] \\  \vdots \\ \hat{y}_j[K] 
+	\end{bmatrix}_{(2K+1) \times 1}
+\end{equation}
+\begin{equation}
+	\bm{P}=
+	\begin{bmatrix}
+		p_{d, c}
+	\end{bmatrix}_{\sum^{D}_{d=1}(2K_d+1) \times \sum^{C}_{c=1}(2K_c+1)}
+	\text{, }
+	\bm{P}\bm{\hat{f}_i}=
+	\begin{bmatrix}
+		p_{d, c}\bm{\hat{f}}^c_i 
+	\end{bmatrix}_{\sum^{D}_{d=1}(2K_d+1) \times 1}
+	\text{, }
+	\bm{\hat{z}^TP\hat{f}_{i,\Delta}} \text{ is a scala.}
+\end{equation}\par
+\begin{equation}
+	\bm{\hat{f}}_i \otimes \bm{\hat{z}}=
+	\begin{bmatrix}
+		\bm{\hat{f}^c_i\hat{z}^d}
+	\end{bmatrix}_{\sum^{C}_{c=1}(2K_c+1)\sum^{D}_{d=1}(2K_d+1) \times 1}
+	\text{, }
+	 B_f= 
+	\begin{bmatrix}
+		(\bm{\hat{f}}_i \otimes \bm{\hat{z}})[-K]^T \\  \vdots \\ (\bm{\hat{f}}_i \otimes \bm{\hat{z}})[K]^T
+	\end{bmatrix}_{(2K+1) \times \sum^{C}_{c=1}(2K_c+1)\sum^{D}_{d=1}(2K_d+1)}
+\end{equation}
+where $K:=\max_dK_c$.  \par
+\begin{equation}
+ 	\bm{p}= 
+	\begin{bmatrix}
+		vec(p_{d,c})
+	\end{bmatrix}_{\sum^{C}_{c=1}(2K_c+1)\sum^{D}_{d=1}(2K_d+1) \times 1}
+	 \text{,   }
+	 \bm{\Delta p}= 
+	\begin{bmatrix}
+		vec(\Delta p_{d,c})
+	\end{bmatrix}_{\sum^{C}_{c=1}(2K_c+1)\sum^{D}_{d=1}(2K_d+1) \times 1}
+\end{equation}
+\begin{equation}
+	A^c_j = 
+	\begin{bmatrix}
+		X^c_j[-K_c]\hat{b}_c[-K_c] \bm{p}_c & \cdots & 0 \\
+		\vdots & \ddots & \vdots \\
+		0 & \cdots & X^c_j[K_c]\hat{b}_c[K_c]  \bm{p}_c\\
+	\end{bmatrix}_{(2K_c+1)\times(2K_c+1)}
+\end{equation} \par
+\begin{equation}
+	A_P = 
+	\begin{bmatrix}
+		0_{(K-K_1)\times(2K_1+1)} & \cdots & 0_{(K-K_C)\times(2K_C+1)}  \\
+		A_j^1 & \cdots & A_j^C \\
+		0_{(K-K_1)\times(2K_1+1)} & \cdots & 0_{(K-K_C)\times(2K_C+1)} 
+	\end{bmatrix}_{(2K+1)\times \sum^C_{c=1}(2K_c+1)}
+\end{equation} \par
+The the equation (\ref{eq:factorizedConvGaussNewton}) becomes:
+\begin{equation} \label{eq:targetDerivativeECO}
+	\tilde{E}(\hat{\bm{f}}_{i, \Delta}, \bm{\Delta p})
+		=\norm{A_P\hat{\bm{f}}_{i, \Delta}+ B_f \bm{\Delta p} -\hat{\bm{y}}}^2_2
+		 + \norm{W \hat{\bm{f}}_{i, \Delta}}^2_2
+		 + \lambda \norm{\bm{p} + \bm{\Delta p}}^2_2
+\end{equation} \par
+Do the derivative to $\hat{\bm {f}}_{i, \Delta}$ and $\bm{\Delta p}$ for the equation(\ref{eq:targetDerivativeECO}) by using the properties (\ref{eq:matrixderivativ1}) and (\ref{eq:matrixderivativ4}):
+\begin{equation}
+	\begin{bmatrix}
+		A^H_PA_P+W^HW & A^H_PB_f \\
+		B^H_fA_P			& B^H_fB_f+\lambda I
+	\end{bmatrix}
+	\begin{bmatrix}
+		\bm{\hat{f}_{i, \Delta}} \\
+		\bm{\Delta p}
+	\end{bmatrix}
+	=
+	\begin{bmatrix}
+		A^H_P\bm{\hat{y}} \\
+		B^H_f\bm{\hat{y}} -\lambda \bm{p}
+	\end{bmatrix}
+\end{equation} \par
+Then we use Conjugate Gradient to iteratively solve this equation. 
 %-----------------------------------------------
 \subsection{Generative Sample Space Model}
 \begin{equation} 
@@ -789,7 +943,7 @@ void opencvTest()
 \end{itemize}
 %=======================================
 \renewcommand\refname{Reference}
-\bibliographystyle{unsrtnat}
+\bibliographystyle{ieeetr} %unsrtnat
 \bibliography{VisualTracking} 
 \clearpage
 \end{document}
