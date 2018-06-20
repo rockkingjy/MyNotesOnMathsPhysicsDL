@@ -252,6 +252,22 @@ $\{e_k(t)\}^{\infty}_{-\infty}$ forms an orthonormal basis for $L^2(T)$. \par
 	= \bm{A^HAx + A^HAx} = 2\bm{A^HAx}
 \end{equation}
 %--------------------------------------------------
+\subsubsection{Kronecker product} \label{ch:kronecker}
+If \textbf{A} is an $m \times n$ matrix and \textbf{B} is a $p \times q$ matrix, then the Kronecker product $A \otimes B$ is the $mp  \times nq$ block matrix:
+\begin{equation}
+	\mathbf{A}\otimes\mathbf{B} = 
+	\begin{bmatrix} 
+		a_{11} \mathbf{B} & \cdots & a_{1n}\mathbf{B} \\ 
+		\vdots & \ddots & \vdots 
+		\\ a_{m1} \mathbf{B} & \cdots & a_{mn} \mathbf{B} 
+	\end{bmatrix}
+\end{equation} \par
+%--------------------------------------------------
+\subsubsection{Forbenius norm} \label{ch:forbenius}
+\begin{equation}
+	\|A\|_{\rm F} = \sqrt{\sum_{i=1}^m \sum_{j=1}^n |a_{ij}|^2} = \sqrt{\operatorname{trace}(A^\dagger A)} = \sqrt{\sum_{i=1}^{\min\{m, n\}} \sigma_i^2(A)}
+\end{equation}
+%--------------------------------------------------
 \subsubsection{Fourier transformation}
 Fourier transformation:
 \begin{equation}\label{eq:fourierTrans}
@@ -359,10 +375,11 @@ or
                 0 & \ldots & 0 & 0 & 0 & x_1 & \ldots & x_{n-2} & x_{n-1} & x_n
             \end{bmatrix}_{m \times (m+n-1)}
 \end{equation}
-
-
 %--------------------------------------------------
 \subsubsection{Newton method} \label{ch:newtonmethod}
+
+%--------------------------------------------------
+\subsubsection{Gauss-Newton Method} \label{ch:gaussnewton}
 
 %--------------------------------------------------
 \subsubsection{Conjugate Gradient \cite{shewchuk1994introduction}} \label{ch:conjugategradient}
@@ -389,16 +406,19 @@ The target is localized by maximizing the confidence score in an image region. \
 
 The filter $f$ is trained by minimizing the functional: 
 \begin{equation} \label{eq:target}
-	E(f)=\sum^{m}_{j=1} \alpha_j \norm{S_f\{x_j\}-y_j}^2 + \sum^D_{d=1} \norm{w f^d}^2
+	E(f)=\sum^{m}_{j=1} \alpha_j \norm{S_f\{x_j\}-y_j}^2_{L^2} + \sum^D_{d=1} \norm{w f^d}^2_{L^2}
 \end{equation}
 
 %--------------------------------------------------
 \subsection{Training the filter $f$ in Fourier domain}
 To train the filter f, we minimize the function (\ref{eq:target}) in the Fourier domain. \par
 By (\ref{eq:fouriershift}) and (\ref{eq:fourierdisc}), we have:
-\begin{equation}
-	\widehat{J_d\{x^d\}}[k]=\sum^{N_d-1}_{n=0} x^d[n] e^{-i\frac{2\pi}{N_d}kn} \hat{b}_d[k]=X^d[k] \hat{b}_d[k] 
-\end{equation} \par
+\begin{align}\begin{split}
+	\widehat{J_d\{x^d\}}[k]&=\sum^{N_d-1}_{n=0} x^d[n] \widehat{b_d(t-\frac{T}{N_d} n)}[k] \\
+	&=\sum^{N_d-1}_{n=0} x^d[n] e^{-i\frac{2\pi}{N_d}kn} \hat{b}_d[k] \\
+	&=\hat{b}_d[k] \sum^{N_d-1}_{n=0} x^d[n] e^{-i\frac{2\pi}{N_d}kn}  \\
+	&=X^d[k] \hat{b}_d[k] 
+\end{split}\end{align} \par 
 With the property of (\ref{eq:convprop}), we have:
 \begin{equation} \label{eq:scoreFourier}
 	\widehat{S_f\{x\}}[k]= \sum^D_{d=1} \hat{f}^d[k] X^d[k] \hat{b}_d[k] 
@@ -410,7 +430,7 @@ By using Parseval's formula (\ref{eq:parseval}):
 \end{equation}
 The functional $E(f)$ can be minimized with respect of $\hat{f}^d[k]$. \par 
 
-%--------------------------------------------------
+%------------------------------------------------
 \subsection{Training the filter $\hat{\bm{f}}$ as finite matrix}
 In practice the filter $f$ needs to be represented by a \textbf{finite} set. So we obtain a \textbf{finite} representation by minimizing (\ref{eq:targetFourier}) over the finite-dimensional subspace $V = span\{e_k\}^{K_1}_{-K_1} \times \cdots \times span\{e_k\}^{K_D}_{-K_D} \subset L^2(T)^D$, by assuming $\hat{f}^d[k] = 0$ for $\abs{k} > K_d$. Here we set $K_d = \lfloor \frac{N_d}{2} \rfloor$. \par
 Define: 
@@ -470,7 +490,6 @@ the convolution operator $W_d\hat{\bm{f}}^d=vec \ \hat{w}*\hat{f}^d$ (\ref{eq:co
 	\end{bmatrix}_{(2K_d+1) \times 1}
 \end{equation} \par
 Define $W=W_1 \oplus \cdots \oplus W_D$. \par
-
 Then the matrix version of (\ref{eq:targetFourier}) becomes:
 \begin{equation} \label{eq:targetMatrix}
 	E_V(f)=\sum^{m}_{j=1} \alpha_j \norm{A_j \hat{\mathbf{f}}-\hat{\mathbf{y}}_j}^2_{2}
@@ -479,21 +498,20 @@ Then the matrix version of (\ref{eq:targetFourier}) becomes:
 
 %--------------------------------------------------
 \subsection{The normal equations of $\hat{\bm{f}}$}
-Define: 
+Define the matrix with m samples: 
 \begin{equation}
 	A = 
 	\begin{bmatrix}
 		A_1 \\ A_2 \\ \vdots \\ A_m
-	\end{bmatrix}
+	\end{bmatrix}_{(2K+1)m \times \sum^D_{d=1}(2K_d+1)}
 	 \text{,   }
 	\hat{\bm{y}}= 
 	\begin{bmatrix}
 		\hat{\bm{y}}_1 \\ \hat{\bm{y}}_2 \\ \vdots \\ \hat{\bm{y}}_m
-	\end{bmatrix}
+	\end{bmatrix}_{(2K+1)m \times 1}
 	 \text{,   }
 	 \Gamma=\alpha_1 I  \oplus \cdots \oplus \alpha_m I
 \end{equation} \par
-
 
 The equation (\ref{eq:targetMatrix}) becomes:
 \begin{align} \begin{split} \label{eq:targetDerivative}
@@ -510,14 +528,13 @@ Do the derivative to $\hat{\bm {f}}$ for the equation(\ref{eq:targetDerivative})
 \begin{align}
 	A^H \Gamma (A \hat{\bm{f}} - \hat{\bm{y}})  
 	+ W^HW\hat{\bm{f}} = 0
-\end{align}
-
+\end{align} \par
 So the minimizer of (\ref{eq:targetMatrix}) is found by solving the equations:
 \begin{equation} \label{eq:normal}
 	(A^H \Gamma A + W^H W) \hat{\bm{f}} = A^H \Gamma \hat{\bm{y}}
 \end{equation}
 %--------------------------------------------------
-\subsection{The desired output $y_j$}
+\subsection{The desired output $y_j$} 
 $g_T(t)$: T-periodic repetition of function g, defined as:
 \begin{equation} \label{eq:periodic}
 	g_T(t) = \sum^{\infty}_{n=-\infty} g(t-nT)
@@ -550,6 +567,13 @@ So the Fourier transformation of $y_j(t)$ is:
 	&\stackrel{(\ref{eq:fouriergT})}{=} \frac{1}{T} \hat{z}_j(\frac{k}{T}) \\
 	&\stackrel{(\ref{eq:fourierz})}{=} \frac{\sqrt{2\pi\sigma^2}}{T}e^{-i 2 \pi \frac{k}{T} u_j-2(\sigma \pi \frac{k}{T})^2} 
 \end{split}\end{align} \par
+\begin{align}\begin{split}
+	\hat{y}_j=
+	\begin{bmatrix}
+		\hat{y}_j[-K] \\ \vdots \\ \hat{y}_j[K] 
+	\end{bmatrix}_{(2K+1) \times 1}
+\end{split}\end{align}
+where $K=max_d K_d$.
 %--------------------------------------------------
 \subsection{Interpolation function $b_d$}
 Standard cubic spline kernel: 
@@ -607,66 +631,74 @@ where $P \times Q$ denotes the target size. \par
 \end{enumerate}
 \subsubsection{Training}
 Using Conjugate Gradient (\ref{ch:conjugategradient}) to iteratively solving the equation (\ref{eq:normal}).
+\subsubsection{Sampling method} \label{ch:samplingccot}
+For each frame $j$, add one training sample $x_j$. The weights for each sample set to decay exponentially $\alpha_j \sim (1-\gamma)^{M-j}$. If the number of samples has reached a maximum number $M_{max}$, the sample with the smallest weight is replaced.
 \subsubsection{Parameters}
 Check file params.h in the code \url{https://github.com/rockkingjy/OpenTrackers}. 
 %=======================================
 \section{ECO \cite{DanelljanCVPR2017}} 
-\subsection{Preliminaries}
-\subsubsection{Kronecker product}
-If \textbf{A} is an $m \times n$ matrix and \textbf{B} is a $p \times q$ matrix, then the Kronecker product $A \otimes B$ is the $mp  \times nq$ block matrix:
-\begin{equation}
-	\mathbf{A}\otimes\mathbf{B} = 
-	\begin{bmatrix} 
-		a_{11} \mathbf{B} & \cdots & a_{1n}\mathbf{B} \\ 
-		\vdots & \ddots & \vdots 
-		\\ a_{m1} \mathbf{B} & \cdots & a_{mn} \mathbf{B} 
-	\end{bmatrix}
-\end{equation} \par
-\subsubsection{Forbenius norm} \label{ch:forbenius}
-\begin{equation}
-	\|A\|_{\rm F} = \sqrt{\sum_{i=1}^m \sum_{j=1}^n |a_{ij}|^2} = \sqrt{\operatorname{trace}(A^\dagger A)} = \sqrt{\sum_{i=1}^{\min\{m, n\}} \sigma_i^2(A)}
-\end{equation}
-\subsubsection{Gauss-Newton Method} \label{ch:gaussnewton}
 %-----------------------------------------------
 \subsection{Factorized Convolution Operator}
 \subsubsection{Factorized convolution}
-Define: \par
-$\hat{f}_i$ and $P_i$ means the value of $i$th iteration. \par
-$P=(p_{d,c})_{D \times C}$. \par
-$\hat{z}^d[k]=X^d[k]\hat{b}_d[k]$. \par
+$\hat{f}_i$ and $P_i$ with the under index $i$ means the value of the $i$th iteration. \par
 Instead of learning one separate filter of each feature channel $d$, we use a smaller set of basis filters 
 $f^1, \cdots, f^C$, where $C < D$. Then the filter for any feature layer $d$ could be constructed as: 
 $f^d = \sum^C_{c=1} p_{d,c}f^c$. \par
 Then the filter could be written as: $(Pf)_{D \times 1}$, so we have 
 the factorized convolution operator from (\ref{eq:score}), with the linearity property of convolution, \par
 \begin{equation}
-	S_{Pf}\{x\}= Pf*J\{x\}=\sum_{c,d} p_{d,c} f^c * J_d\{x^d\} = f*P^TJ\{x\}
-\end{equation} \par
+	S_{Pf}\{x\}= Pf*J\{x\}=\sum^C_{c=1} \sum^D_{d=1} p_{d,c} f^c * J_d\{x^d\} = f*P^TJ\{x\}
+\end{equation} 
+where 
+\begin{equation}
+	f = 
+	\begin{bmatrix}
+		f^1 \\ \vdots \\ f^C
+	\end{bmatrix}
+	\text{, }
+	P = 
+	\begin{bmatrix}
+		P_{1,1} & \cdots & P_{1,C} \\
+		\vdots & \cdots & \vdots \\
+		P_{D,1} & \cdots & P_{D,C} 
+	\end{bmatrix}_{D \times C}
+	\text{, }
+	J\{x\} = 
+	\begin{bmatrix}
+		J\{x\}^1 \\ \vdots \\ J\{x\}^D
+	\end{bmatrix}
+\end{equation}
 Here $P^T$ resembles a linear dimensionality reduction operator. \par
 We now learning the filter $f$ and $P^T$ jointly. \par
-Add a extra regularization using the Forbenius norm (\$ \ref{ch:forbenius}) of P, and now using just a \textbf{single} sample, the loss of (\ref{eq:target}) becomes: 
+Add a extra regularization using the Forbenius norm (ch. \ref{ch:forbenius}) of P, and now using just a \textbf{single} sample, the loss of (\ref{eq:target}) becomes: 
 \begin{equation} \label{eq:targetFactorized}
-	E(f, P)=\norm{S_{Pf}\{x\}-\hat{y}}^2_{L^2}
+	E(f, P)=\norm{S_{Pf}\{x\}-y}^2_{L^2}
 		 + \sum^C_{c=1} \norm{w f^c}^2_{L^2}
 		 + \lambda \norm{P}^2_F
 \end{equation} \par
+Do the Fourier transformation, 
+\begin{equation}
+	\widehat{S_{Pf}\{x\}} =\widehat{Pf*J\{x\}}
+	=\sum^D_{d=1}\sum^C_{c=1}p_{d,c}\hat{f}^c[k]X^d[k]\hat{b}_d[k]
+	=(\hat{z}^TP\hat{f})[k]
+\end{equation}
+where $\hat{z}^d[k]=\widehat{J_d\{x^d\}}[k]=X^d[k]\hat{b}_d[k]$. \par
 By applying the Parseval's formula (\ref{eq:parseval}), 
 \begin{equation} \label{eq:targetFourierFactorized}
 	E(f, P)=\norm{\hat{z}^TP\hat{f}-\hat{y}}^2_{l^2}
 		 + \sum^C_{c=1} \norm{\hat{w} * \hat{f}^c}^2_{l^2}
 		 + \lambda \norm{P}^2_F
-\end{equation}
-where $(\hat{z}^TP\hat{f})[k]=\sum^D_{d=1}\sum^C_{c=1}\hat{z}^d[k]p_{d,c}\hat{f}^c[k]$. \par
-We use Gauss-Newton (\ref{ch:gaussnewton})  and Conjugate Gradient (\ref{ch:conjugategradient}) methods to optimize the quadratic subproblems. The Gauss-Newton method is derived by linearizing the residuals in {\ref{eq:targetFourierFactorized}) using a first order Taylor series expansion, 
+\end{equation} \par
+We use Gauss-Newton (\ref{ch:gaussnewton})  and Conjugate Gradient (\ref{ch:conjugategradient}) methods to optimize the quadratic subproblems. The Gauss-Newton method is derived by linearizing the residuals in ({\ref{eq:targetFourierFactorized}) using a first order Taylor series expansion, 
 \begin{align} \begin{split} \label{eq:approTayor}
 	\hat{z}^T(P_i+\Delta P)(\hat{f}_i+\Delta\hat{f}) 
 	&\approx \hat{z}^T P_i \hat{f}_{i, \Delta} +  \hat{z}^T \Delta P \hat{f}_{i} \\
 	&= \hat{z}^T P_i \hat{f}_{i, \Delta} + (\hat{f}_i \otimes \hat{z})^T vec(\Delta P)
 \end{split}\end{align} 
-where $\hat{f}_{i, \Delta} = \hat{f}_i + \Delta \hat{f}$, and $\otimes$ is Kronecker product. \par
+where $\hat{f}_{i, \Delta} = \hat{f}_i + \Delta \hat{f}$, and $\otimes$ is Kronecker product (ch. \ref{ch:kronecker}). \par
 Substitute (\ref{eq:approTayor}) into (\ref{eq:targetFourierFactorized}):
 \begin{equation} \label{eq:factorizedConvGaussNewton}
-	\tilde{E}(\hat{f}_{i, \Delta}, \Delta P)
+	\tilde{E}(\hat{f}_{i, \Delta}, P+\Delta P)
 		=\norm{\hat{z}^TP_i\hat{f}_{i, \Delta}+ (\hat{f}_i \otimes \hat{z})^T vec(\Delta P)
  -\hat{y}_j}^2_{l^2}
 		 + \sum^C_{c=1} \norm{\hat{w} * \hat{f}^c}^2_{l^2}
@@ -677,7 +709,7 @@ Then use Conjugate Gradient to optimize each Gauss-Newton subproblem to obtain t
 $\hat{f}^*_{i, \Delta}$ and $\Delta P^*$, and the filter and matrix is updated as: $\hat{f}_{i+1}=\hat{f}^*_{i, \Delta}$
 and $P_{i+1}=P_i+\Delta P^*$. \par
 \subsubsection{Matrix version of Factorized Convolution Operator}
-Define: 
+To make things clear, I present all the matrix here: 
 \begin{equation}
 	\hat{\bm{z}}^d= 
 	\begin{bmatrix}
@@ -710,7 +742,8 @@ Define:
 	\begin{bmatrix}
 		\hat{\bm{f}}^1_{i, \Delta} \\ \hat{\bm{f}}^2_{i, \Delta} \\ \vdots \\ \hat{\bm{f}}^D_{i, \Delta}
 	\end{bmatrix}_{\sum^{C}_{c=1}(2K_c+1) \times 1}	
-	 \text{,   }
+\end{equation}
+\begin{equation}
 	 \hat{\bm{y}}_j= 
 	\begin{bmatrix}
 		\hat{y}_j[-K] \\  \vdots \\ \hat{y}_j[K] 
@@ -770,12 +803,25 @@ where $K:=\max_dK_c$.  \par
 \end{equation} \par
 The the equation (\ref{eq:factorizedConvGaussNewton}) becomes:
 \begin{equation} \label{eq:targetDerivativeECO}
-	\tilde{E}(\hat{\bm{f}}_{i, \Delta}, \bm{\Delta p})
+	\tilde{E}(\hat{\bm{f}}_{i, \Delta}, \bm{p + \Delta p})
 		=\norm{A_P\hat{\bm{f}}_{i, \Delta}+ B_f \bm{\Delta p} -\hat{\bm{y}}}^2_2
 		 + \norm{W \hat{\bm{f}}_{i, \Delta}}^2_2
 		 + \lambda \norm{\bm{p} + \bm{\Delta p}}^2_2
 \end{equation} \par
-Do the derivative to $\hat{\bm {f}}_{i, \Delta}$ and $\bm{\Delta p}$ for the equation(\ref{eq:targetDerivativeECO}) by using the properties (\ref{eq:matrixderivativ1}) and (\ref{eq:matrixderivativ4}):
+To expand it: 
+\begin{align}\begin{split}
+	\tilde{E}(\hat{\bm{f}}_{i, \Delta}, \bm{p + \Delta p}) 
+		=&(A_P\hat{\bm{f}}_{i, \Delta}+ B_f \bm{\Delta p} -\hat{\bm{y}})^H(A_P\hat{\bm{f}}_{i, \Delta}+ B_f \bm{\Delta p} -\hat{\bm{y}}) \\
+		& + (W \hat{\bm{f}}_{i, \Delta})^H(W \hat{\bm{f}}_{i, \Delta})
+		 + \lambda (\bm{p} + \bm{\Delta p})^H(\bm{p} + \bm{\Delta p}) \\
+		 =&(\hat{\bm{f}}_{i, \Delta}^HA_P^H+ \bm{\Delta p}^HB_f^H -\hat{\bm{y}}^H)(A_P\hat{\bm{f}}_{i, \Delta}+ B_f \bm{\Delta p} -\hat{\bm{y}}) \\
+		& + (\hat{\bm{f}}_{i, \Delta}^HW^H)(W \hat{\bm{f}}_{i, \Delta})
+		 + \lambda (\bm{p} ^H+ \bm{\Delta p}^H)(\bm{p} + \bm{\Delta p}) \\
+		 =&(f^HAAf+f^HA^HB\Delta p - f^HA^Hy) + (\Delta p^HB^HAf + \Delta p^HB^HB\Delta p - \Delta p^HB^Hy) \\
+		 &+(-y^HAf -y^HB\Delta p + y^Hy) + f^HW^HWf + \lambda (p^Hp+p^H\Delta p+\Delta p^H p + \Delta p^H\Delta p)
+\end{split}\end{align} 
+,the last formula removed the hats and index to make it clean. \par
+Do the derivative to $\hat{\bm {f}}_{i, \Delta}$ and $\bm{\Delta p}$ for the equation by using the properties (\ref{eq:matrixderivativ1}) and (\ref{eq:matrixderivativ4}), and equals them to zero, then rearrange the equations, we have:
 \begin{equation}
 	\begin{bmatrix}
 		A^H_PA_P+W^HW & A^H_PB_f \\
@@ -794,17 +840,30 @@ Do the derivative to $\hat{\bm {f}}_{i, \Delta}$ and $\bm{\Delta p}$ for the equ
 Then we use Conjugate Gradient to iteratively solve this equation. 
 %-----------------------------------------------
 \subsection{Generative Sample Space Model}
+The sampling method of C-COT is depicted in (ch. \ref{ch:samplingccot}), it has a issue of storing a large set of recent training samples. So a probabilistic generative model is proposed. \par
+The approach is based on the joint probability distribution of $p(x,y)$. So, replacing (\ref{eq:target}) by:
 \begin{equation} 
 	E(f)=\mathbb{E} \{\norm{S_f\{x_j\}-y}^2_{L^2} \}+ \sum^D_{d=1} \norm{w f^d}^2_{L^2} 
 \end{equation}
-
+here $\mathbb{E}$ is evaluated over the distribution $p(x,y)$. If we suppose $p(x,y)=\sum^m_{j=1}\alpha_j\delta_{x_j,y_j}(x,y)$, then we get the original equation (\ref{eq:target}). \par
+Notice that, the $y_j$in (\ref{eq:target}) only differ by a translation, it equals the shifting of the feature map. Hence, we could assume that the target is centered in the image region and all $y=y_0$ are identical. Then the distribution can be factorized as $p(x,y)=p(x)\delta_{y_0}(y)$. Thus, we only need to estimate $p(x)$, employ Gaussian Mixture Model (GMM):
+\begin{equation}
+	p(x)=\sum^L_{l=1} \pi_l \mathcal{N} (x;\mu_l;I)
+\end{equation}
+where $L$ is the number of components, $\pi_l$ is the prior weight of component $l$, $\mu_l$ is its mean. $I$ is covariance matrix. \par
+To update the GMM, if the number of components exceeds the $L$, we discard the component if its $\pi_l$ is below a threshold. Else, we merge the two closest components by:
 \begin{equation} 
 	\pi_n = \pi_k + \pi_l , \mu_n = \frac{\pi_k\mu_k+\pi_l\mu_l}{\pi_k+\pi_l}
-\end{equation}
-
+\end{equation} \par
+The distance of two components are calculated by $||\mu_k - \mu_l||$. Then the final loss is expressed as:
 \begin{equation} 
 	E(f)=\sum^L_{l=1} \pi_l \norm{S_f\{\mu_l\}-y_0}^2_{L^2} + \sum^D_{d=1} \norm{w f^d}^2_{L^2} 
+\end{equation} \par
+Compare to (\ref{eq:target}), it just do the following replacements:
+\begin{equation} 
+	m \rightarrow L \text{, } \alpha_j \rightarrow \pi_l \text{, } x_j \rightarrow \mu_l 
 \end{equation}
+so using the same method as C-COT to train it.
 %-----------------------------------------------
 \subsection{Update strategy}
 Update the filter by starting the optimization process in every $N_s$th frame instead of every time.
