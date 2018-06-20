@@ -47,6 +47,191 @@
 \maketitle
 \tableofcontents
 %=======================================
+\section{Math Foundation}
+\subsection{Basic Notations}
+Complex-value functions $g, h: \mathbb{R} \rightarrow \mathbb{C}$ are periodic with period $T > 0$. \par
+Space $L^2(T)$ : Hilbert space equipped with an inner product $\langle \cdot , \cdot \rangle$ of periodic functions with period $T>0$. \par
+For $g, h \in L^2(T)$, 
+\begin{equation}\label{eq:conj}
+	\langle g,h \rangle = \frac{1}{T} \int^{T}_{0} g(t) \overline{h(t)} dt
+\end{equation}
+where bar means complex conjugation. \par
+Complex exponential functions: 
+\begin{equation}
+	e_k(t) = e^{i 2\pi kt/T}
+\end{equation} \par
+$\{e_k(t)\}^{\infty}_{-\infty}$ forms an orthonormal basis for $L^2(T)$. \par
+
+%--------------------------------------------------
+\subsection{Matrix Derivatives \cite{nasrabadi2007pattern}}
+\begin{equation} \label{eq:matrixderivativ1}
+	\frac{\partial}{\partial \bm{x}}(\bm{x^Ha}) = 
+	\frac{\partial}{\partial \bm{x}}(\bm{a^Hx})= \bm{a}
+\end{equation}
+
+\begin{equation} \label{eq:matrixderivativ2}
+	\frac{\partial}{\partial \bm{x}}(\bm{AB}) = 
+	\frac{\partial \bm{A}}{\partial \bm{x}} \bm{B} + \bm{A} \frac{\partial \bm{B}}{\partial \bm{x}} 
+\end{equation}
+
+\begin{equation}\label{eq:matrixderivativ3}
+	\frac{\partial}{\partial \bm{x}}(\bm{A^{-1}}) = 
+	\bm{A}^{-1} \frac{\partial \bm{A}}{\partial \bm{x}} \bm{A}^{-1}
+\end{equation}
+
+\begin{equation}\label{eq:matrixderivativ4}
+	\frac{\partial}{\partial \bm{x}}(\norm{\bm{Ax}}^2) 
+	= \frac{\partial}{\partial \bm{x}} (\bm{x^HA^HAx} )
+	= \bm{A^HAx + A^HAx} = 2\bm{A^HAx}
+\end{equation}
+%--------------------------------------------------
+\subsection{Kronecker product} \label{ch:kronecker}
+If \textbf{A} is an $m \times n$ matrix and \textbf{B} is a $p \times q$ matrix, then the Kronecker product $A \otimes B$ is the $mp  \times nq$ block matrix:
+\begin{equation}
+	\mathbf{A}\otimes\mathbf{B} = 
+	\begin{bmatrix} 
+		a_{11} \mathbf{B} & \cdots & a_{1n}\mathbf{B} \\ 
+		\vdots & \ddots & \vdots 
+		\\ a_{m1} \mathbf{B} & \cdots & a_{mn} \mathbf{B} 
+	\end{bmatrix}_{mn\times nq}
+\end{equation} \par
+%--------------------------------------------------
+\subsection{Forbenius norm} \label{ch:forbenius}
+\begin{equation}
+	\|A\|_{\rm F} = \sqrt{\sum_{i=1}^m \sum_{j=1}^n |a_{ij}|^2} = \sqrt{\operatorname{trace}(A^\dagger A)} = \sqrt{\sum_{i=1}^{\min\{m, n\}} \sigma_i^2(A)}
+\end{equation}
+%--------------------------------------------------
+\subsection{Fourier transformation}
+Fourier transformation:
+\begin{equation}\label{eq:fourierTrans}
+	\hat{f}(\xi) = \int_{-\infty}^{\infty} f(x)\ e^{-2\pi i x \xi}\,dx
+\end{equation} \par
+Inverse Fourier transformation: 
+\begin{equation}
+	f(x) = \int_{-\infty}^{\infty} \hat f(\xi)\ e^{2 \pi i x \xi}\,d\xi
+\end{equation} \par
+
+For discrete points: $\left \{ \mathbf{ x_n } \right \} := x_0, x_1, \ldots, x_{N-1}$ and 
+$\left \{ \mathbf{X_k} \right \} := X_0, X_1, \ldots, X_{N-1}$, we have: \par
+Discrete Fourier transformation: 
+\begin{equation}\label{eq:fourierdisc}
+	X_k = \sum_{n=0}^{N-1} x_n \cdot e^{-i2\pi kn/N}
+\end{equation} \par
+Inverse discrete Fourier transformation
+\begin{equation}
+x_n = \frac{1}{N}\sum_{k=0}^{N-1}X_k \cdot e^{i 2 \pi kn/N} 
+\end{equation} \par 
+
+Fourier transformation of $g \in L^2(T)$: 
+\begin{equation}\label{eq:fourierL2T}
+	\hat{g}[k] = \langle g , e_k \rangle = \frac{1}{T} \int^{T}_{0} g(t)e^{-i 2\pi kt/T} dt
+\end{equation} \par
+
+Any $g \in L^2(T)$ can be expressed as: $g(t)=\sum^{\infty}_{-\infty}\hat{g}[k] e_k$. \par
+\textbf{Shift property:} For any real number $L$, if $h(t)=g(t-L)$, then
+\begin{equation} \label{eq:fouriershift}
+	\hat{h}[k]=e^{-2\pi i L k} \hat{g}[k]
+\end{equation}
+
+\textbf{Parseval's formula:}
+\begin{equation} \label{eq:parseval}
+	\norm{g}^2_{L^2}=\norm{\hat{g}}^2_{l^2}
+\end{equation}
+where $\norm{g}^2= \langle g , g \rangle$ and $\norm{\hat{g}}^2_{l^2}=\sum^{\infty}_{-\infty}\abs{\hat{g}[k]}^2$. \par
+
+\textbf{Poisson summation formula:}
+\begin{equation}
+	\sum_{n=-\infty}^\infty f(n)=\sum_{k=-\infty}^\infty \hat f\left(k\right)
+\end{equation} \par
+\begin{equation} \label{eq:poisson}
+	\sum_{n=-\infty}^{\infty} s(t + nT)=\sum_{k=-\infty}^{\infty} \frac{1}{T}\cdot \hat s\left(\frac{k}{T}\right)e^{i 2\pi \frac{k}{T} t }
+\end{equation} \par
+%--------------------------------------------------
+\subsection{FFT}
+
+%--------------------------------------------------
+\subsection{Correlation}
+Correlation definition:
+\begin{align} \label{eq:conv}
+	(f \star g )(t) &\stackrel{\mathrm{def}}{=}\ \int_{-\infty}^\infty f^*(\tau) g(t + \tau) \, d\tau 
+\end{align} \par
+Discrete correlation:
+\begin{align}
+	(f \star g)[k] &= \sum_{l=-\infty}^\infty f^*[l] g[k + l] 
+\end{align} \par
+Correlation properties:
+\begin{equation} \label{eq:correlationproperty1}
+	\widehat{f \star g}=\hat{f}^* \hat{g}=\hat{f} \hat{g}^*
+\end{equation}
+where $^*$ means complex conjugate. \par
+%--------------------------------------------------
+\subsection{Convolution}
+Convolution definition:
+\begin{align} \label{eq:conv}
+	(f * g )(t) &\stackrel{\mathrm{def}}{=}\ \int_{-\infty}^\infty f(\tau) g(t - \tau) \, d\tau \\
+	&= \int_{-\infty}^\infty f(t-\tau) g(\tau)\, d\tau
+\end{align} \par
+
+Discrete convolution: 
+\begin{align}
+	(f * g)[k] &= \sum_{l=-\infty}^\infty f[l] g[k - l] \\
+			&= \sum_{l=-\infty}^\infty f[k-l] g[l]
+\end{align} \par
+
+Circular convolution operation(with normalization) $*:L^2(T) \times L^2(T) \rightarrow L^2(T)$ here is defined by:
+\begin{equation} \label{eq:circonv}
+	 (g * h)(t) = \frac{1}{T} \int^{T}_{0} g(t-s) h(s) ds
+\end{equation} \par
+Convolution properties: 
+\begin{equation}\label{eq:convprop}
+	 \widehat{g*h}=\hat{g}\hat{h},\ \ \ \ \  \widehat{gh}=\hat{g}*\hat{h}
+\end{equation} \par
+To calculate discrete convolution, one of the inputs is converted into a \textbf{Toeplitz matrix}:
+\begin{equation} \label{eq:convToep}
+ y = h \ast x =
+            \begin{bmatrix}
+                h_1 & 0 & \ldots & 0 & 0 \\
+                h_2 & h_1 & \ldots & \vdots & \vdots \\
+                h_3 & h_2 & \ldots & 0 & 0 \\
+                \vdots & h_3 & \ldots & h_1 & 0 \\
+                h_{m-1} & \vdots & \ldots & h_2 & h_1 \\
+                h_m & h_{m-1} & \vdots & \vdots & h_2 \\
+                0 & h_m & \ldots & h_{m-2} & \vdots \\
+                0 & 0 & \ldots & h_{m-1} & h_{m-2} \\
+                \vdots & \vdots & \vdots & h_m & h_{m-1} \\
+                0 & 0 & 0 & \ldots & h_m
+            \end{bmatrix}_{(m+n-1) \times n}
+            \begin{bmatrix}
+                x_1 \\
+                x_2 \\
+                x_3 \\
+                \vdots \\
+                x_n
+            \end{bmatrix}
+\end{equation}
+or 
+\begin{equation}
+            \begin{bmatrix}
+                h_1 & h_2 & h_3 & \ldots & h_{m-1} & h_m
+            \end{bmatrix}
+            \begin{bmatrix}
+                x_1 & x_2 & x_3 & \ldots & x_n & 0 & 0 & 0& \ldots & 0 \\
+                0 & x_1 & x_2 & x_3 & \ldots & x_n & 0 & 0 & \ldots & 0 \\
+                0 & 0 & x_1 & x_2 & x_3 & \ldots & x_n & 0  & \ldots & 0 \\
+                \vdots & \vdots & \vdots & \vdots & \vdots & \ldots & \vdots & \vdots  & \ldots & 0 \\
+                0 & \ldots & 0 & 0 & x_1 & \ldots & x_{n-2} & x_{n-1} & x_n & \vdots \\
+                0 & \ldots & 0 & 0 & 0 & x_1 & \ldots & x_{n-2} & x_{n-1} & x_n
+            \end{bmatrix}_{m \times (m+n-1)}
+\end{equation}
+%--------------------------------------------------
+\subsection{Newton Method} \label{ch:newtonmethod}
+
+%--------------------------------------------------
+\subsection{Gauss-Newton Method} \label{ch:gaussnewton}
+
+%--------------------------------------------------
+\subsection{Conjugate Gradient \cite{shewchuk1994introduction}} \label{ch:conjugategradient}
+%==========================================
 \section{HOG feature \cite{dalal2005histograms} \cite{felzenszwalb2010object}} 
 \subsection{Original HOG feature  \cite{dalal2005histograms} } \label{ch:hog}
 Basic idea: local object appearance and shape can often be characterized rather well
@@ -203,9 +388,61 @@ Equation to calculate output size from input for convolution layer:
 \begin{equation}
 	\abs{Ouput} = \lfloor{\frac{\abs{Input} - size + pad1 + pad2}{stride}}\rfloor + 1
 \end{equation}	
-
 %=======================================
 \section{MOSSE \cite{bolme2010visual}}
+$x_i$: training images ; $f$: filter; $g_i$: actual target; $y_i$: desired target, here we choose 2D Gaussian centered on the target in training image. \par
+The correlation filter performs on the training image, gave the target that we want to tracking:
+\begin{equation}
+	x_i \star f = g_i
+\end{equation}\par
+The maximum point of $g_i$ is the centre of the target. \par
+With the property of correlation (\ref{eq:correlationproperty1}), we have:
+\begin{equation}
+	\widehat{x_i \star f} = \hat{x}_i \odot \hat{f}^*
+\end{equation}
+$\odot$ means element-wise multiplication. And this could speed up the localization procedure.\par
+%------------------------
+\subsection{Localization procedures}
+\begin{enumerate}
+	\item Do Fourier transform of the input image: $\hat{x}_i=\mathcal{F}(x_i)$, and of the filter: $\hat{f}=\mathcal{F}(f)$. \par
+	\item Do the element-wise multiplication: $\hat{g}_i =\hat{x}_i \odot \hat{f}^*$. \par
+	\item Transform back to the spatial domain using the inverse FFT to $g_i=\mathcal{F}^{-1}(\hat{g}_i)$. \par
+	\item The maximum point is the location of the target.
+\end{enumerate}
+%------------------------
+\subsection{Training}
+To train a filter, MOSSE minimizes the error between actual output and the desired output:
+\begin{equation} \label{eq:mossetarget}
+	\min_{\hat{f}} \sum_{i=1}^{m} |\hat{x}_i \odot \hat{f}^* - \hat{g}_i|^2
+\end{equation} \par
+Because correlation in the Fourier domain is an element- wise multiplication, each element of the filter can be optimized independently.
+\begin{equation}
+	\min_{\hat{f}_{\omega \nu}}\sum_{i=1}^{m}|\hat{x}_{i\omega \nu}  \hat{f}^*_{\omega \nu} - \hat{g}_{i\omega \nu}|^2
+\end{equation} 
+For each element of $\hat{f}$, we do the partial, and equals to zero to get the minimum point:
+\begin{equation}
+	0= \frac{\partial}{\partial f^*_{\omega \nu}}\sum_{i=1}^{m}|\hat{x}_{i\omega \nu} \odot \hat{f}^*_{\omega \nu} - \hat{g}_{i\omega \nu}|^2
+\end{equation} 
+\begin{equation}
+	\hat{f}= \frac{\sum_{i=1}^{m}\hat{x}_i \odot \hat{g}^*_i }{\sum_{i=1}^{m}\hat{x}_i \odot \hat{x}^*_i}
+\end{equation} 
+%------------------------
+\subsection{Update method}
+For each new sample $i$:
+\begin{align}
+	H^*_i &= \frac{A_i}{B_i} \\
+	A_i &= \eta \hat{g}_i \odot \hat{f}_i^* + (1-\eta)A_{i-1} \\
+	B_i &= \eta\hat{f}_i\odot \hat{f}_i^* + (1-\eta)B_{i-1}
+\end{align}
+where $\eta$ is the learning rate.
+
+%------------------------
+\subsection{Failure Detection}
+Peak to Sidelobe Ratio (PSR): g is split into the peak which is the maximum value and the sidelobe whichis the rest of the pixels excluding an $11 \times 11$ window around the peak. The PSR is then defined as:
+\begin{equation}
+	PSR = \frac{g_{max}-\mu_{s1}}{\theta_{s1}}
+\end{equation}
+where $g_{max}$ is the peak values and $\mu_{s1}$ and $\theta_{s1}$ are the mean and standard deviation of the sidelobe. \par
 %=======================================
 \section{CSK \cite{henriques2012exploiting}}
 
@@ -214,175 +451,6 @@ Equation to calculate output size from input for convolution layer:
 
 %=======================================
 \section{C-COT \cite{DanelljanECCV2016}}
-\subsection{Preliminaries}
-\subsubsection{Basic Notations}
-Complex-value functions $g, h: \mathbb{R} \rightarrow \mathbb{C}$ are periodic with period $T > 0$. \par
-Space $L^2(T)$ : Hilbert space equipped with an inner product $\langle \cdot , \cdot \rangle$ of periodic functions with period $T>0$. \par
-For $g, h \in L^2(T)$, 
-\begin{equation}\label{eq:conj}
-	\langle g,h \rangle = \frac{1}{T} \int^{T}_{0} g(t) \overline{h(t)} dt
-\end{equation}
-where bar means complex conjugation. \par
-Complex exponential functions: 
-\begin{equation}
-	e_k(t) = e^{i 2\pi kt/T}
-\end{equation} \par
-$\{e_k(t)\}^{\infty}_{-\infty}$ forms an orthonormal basis for $L^2(T)$. \par
-
-%--------------------------------------------------
-\subsubsection{Matrix Derivatives \cite{nasrabadi2007pattern}}
-\begin{equation} \label{eq:matrixderivativ1}
-	\frac{\partial}{\partial \bm{x}}(\bm{x^Ha}) = 
-	\frac{\partial}{\partial \bm{x}}(\bm{a^Hx})= \bm{a}
-\end{equation}
-
-\begin{equation} \label{eq:matrixderivativ2}
-	\frac{\partial}{\partial \bm{x}}(\bm{AB}) = 
-	\frac{\partial \bm{A}}{\partial \bm{x}} \bm{B} + \bm{A} \frac{\partial \bm{B}}{\partial \bm{x}} 
-\end{equation}
-
-\begin{equation}\label{eq:matrixderivativ3}
-	\frac{\partial}{\partial \bm{x}}(\bm{A^{-1}}) = 
-	\bm{A}^{-1} \frac{\partial \bm{A}}{\partial \bm{x}} \bm{A}^{-1}
-\end{equation}
-
-\begin{equation}\label{eq:matrixderivativ4}
-	\frac{\partial}{\partial \bm{x}}(\norm{\bm{Ax}}^2) 
-	= \frac{\partial}{\partial \bm{x}} (\bm{x^HA^HAx} )
-	= \bm{A^HAx + A^HAx} = 2\bm{A^HAx}
-\end{equation}
-%--------------------------------------------------
-\subsubsection{Kronecker product} \label{ch:kronecker}
-If \textbf{A} is an $m \times n$ matrix and \textbf{B} is a $p \times q$ matrix, then the Kronecker product $A \otimes B$ is the $mp  \times nq$ block matrix:
-\begin{equation}
-	\mathbf{A}\otimes\mathbf{B} = 
-	\begin{bmatrix} 
-		a_{11} \mathbf{B} & \cdots & a_{1n}\mathbf{B} \\ 
-		\vdots & \ddots & \vdots 
-		\\ a_{m1} \mathbf{B} & \cdots & a_{mn} \mathbf{B} 
-	\end{bmatrix}
-\end{equation} \par
-%--------------------------------------------------
-\subsubsection{Forbenius norm} \label{ch:forbenius}
-\begin{equation}
-	\|A\|_{\rm F} = \sqrt{\sum_{i=1}^m \sum_{j=1}^n |a_{ij}|^2} = \sqrt{\operatorname{trace}(A^\dagger A)} = \sqrt{\sum_{i=1}^{\min\{m, n\}} \sigma_i^2(A)}
-\end{equation}
-%--------------------------------------------------
-\subsubsection{Fourier transformation}
-Fourier transformation:
-\begin{equation}\label{eq:fourierTrans}
-	\hat{f}(\xi) = \int_{-\infty}^{\infty} f(x)\ e^{-2\pi i x \xi}\,dx
-\end{equation} \par
-Inverse Fourier transformation: 
-\begin{equation}
-	f(x) = \int_{-\infty}^{\infty} \hat f(\xi)\ e^{2 \pi i x \xi}\,d\xi
-\end{equation} \par
-
-For discrete points: $\left \{ \mathbf{ x_n } \right \} := x_0, x_1, \ldots, x_{N-1}$ and 
-$\left \{ \mathbf{X_k} \right \} := X_0, X_1, \ldots, X_{N-1}$, we have: \par
-Discrete Fourier transformation: 
-\begin{equation}\label{eq:fourierdisc}
-	X_k = \sum_{n=0}^{N-1} x_n \cdot e^{-i2\pi kn/N}
-\end{equation} \par
-Inverse discrete Fourier transformation
-\begin{equation}
-x_n = \frac{1}{N}\sum_{k=0}^{N-1}X_k \cdot e^{i 2 \pi kn/N} 
-\end{equation} \par 
-
-Fourier transformation of $g \in L^2(T)$: 
-\begin{equation}\label{eq:fourierL2T}
-	\hat{g}[k] = \langle g , e_k \rangle = \frac{1}{T} \int^{T}_{0} g(t)e^{-i 2\pi kt/T} dt
-\end{equation} \par
-
-Any $g \in L^2(T)$ can be expressed as: $g(t)=\sum^{\infty}_{-\infty}\hat{g}[k] e_k$. \par
-\textbf{Shift property:} For any real number $L$, if $h(t)=g(t-L)$, then
-\begin{equation} \label{eq:fouriershift}
-	\hat{h}[k]=e^{-2\pi i L k} \hat{g}[k]
-\end{equation}
-
-\textbf{Parseval's formula:}
-\begin{equation} \label{eq:parseval}
-	\norm{g}^2_{L^2}=\norm{\hat{g}}^2_{l^2}
-\end{equation}
-where $\norm{g}^2= \langle g , g \rangle$ and $\norm{\hat{g}}^2_{l^2}=\sum^{\infty}_{-\infty}\abs{\hat{g}[k]}^2$. \par
-
-\textbf{Poisson summation formula:}
-\begin{equation}
-	\sum_{n=-\infty}^\infty f(n)=\sum_{k=-\infty}^\infty \hat f\left(k\right)
-\end{equation} \par
-\begin{equation} \label{eq:poisson}
-	\sum_{n=-\infty}^{\infty} s(t + nT)=\sum_{k=-\infty}^{\infty} \frac{1}{T}\cdot \hat s\left(\frac{k}{T}\right)e^{i 2\pi \frac{k}{T} t }
-\end{equation} \par
-%--------------------------------------------------
-\subsubsection{FFT}
-
-%--------------------------------------------------
-\subsubsection{Convolution}
-Convolution:
-\begin{align} \label{eq:conv}
-	(f * g )(t) &\stackrel{\mathrm{def}}{=}\ \int_{-\infty}^\infty f(\tau) g(t - \tau) \, d\tau \\
-	&= \int_{-\infty}^\infty f(t-\tau) g(\tau)\, d\tau
-\end{align} \par
-
-Discrete convolution: 
-\begin{align}
-	(f * g)[k] &= \sum_{l=-\infty}^\infty f[l] g[k - l] \\
-			&= \sum_{l=-\infty}^\infty f[k-l] g[l]
-\end{align} \par
-
-Circular convolution operation(with normalization) $*:L^2(T) \times L^2(T) \rightarrow L^2(T)$ here is defined by:
-\begin{equation} \label{eq:circonv}
-	 (g * h)(t) = \frac{1}{T} \int^{T}_{0} g(t-s) h(s) ds
-\end{equation} \par
-Convolution properties: 
-\begin{equation}\label{eq:convprop}
-	 \widehat{g*h}=\hat{g}\hat{h},\ \ \ \ \  \widehat{gh}=\hat{g}*\hat{h}
-\end{equation} \par
-To calculate discrete convolution, one of the inputs is converted into a \textbf{Toeplitz matrix}:
-\begin{equation} \label{eq:convToep}
- y = h \ast x =
-            \begin{bmatrix}
-                h_1 & 0 & \ldots & 0 & 0 \\
-                h_2 & h_1 & \ldots & \vdots & \vdots \\
-                h_3 & h_2 & \ldots & 0 & 0 \\
-                \vdots & h_3 & \ldots & h_1 & 0 \\
-                h_{m-1} & \vdots & \ldots & h_2 & h_1 \\
-                h_m & h_{m-1} & \vdots & \vdots & h_2 \\
-                0 & h_m & \ldots & h_{m-2} & \vdots \\
-                0 & 0 & \ldots & h_{m-1} & h_{m-2} \\
-                \vdots & \vdots & \vdots & h_m & h_{m-1} \\
-                0 & 0 & 0 & \ldots & h_m
-            \end{bmatrix}_{(m+n-1) \times n}
-            \begin{bmatrix}
-                x_1 \\
-                x_2 \\
-                x_3 \\
-                \vdots \\
-                x_n
-            \end{bmatrix}
-\end{equation}
-or 
-\begin{equation}
-            \begin{bmatrix}
-                h_1 & h_2 & h_3 & \ldots & h_{m-1} & h_m
-            \end{bmatrix}
-            \begin{bmatrix}
-                x_1 & x_2 & x_3 & \ldots & x_n & 0 & 0 & 0& \ldots & 0 \\
-                0 & x_1 & x_2 & x_3 & \ldots & x_n & 0 & 0 & \ldots & 0 \\
-                0 & 0 & x_1 & x_2 & x_3 & \ldots & x_n & 0  & \ldots & 0 \\
-                \vdots & \vdots & \vdots & \vdots & \vdots & \ldots & \vdots & \vdots  & \ldots & 0 \\
-                0 & \ldots & 0 & 0 & x_1 & \ldots & x_{n-2} & x_{n-1} & x_n & \vdots \\
-                0 & \ldots & 0 & 0 & 0 & x_1 & \ldots & x_{n-2} & x_{n-1} & x_n
-            \end{bmatrix}_{m \times (m+n-1)}
-\end{equation}
-%--------------------------------------------------
-\subsubsection{Newton method} \label{ch:newtonmethod}
-
-%--------------------------------------------------
-\subsubsection{Gauss-Newton Method} \label{ch:gaussnewton}
-
-%--------------------------------------------------
-\subsubsection{Conjugate Gradient \cite{shewchuk1994introduction}} \label{ch:conjugategradient}
 
 %--------------------------------------------------
 \subsection{Continuous Learning Formulation}
