@@ -93,7 +93,7 @@ If \textbf{A} is an $m \times n$ matrix and \textbf{B} is a $p \times q$ matrix,
 		a_{11} \mathbf{B} & \cdots & a_{1n}\mathbf{B} \\ 
 		\vdots & \ddots & \vdots 
 		\\ a_{m1} \mathbf{B} & \cdots & a_{mn} \mathbf{B} 
-	\end{bmatrix}_{mn\times nq}
+	\end{bmatrix}_{mp\times nq}
 \end{equation} \par
 %--------------------------------------------------
 \subsection{Forbenius norm} \label{ch:forbenius}
@@ -128,9 +128,10 @@ Fourier transformation of $g \in L^2(T)$:
 \end{equation} \par
 
 Any $g \in L^2(T)$ can be expressed as: $g(t)=\sum^{\infty}_{-\infty}\hat{g}[k] e_k$. \par
-\textbf{Shift property:} For any real number $L$, if $h(t)=g(t-L)$, then
+\textbf{Shift property in $L^2(T)$:}  \par
+For any real number $L$, if $h(t)=g(t-L)$, then
 \begin{equation} \label{eq:fouriershift}
-	\hat{h}[k]=e^{-2\pi i L k} \hat{g}[k]
+	\hat{h}[k]=e^{-2\pi i k L / T} \hat{g}[k]
 \end{equation}
 
 \textbf{Parseval's formula:}
@@ -146,9 +147,17 @@ where $\norm{g}^2= \langle g , g \rangle$ and $\norm{\hat{g}}^2_{l^2}=\sum^{\inf
 \begin{equation} \label{eq:poisson}
 	\sum_{n=-\infty}^{\infty} s(t + nT)=\sum_{k=-\infty}^{\infty} \frac{1}{T}\cdot \hat s\left(\frac{k}{T}\right)e^{i 2\pi \frac{k}{T} t }
 \end{equation} \par
+
+\textbf{Symmetry of discrete Fourier transformation} \par
+From equation (\ref{eq:fourierdisc}), we can have:
+\begin{equation}
+	X_{N-k} = \sum_{n=0}^{N-1} x_n \cdot e^{-i2\pi (N-k)n/N} = \sum_{n=0}^{N-1} x_n \cdot e^{-i2\pi n} e^{+i2\pi kn/N} 
+	= \sum_{n=0}^{N-1}  x_n \cdot e^{+i2\pi kn/N} = \overline{X}_k
+\end{equation} \par
+So the Fourier coefficient is symmetry to the axis $(N+1)/2$, with a complex conjugation, this property could be used to save the memory and computing resources. \par
 %--------------------------------------------------
 \subsection{FFT}
-
+FFT is short Fast Fourier Transformation, which fully use the symmetry property of Fourier transformation. \par
 %--------------------------------------------------
 \subsection{Correlation}
 Correlation definition:
@@ -402,7 +411,7 @@ With the property of correlation (\ref{eq:correlationproperty1}), we have:
 \end{equation}
 $\odot$ means element-wise multiplication. And this could speed up the localization procedure.\par
 %------------------------
-\subsection{Localization procedures}
+\subsection{Localization}
 \begin{enumerate}
 	\item Do Fourier transform of the input image: $\hat{x}_i=\mathcal{F}(x_i)$, and of the filter: $\hat{f}=\mathcal{F}(f)$. \par
 	\item Do the element-wise multiplication: $\hat{g}_i =\hat{x}_i \odot \hat{f}^*$. \par
@@ -413,32 +422,33 @@ $\odot$ means element-wise multiplication. And this could speed up the localizat
 \subsection{Training}
 To train a filter, MOSSE minimizes the error between actual output and the desired output:
 \begin{equation} \label{eq:mossetarget}
-	\min_{\hat{f}} \sum_{i=1}^{m} |\hat{x}_i \odot \hat{f}^* - \hat{g}_i|^2
+	\min_{\hat{f}} \sum_{i=1}^{m} |\hat{x}_i \odot \hat{f}^* - \hat{y}_i|^2
 \end{equation} \par
 Because correlation in the Fourier domain is an element- wise multiplication, each element of the filter can be optimized independently.
 \begin{equation}
-	\min_{\hat{f}_{\omega \nu}}\sum_{i=1}^{m}|\hat{x}_{i\omega \nu}  \hat{f}^*_{\omega \nu} - \hat{g}_{i\omega \nu}|^2
+	\min_{\hat{f}_{\omega \nu}}\sum_{i=1}^{m}|\hat{x}_{i\omega \nu}  \hat{f}^*_{\omega \nu} - \hat{y}_{i\omega \nu}|^2
 \end{equation} 
 For each element of $\hat{f}$, we do the partial, and equals to zero to get the minimum point:
 \begin{equation}
-	0= \frac{\partial}{\partial f^*_{\omega \nu}}\sum_{i=1}^{m}|\hat{x}_{i\omega \nu} \odot \hat{f}^*_{\omega \nu} - \hat{g}_{i\omega \nu}|^2
+	0= \frac{\partial}{\partial f^*_{\omega \nu}}\sum_{i=1}^{m}|\hat{x}_{i\omega \nu} \odot \hat{f}^*_{\omega \nu} - \hat{y}_{i\omega \nu}|^2
 \end{equation} 
 \begin{equation}
-	\hat{f}= \frac{\sum_{i=1}^{m}\hat{x}_i \odot \hat{g}^*_i }{\sum_{i=1}^{m}\hat{x}_i \odot \hat{x}^*_i}
+	\hat{f}= \frac{\sum_{i=1}^{m}\hat{x}_i \odot \hat{y}^*_i }{\sum_{i=1}^{m}\hat{x}_i \odot \hat{x}^*_i}
 \end{equation} 
 %------------------------
 \subsection{Update method}
 For each new sample $i$:
 \begin{align}
-	H^*_i &= \frac{A_i}{B_i} \\
-	A_i &= \eta \hat{g}_i \odot \hat{f}_i^* + (1-\eta)A_{i-1} \\
-	B_i &= \eta\hat{f}_i\odot \hat{f}_i^* + (1-\eta)B_{i-1}
+	\hat{f}_i &= \frac{A_i}{B_i} \\
+	A_i &= \eta \hat{x}_i \odot \hat{y}_i^* + (1-\eta)A_{i-1} \\
+	B_i &= \eta\hat{x}_i\odot \hat{x}_i^* + (1-\eta)B_{i-1}
 \end{align}
 where $\eta$ is the learning rate.
 
 %------------------------
 \subsection{Failure Detection}
-Peak to Sidelobe Ratio (PSR): g is split into the peak which is the maximum value and the sidelobe whichis the rest of the pixels excluding an $11 \times 11$ window around the peak. The PSR is then defined as:
+Peak to Sidelobe Ratio (PSR): g is split into the peak which is the maximum value and the sidelobe which
+is the rest of the pixels excluding an $11 \times 11$ window around the peak. The PSR is then defined as:
 \begin{equation}
 	PSR = \frac{g_{max}-\mu_{s1}}{\theta_{s1}}
 \end{equation}
@@ -687,8 +697,20 @@ where $P \times Q$ denotes the target size. \par
 \subsection{Tracking Frameworks}
 \subsubsection{Localization}
 \begin{enumerate}
-	\item Extract the feature maps $\{x^d_j[n]\}: n \in \{0, \cdots, N_d -1\}, d \in \{1, \cdots, D\}$ from the region of interest in an image.
-	\item Calculate confidence score $s=S_f\{x\}$ using (\ref{eq:scoreFourier}) and inverse DFT. 
+	\item Extract the feature maps $\{x^d[n]\}: n \in \{0, \cdots, N_d -1\}, d \in \{1, \cdots, D\}$ from the region of interest in an image.
+	\item Multiply it by the cosine window.
+	\item Do DFT on the extracted feature maps:
+		\begin{equation} 
+			X^d[k] = \mathcal{F} (x^d[n])
+		\end{equation} \par	
+	\item Calculate $\widehat{S_f\{x\}}[k]$ according to (\ref{eq:scoreFourier}):
+		\begin{equation} 
+			\widehat{S_f\{x\}}[k]=\sum^D_{d=1} \hat{f}^d[k] X^d[k] \hat{b}_d[k]
+		\end{equation} \par
+	\item Calculate confidence score $s=S_f\{x\}$ by inverse DFT:
+		\begin{equation} 
+			s(t)=\mathcal{F}^{-1}(\widehat{S_f\{x\}}[k])
+		\end{equation} \par
 	\item To maximizing the score $s(t): t\in [0,T)$,
 		\begin{enumerate}
 			\item Using grid search on $s(T\frac{n}{2K+1})$ for $n=0, \cdots, 2K$ to find a rough
@@ -914,7 +936,7 @@ The approach is based on the joint probability distribution of $p(x,y)$. So, rep
 	E(f)=\mathbb{E} \{\norm{S_f\{x_j\}-y}^2_{L^2} \}+ \sum^D_{d=1} \norm{w f^d}^2_{L^2} 
 \end{equation}
 here $\mathbb{E}$ is evaluated over the distribution $p(x,y)$. If we suppose $p(x,y)=\sum^m_{j=1}\alpha_j\delta_{x_j,y_j}(x,y)$, then we get the original equation (\ref{eq:target}). \par
-Notice that, the $y_j$in (\ref{eq:target}) only differ by a translation, it equals the shifting of the feature map. Hence, we could assume that the target is centered in the image region and all $y=y_0$ are identical. Then the distribution can be factorized as $p(x,y)=p(x)\delta_{y_0}(y)$. Thus, we only need to estimate $p(x)$, employ Gaussian Mixture Model (GMM):
+Notice that, the $y_j$ in (\ref{eq:target}) only differ by a translation, it equals the shifting of the feature map. Hence, we could assume that the target is centered in the image region and all $y=y_0$ are identical. Then the distribution can be factorized as $p(x,y)=p(x)\delta_{y_0}(y)$. Thus, we only need to estimate $p(x)$, employ Gaussian Mixture Model (GMM):
 \begin{equation}
 	p(x)=\sum^L_{l=1} \pi_l \mathcal{N} (x;\mu_l;I)
 \end{equation}
@@ -935,6 +957,78 @@ so using the same method as C-COT to train it.
 %-----------------------------------------------
 \subsection{Update strategy}
 Update the filter by starting the optimization process in every $N_s$th frame instead of every time.
+%-----------------------------------------------
+\subsection{Tracking Frameworks}
+\subsubsection{Initialization for frame $0$ with bounding box}
+\begin{enumerate}
+	\item Initialize all the parameters.
+	\item Extract features from the first frame (image):$\{x^d[n]: n \in \{0, \cdots, N_d -1\}, d \in \{1, \cdots, D\}\}$.
+	\item Multiply the features by the cosine window.
+	\item Do DFT on the features:
+		\begin{equation} 
+			X^d[k] = \mathcal{F} (x^d[n])
+		\end{equation} \par
+	\item Interpolate the features to the continuos domain:
+		\begin{align}
+			\widehat{J_d\{x^d\}}[k]&=X^d[k] \hat{b}_d[k] 
+		\end{align} \par 
+	\item Initialize projection matrix $P$, by using PCA to the interpolated features.
+	\item Do the feature reduction for each feature channel $\hat{J}_d$:
+	\begin{equation}
+		\hat{J}_c = P^T\hat{J}_d
+	\end{equation} 
+	\item Initialize and update sample space.
+	\item Calculate sample energy and projection map energy.
+	\item Initialize filter $\hat{\bm{f}}_{0}$ and it's derivative $\Delta \hat{\bm{f}}_{0}$.
+	\item Train the tracker.
+	\item Update the projection matrix $P$.
+	\item Re-project the sample and update the sample space.
+	\item Update distance matrix of sample space.
+	\item Update filter  $\hat{\bm{f}}_{0}$.
+\end{enumerate}
+\subsubsection{Localization for frame $i$}
+\begin{enumerate}
+	\item Extract the features $\{x^d[n]: n \in \{0, \cdots, N_d -1\}, d \in \{1, \cdots, D\}\}$ from the region of interest in the frame $i$ for different scales.
+	\item Do the feature reduction for each feature channel $x^d$:
+	\begin{equation}
+		 x^c = P^Tx^d
+	\end{equation} 
+	\item Multiply the feature by cosine window.
+	\item Do DFT on the extracted features:
+		\begin{equation} 
+			X^c[k] = \mathcal{F} (x^c[n])
+		\end{equation} \par	
+	\item Interpolate the features to the continuos domain:
+		\begin{align}
+			\widehat{J_c\{x^c\}}[k]=X^c[k] \hat{b}_c[k] 
+		\end{align} \par 
+	\item Calculate score in Fourier domain $\widehat{S_f\{x\}}[k]$ according to (\ref{eq:scoreFourier}):
+		\begin{equation}
+			\widehat{S_f\{x\}}[k]=\sum^C_{c=1} \hat{f}^c[k] \widehat{J_c\{x^c\}}[k]
+		\end{equation} \par
+	\item Calculate confidence score $s=S_f\{x\}$ by inverse DFT:
+		\begin{equation} 
+			s(t)=\mathcal{F}^{-1}(\widehat{S_f\{x\}}[k])
+		\end{equation} \par
+	\item To maximizing the score $s(t): t\in [0,T)$,
+		\begin{enumerate}
+			\item Using grid search on $s(T\frac{n}{2K+1})$ for $n=0, \cdots, 2K$ to find a rough
+			 initial estimate $s(t)$.
+			\item Do Fourier series expansion $s(t)=\sum^K_{-K}\hat{s}[k]e_k(t)$, and use the result above
+			as the initial state, using Newtons method (\ref{ch:newtonmethod}) to do iterative optimization of it.
+		\end{enumerate}
+	\item Update position and scale.
+\end{enumerate}
+
+\subsubsection{Training for frame $i$}
+\begin{enumerate}
+	\item Get the sample calculated in localization.
+	\item Shift the sample so that the target is centered.
+	\item Update sample space.
+	\item Train the tracker every $N_s$th frame.
+	\item Update the projection matrix $P$.
+	\item Update filter  $\hat{\bm{f}}_{i}$.
+\end{enumerate}
 %=======================================
 \section{Some tips of transfer from matlab to $c++$}
 \begin{itemize}
