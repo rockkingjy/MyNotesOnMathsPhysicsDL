@@ -38,7 +38,7 @@
     linkcolor=blue,  %choose some color if you want links to stand out
 }
 \newtheorem{Proposition}{Proposition}
-\setlength{\parindent}{10ex}
+\setlength{\parindent}{4ex}
 \begin{document}\small
 \title{SLAM Notes}
 \author{rockking.jy@gmail.com}
@@ -50,11 +50,11 @@
 \maketitle
 \tableofcontents
 %=======================================
-\section{Probabilistic Data Association for Semantic SLAM \cite{bowman2017probabilistic}}
+\section{Probabilistic Data Association for Semantic SLAM \cite{bowman2017probabilistic} \cite{atanasov2018unifying}}
 \subsection{Notations}
 $\mathcal{Z}=\{z_k\}^K_{k=1}$: K Sensor Measurements. \par
 $\mathcal{X}=\{\bm{x_t}\}^T_{t=1}$: T sensor poses. \par
-$\mathcal{L}=\{l_m\}^M_{m=1}$: M Static landmarks, consist of its position $l^p \in \mathbb{R}^3$ and a class label $l^c$ from a discrete set $\mathbb{C}=\{1, \cdots , C\}$. \par
+$\mathcal{L}=\{l_m\}^M_{m=1}$: M Static landmarks, consist of its \textbf{position} $l^p \in \mathbb{R}^3$ and a \textbf{class label} $l^c$ from a discrete set $\mathbb{C}=\{1, \cdots , C\}$. \par
 $\mathcal{D}=\{(\alpha_k, \beta_k)\}^K_{k=1}$: K Data associations, the measurement $z_k$ of landmark $l_{\beta_k}$ was obtained from sensor state $x_{\alpha_k}$. \par
 SLAM Task Definition: Given $\mathcal{Z}$, estimate $\mathcal{X}$, $\mathcal{L}$ and $\mathcal{D}$:
 \begin{equation}
@@ -186,6 +186,14 @@ The full pose graph optimization is then becomes:
 	\begin{equation}
 			\hat{\mathcal{X}}_{1:T}, \hat{l}_{1:M}=\argmin_{\mathcal{X}, l_{1:M}} \sum^K_{k=1} \sum^M_{j=1}f^s_{kj}(\mathcal{X}, l^p_{1:M}) + \sum^{N_y}_{i=1} f^y_i(\mathcal{X}) + \sum^{T-1}_{t=1} f^{\mathcal{I}}_t(\mathcal{X})
 	\end{equation}
+%-----------------------------------------------------------
+\subsection{Implementation}
+\begin{itemize}
+	\item Sensors: VI-Sensor's IMU and left camera.
+	\item Front-end: Select per 15 frames as keyframe, ORB features, RANSAC.
+	\item Back-end: GTSAM and iSAM2.
+	\item Object detector: A deformable parts model detection algorithm.  
+\end{itemize}
 %=======================================
 \renewcommand\refname{Reference}
 \bibliographystyle{ieeetr}
