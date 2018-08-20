@@ -1,0 +1,194 @@
+%\documentclass[12pt,draft]{article}
+\documentclass[12pt]{article}
+\usepackage{CJK}
+\AtBeginDvi{\input{zhwinfonts}}
+\usepackage{mathrsfs}
+\usepackage{amsmath,amsthm,amsfonts,amssymb}
+\usepackage{geometry}
+\usepackage{fancyhdr}
+\usepackage{indentfirst}
+\usepackage{float}
+\usepackage[dvips]{graphicx}
+\usepackage{subfigure}
+\usepackage[font=small]{caption}
+\usepackage{threeparttable}
+\usepackage{cases}
+\usepackage{multicol}
+\usepackage{url}
+\usepackage{amsmath}
+\usepackage{bm}
+\usepackage{xcolor}
+\usepackage{overpic}
+\usepackage[utf8]{inputenc}
+\usepackage[american]{babel}
+%\usepackage[round]{natbib}
+\usepackage{amsmath}
+\DeclareMathOperator*{\argmax}{argmax} % thin space, limits underneath in displays
+\DeclareMathOperator*{\argmin}{argmin} % thin space, limits underneath in displays
+\usepackage{graphicx}
+\numberwithin{equation}{section}
+\geometry{left=1.5cm,right=1.5cm,top=1.5cm,bottom=1.5cm}
+\setlength{\parskip}{0.3\baselineskip}
+\setlength{\headheight}{15pt}
+\usepackage{color}   %May be necessary if you want to color links
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true, %set true if you want colored links
+    linktoc=all,     %set to all if you want both sections and subsections linked
+    linkcolor=blue,  %choose some color if you want links to stand out
+}
+\newtheorem{Proposition}{Proposition}
+\setlength{\parindent}{10ex}
+\begin{document}\small
+\title{SLAM Notes}
+\author{rockking.jy@gmail.com}
+\pagestyle{fancy}\fancyhf{}
+\lhead{}\rhead{rockking.jy@gmail.com}
+\lfoot{\textit{}}\cfoot{}\rfoot{\thepage}
+\renewcommand{\headrulewidth}{1.pt}
+\renewcommand{\footrulewidth}{1.pt}
+\maketitle
+\tableofcontents
+%=======================================
+\section{Probabilistic Data Association for Semantic SLAM \cite{bowman2017probabilistic}}
+\subsection{Notations}
+$\mathcal{Z}=\{z_k\}^K_{k=1}$: K Sensor Measurements. \par
+$\mathcal{X}=\{\bm{x_t}\}^T_{t=1}$: T sensor poses. \par
+$\mathcal{L}=\{l_m\}^M_{m=1}$: M Static landmarks, consist of its position $l^p \in \mathbb{R}^3$ and a class label $l^c$ from a discrete set $\mathbb{C}=\{1, \cdots , C\}$. \par
+$\mathcal{D}=\{(\alpha_k, \beta_k)\}^K_{k=1}$: K Data associations, the measurement $z_k$ of landmark $l_{\beta_k}$ was obtained from sensor state $x_{\alpha_k}$. \par
+SLAM Task Definition: Given $\mathcal{Z}$, estimate $\mathcal{X}$, $\mathcal{L}$ and $\mathcal{D}$:
+\begin{equation}
+	\hat{\mathcal{X}}, \hat{\mathcal{L}}, \hat{\mathcal{D}} = \\
+		\argmax_{\mathcal{X},\mathcal{L},\mathcal{D}} log\ p(\mathcal{Z}|\mathcal{X},\mathcal{L},\mathcal{D})
+\end{equation} \par
+Common approach to this task:
+\begin{subequations}
+\begin{align}
+	\hat{\mathcal{D}} &= 
+		\argmax_{\mathcal{D}} log\ p(\mathcal{D}|\mathcal{X}^0,\mathcal{L}^0,\mathcal{Z}) \\
+	\hat{\mathcal{X}}, \hat{\mathcal{L}} &= 
+		\argmax_{\mathcal{X},\mathcal{L}} log\ p(\mathcal{Z}|\mathcal{X},\mathcal{L},\hat{\mathcal{D}})
+\end{align}
+\end{subequations} \par
+In order to revisit association decisions to avoid detrimental effect from incorrectly chosen data association, instead of simple one step process above, it is possible to perform \textbf{coordinate descent}:
+\begin{subequations}
+\begin{align}
+	\mathcal{D}^{i+1} &= \argmax_{\mathcal{D}} log\ p(\mathcal{D}|\mathcal{X}^i,\mathcal{L}^i,\mathcal{Z}) \\
+	\mathcal{X}^{i+1}, \mathcal{L}^{i+1} &= \argmax_{\mathcal{X},\mathcal{L}} log\ p(\mathcal{Z}|\mathcal{X},\mathcal{L},\mathcal{D}^{i+1})
+\end{align}
+\end{subequations} \par
+To resolve the problem of ambiguous measurements (if the measurements are ambiguous, they will be discarded), utilize the whole density of $\mathcal{D}$ visa \textbf{EM}(expectation maximization) to averages over all possible data associations $\mathbb{D}$:
+\begin{align}\begin{split}\label{eq:em1}
+	\mathcal{X}^{i+1}, \mathcal{L}^{i+1} &= 
+	\argmax_{\mathcal{X},\mathcal{L}} \mathbb{E}_{\mathcal{D}} [log\ p(\mathcal{Z}|\mathcal{X},\mathcal{L},\mathcal{D})|\mathcal{X}^i,\mathcal{L}^i,\mathcal{Z}] \\
+	&= \argmax_{\mathcal{X},\mathcal{L}} \sum_{\mathcal{D} \in \mathbb{D}} \ p(\mathcal{D}|\mathcal{X}^i,\mathcal{L}^i,\mathcal{Z}) log\ p(\mathcal{Z}|\mathcal{X},\mathcal{L},\mathcal{D})
+\end{split}\end{align}
+using $p(\mathcal{Z}|\mathcal{X},\mathcal{L},\mathcal{D})=\prod_kp(z_k|x_{\alpha_k}, l_{\beta_k})$, we have:
+\begin{equation}\label{eq:em2}
+	\argmax_{\mathcal{X},\mathcal{L}} \sum_{\mathcal{D} \in \mathbb{D}} \sum_{k=1}^K \ p(\mathcal{D}|\mathcal{X}^i,\mathcal{L}^i,\mathcal{Z})log\ p(z_k|x_{\alpha_k}, l_{\beta_k})  \\
+	= \argmax_{\mathcal{X},\mathcal{L}} \sum_{k=1}^K \sum_{j=1}^{M} \ w^i_{kj} log\ p(z_k|x_{\alpha_k}, l_j) 
+\end{equation}
+where, $w^i_{kj}=\sum_{\mathcal{D} \in \mathbb{D}(k,j)} p(\mathcal{D}|\mathcal{X}^i,\mathcal{L}^i,\mathcal{Z})$, and $\mathbb{D}(k,j)=\{\mathcal{D} \in \mathbb{D} | \beta_k = j\} \subseteq \mathbb{D}$ is the set of all data associations such that measurement $k$ is assigned to landmark $j$. \par
+The EM formulation (\ref{eq:em1}) allows us to solve \textbf{iteratively} from the proposition:
+\begin{Proposition}
+	If $p(\mathcal{D}|\mathcal{X}^i,\mathcal{L}^i)$ is uniform, the maximizers of the EM formulation (\ref{eq:em1}) is euqal to the optimization:
+	\begin{equation}
+		\mathcal{X}^{i+1}, \mathcal{L}^{i+1} = \argmax_{\mathcal{X},\mathcal{L}} per(Q^i(_{\mathcal{X},\mathcal{L}}))
+	\end{equation}
+\end{Proposition} \par
+So EM algorithm has the following steps:
+\begin{enumerate}
+	\item E step: estimate the data association distribution $p(\mathcal{D}|\mathcal{X}^i,\mathcal{L}^i,\mathcal{Z})$ in the form of the $w^i_{kj}$.
+	\item M step: maximize the expected measurement log likelihood (\ref{eq:em2}).
+\end{enumerate}
+%-----------------------------------------------------------
+\subsection{Semantic SLAM}
+$\mathcal{I}=\{\mathcal{I}_t\}^T_{t=1}$: inertial information from IMU. \par
+$\mathcal{Y}=\{\mathcal{Y}_t\}^T_{t=1}$: geometric information, extract ORB features and match them. \par
+$\mathcal{S}=\{\mathcal{S}_t\}^T_{t=1}$: semantic information  from object recognition algorithm, $\bm{s_k}=(s^c_k, s^s_k, s^b_k) \in \mathcal{S}_t$ represents $(class, score, bbox)$ \par
+If the data association $\mathcal{D}_k=(\alpha_k, \beta_k)$ of measurement $\bm{s_k}$ is known, the measurement likelihood can be decomposed as follows:
+\begin{equation}
+	p(\bm{s_k}|x_{\alpha_k}, l_{\beta_k})=p(s^c_k|l^c_{\beta_k}) p(s^s_k|l^c_{\beta_k},s^c_k) p(s^b_k|x_{\alpha_k},l^c_{\beta_k})
+\end{equation}
+where, $p(s^c_k|l^c_{\beta_k})$ is the confusion matrix of the object detector, $p(s^s_k|l^c_{\beta_k},s^c_k)$ is score distribution, both of them are learned offline. And $p(s^b_k|x_{\alpha_k},l^c_{\beta_k})$ is assumed as normally distribution. \par
+$\mathcal{I}$ an $\mathcal{Y}$ used to track the sensor trajectory \textbf{locally}, while $\mathcal{S}$ used to construct a map of objects to perform loop closure that is robust to ambiguities and viewpoint efficiently. \par
+%-----------------------------------------------------------
+\subsection{Semantic SLAM using EM}
+\subsubsection{Proposition}
+\begin{Proposition}
+	If
+	\begin{itemize}
+		\item $p(\mathcal{D}|\mathcal{X},\mathcal{L})$ is uniform.
+		\item Semantic measurement data associations are independent across keyframes: $p(\mathcal{D}|\mathcal{S},\mathcal{X},\mathcal{L})=\prod^T_{t=1}(\mathcal{D}_t|\mathcal{S}_t,\mathcal{X},\mathcal{L})$.
+	\end{itemize}
+	the semantic SLAM problem can be solved via the EM algorithm by iteratively solving for:
+	\begin{enumerate}
+		\item E-step: Data association weights $w^t_{kj}$:
+		\begin{equation}
+			w^{t,(i)}_{kj}=\sum_{l^c \in \mathbb{C}} \sum_{\mathcal{D}_t \in \mathbb{D}_t(k,j)} k^{(i)}(\mathcal{D}_t, l^c) \ \ \ \ \forall t, k, j
+		\end{equation}
+		where,
+		\begin{equation}
+			k^{(i)}(\mathcal{D}_t,l^c)=\frac{p(S_t|\mathcal{X}^{(i)},\mathcal{L}^{(i)}, \mathcal{D}_t)}{\sum_{l^c \in \mathbb{C}} \sum_{\mathcal{D}_t \in \mathbb{D}_t} p(S_t|\mathcal{X}^{(i)},\mathcal{L}^{(i)}, \mathcal{D}_t)}
+		\end{equation}
+		$\mathbb{D}_t$: the set of all possible data associations for measurements received at timestep t. \par
+		$\mathbb{D}_t(k,j) \subseteq \mathbb{D}_t$: the set of data associations that measurement i is assigned to landmark j. 
+		\item M-step: Sensor states $\mathcal{X}$ and landmark positions $l^p_{1:M}$:
+		\begin{equation} \label{eq:mstep}
+			\mathcal{X}^{(i+1)}, {l}^{p,(i+1)}_{1:M}=\argmin_{\mathcal{X}, l^p_{1:M}} \sum^T_{t=1} \sum_{\bm{s_k} \in S_t} \sum^M_{j=1} -w^{t,(i)}_{kj} log \ p(\bm{s_k}|\bm{x_t}, l_j) - log\ p(\mathcal{Y}|\mathcal{X}) - log\ p(\mathcal{I}|\mathcal{X})
+		\end{equation}
+	\end{enumerate}	
+\end{Proposition} \par
+\subsubsection{Analysis of the proposition}
+Pose graph:  \par
+A set of vertices $\mathcal{V}$ corresponds to the set of optimization variables. \par
+A set of factors $\mathcal{F}$ is a generalization of the edges that allow connectivity between more than two vertices, corresponds to the set of individual components of the cost function. \par
+A factor f depends on a subset of $\mathcal{V}$ such that the entire optimization is of the form:
+\begin{equation}
+	\hat{\mathcal{V}}=\argmin_{\mathcal{V}} \sum_{f \in \mathcal{F}} f(\mathcal{V})
+\end{equation}
+\begin{enumerate}
+	\item E step
+	\item M step
+		\begin{itemize}
+		\item Semantic Factors \par
+			A measurement $\bm{s_k}$ from sensor state $\bm{x_i}$ defines factors 
+			$f^s_{kj}(\bm{x_i}, l_j)$ for each visible landmark j. \par
+			Let $h_{\pi}(\bm{x}, l^p)$ be the projection of a landmark $l^p$ onto a camera at pose 
+			$\bm{x}$. \par
+			Assume the camera measurement of a landmark $l^p$ from camera pose $\bm{x}$ is 
+			Gaussian distributed with mean $h_{\pi}(\bm{x}, l^p)$ and covariance $\bm{R_s}$. \par
+			Thus, a camera factor corresponding to sensor state t, measurement k, and landmark j, 
+			becomes:
+			\begin{equation}
+				f^s_{kj}(\mathcal{X}, \mathcal{L})= -w^{t,(i)}_{kj} log \ p(s_k^b|\bm{x_t}, l_j^p)
+				=||s_k^b-h_\pi (\bm{x_t}, l_j)||^2_{\bm{R_s}/w^{t,(i)}_{kj}}
+			\end{equation}
+		\item Geometric Factors \par
+			The term corresponding to geometric factors in (\ref{eq:mstep}) rewrite as:
+			\begin{align}\begin{split}
+			- log\ p(\mathcal{Y}|\mathcal{X}) 
+			&=-\sum^{N_y}_{i=1}\sum_{k:\beta^y_k=i} log\ p(y_k|x_{\alpha^y_k}) \\
+			&=\sum^{N_y}_{i=1}f^y_i(\mathcal{X}) \\
+			&=\sum^{N_y}_{i=1}\sum_{k:\beta^y_k=i}||\bm{y}_k-h_\pi (\bm{x}_{\alpha_k^y}, \rho_i)||^2_{\bm{R}_y}
+			\end{split}\end{align}
+			where $N_y$ is the total number of distinct feature trackers. $\rho_{\beta^y_k}$ be the 3D position in the frame of landmark that generated measurement $\bm{y}_k$, and assuming the projection has Gaussian pixel noise with covariance $\bm{R}_y$. \par
+		\item Inertial Factors \par
+			\begin{equation}
+				f^{\mathcal{I}}_i(\mathcal{X})
+				=-log \ p(\mathcal{I}_{ij}|\mathcal{X})
+				=||\bm{r}_{\mathcal{I}_{ij}}||^2_{\sum_{ij}}
+			\end{equation}
+			where $\bm{r}_{\mathcal{I}_{ij}}$ is the inertial residuals on the rotation($\bm{r}_{\Delta R_{ij}}$), velocity($\bm{r}_{\Delta v_{ij}}$) and position($\bm{r}_{\Delta p_{ij}}$) differences between two keyframes as a function of the pose $\bm{x_i}$ and $\bm{x_j}$.
+		\end{itemize}
+\end{enumerate}
+The full pose graph optimization is then becomes: 
+	\begin{equation}
+			\hat{\mathcal{X}}_{1:T}, \hat{l}_{1:M}=\argmin_{\mathcal{X}, l_{1:M}} \sum^K_{k=1} \sum^M_{j=1}f^s_{kj}(\mathcal{X}, l^p_{1:M}) + \sum^{N_y}_{i=1} f^y_i(\mathcal{X}) + \sum^{T-1}_{t=1} f^{\mathcal{I}}_t(\mathcal{X})
+	\end{equation}
+%=======================================
+\renewcommand\refname{Reference}
+\bibliographystyle{ieeetr}
+\bibliography{SLAM} 
+\clearpage
+\end{document}
